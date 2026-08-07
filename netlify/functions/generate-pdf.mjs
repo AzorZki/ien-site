@@ -1,16 +1,15 @@
 // ═══════════════════════════════════════════════════════
-// generate-pdf.js — Netlify Function for "Il était nous"
+// generate-pdf.mjs — Netlify Function for "Nos premiers mots"
 // v3: chat bubbles + alignment fixes
 // ═══════════════════════════════════════════════════════
 
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const FONTS_DIR = path.join(__dirname, 'fonts');
+
+// ─── PATHS ───
+const FONTS_DIR = path.resolve('fonts');
 
 // ─── COLORS (warm coral + soft steel blue) ───
 const ROSE = [194, 124, 90];        // #C27C5A — terracotta
@@ -104,7 +103,7 @@ function drawBar(doc, x, y, w, val1, val2, color1 = ROSE, color2 = BLUE) {
 }
 
 function drawSep(doc, y) { doc.moveTo(MARGIN + CONTENT_W * 0.3, y).lineTo(MARGIN + CONTENT_W * 0.7, y).strokeColor(BORDER).lineWidth(0.5).stroke(); }
-function fmtNum(n) { return n != null ? n.toLocaleString('fr-FR') : '0'; }
+function fmtNum(n) { return n != null ? String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : '0'; }
 
 function drawArc(doc, cx, cy, r, startAngle, endAngle, color, lineWidth) {
   const steps = 60, angleStep = (endAngle - startAngle) / steps;
@@ -123,7 +122,7 @@ function drawCover(doc, name1, name2, stats, msgs, colors) {
   doc.moveTo(PAGE_W * 0.35, 120).lineTo(PAGE_W * 0.65, 120).strokeColor(ROSE).lineWidth(0.8).stroke();
 
   doc.font('Playfair-Italic').fontSize(36).fillColor(INK);
-  doc.text('Il était nous', 0, 160, { align: 'center', width: PAGE_W });
+  doc.text('Nos premiers mots', 0, 160, { align: 'center', width: PAGE_W });
   doc.font('Inter').fontSize(11).fillColor(INK_MUTED);
   doc.text('L\'histoire de', 0, 220, { align: 'center', width: PAGE_W });
   doc.font('Playfair').fontSize(24).fillColor(ROSE);
@@ -294,19 +293,6 @@ function drawConversation(doc, msgs, name1, name2, nameMap, colors) {
     doc.text(timeText, bubbleX + bubbleW - tw - bubblePadX, msgY + totalBubbleH - timeH - bubblePadY + 2, { lineBreak: false });
 
     doc.y = msgY + totalBubbleH + 5;
-  }
-}
-
-// ═══ ROMAN ═══
-function drawRoman(doc, roman) {
-  if (!roman) return;
-  doc.addPage(); doc.y = MARGIN + 20;
-  for (const para of roman.split('\n\n').filter(p => p.trim())) {
-    const t = para.trim();
-    if (/^CHAPITRE|^—/.test(t)) { ensureSpace(doc, 50); doc.moveDown(1); doc.font('Playfair').fontSize(14).fillColor(ROSE); doc.text(t, MARGIN, doc.y, { width: CONTENT_W, align: 'center' }); doc.moveDown(0.8); continue; }
-    const qm = t.match(/^\[(.+?)\]\s*[«""](.+?)[»""]/s);
-    if (qm) { ensureSpace(doc, 60); const qX = MARGIN + 16; doc.rect(MARGIN + 10, doc.y, 2, 35).fill(ROSE); doc.font('Inter').fontSize(9).fillColor(ROSE); doc.text(qm[1].trim(), qX, doc.y, { width: CONTENT_W - 32 }); doc.font('Playfair-Italic').fontSize(10.5).fillColor(INK_SOFT); doc.text(`« ${qm[2].trim()} »`, qX, doc.y + 2, { width: CONTENT_W - 32 }); doc.moveDown(0.8); continue; }
-    ensureSpace(doc, 40); doc.font('Inter').fontSize(10.5).fillColor(INK_SOFT); doc.text(t, MARGIN, doc.y, { width: CONTENT_W, align: 'justify', lineGap: 4 }); doc.moveDown(0.6);
   }
 }
 
@@ -486,8 +472,8 @@ function drawFaceAFace(doc, stats, name1, name2, colors) {
 // ═══ NOTRE HISTOIRE ═══
 function drawNotreHistoire(doc, stats, name1, name2, colors) {
   doc.addPage(); doc.y = MARGIN + 10;
-  doc.font('Playfair').fontSize(18).fillColor(INK); doc.text('Notre histoire', MARGIN, doc.y, { width: CONTENT_W, align: 'center' });
-  doc.font('Inter').fontSize(10).fillColor(INK_MUTED); doc.text('Les chiffres de votre couple', MARGIN, doc.y + 4, { width: CONTENT_W, align: 'center' });
+  doc.font('Playfair').fontSize(18).fillColor(INK); doc.text('Le saviez-vous ?', MARGIN, doc.y, { width: CONTENT_W, align: 'center' });
+  doc.font('Inter').fontSize(10).fillColor(INK_MUTED); doc.text('Les petits détails de votre couple', MARGIN, doc.y + 4, { width: CONTENT_W, align: 'center' });
   doc.moveDown(2);
 
   const facts = [
@@ -551,7 +537,7 @@ function drawEndPage(doc, name1, name2) {
   doc.font('Playfair').fontSize(20).fillColor(INK); doc.text(`${name1} & ${name2}`, 0, cy + 20, { align: 'center', width: PAGE_W });
   doc.font('Playfair-Italic').fontSize(13).fillColor(INK_MUTED); doc.text('Chaque message compte.', 0, cy + 60, { align: 'center', width: PAGE_W });
   drawSep(doc, cy + 95);
-  doc.font('Inter').fontSize(8).fillColor(INK_MUTED); doc.text('Généré par Il était nous — iletaitnous.fr', 0, cy + 110, { align: 'center', width: PAGE_W });
+  doc.font('Inter').fontSize(8).fillColor(INK_MUTED); doc.text('Généré par Nos premiers mots — nospremiersmots.fr', 0, cy + 110, { align: 'center', width: PAGE_W });
 }
 
 // ═══ SWAP STATS (when s1 maps to name2) ═══
@@ -577,18 +563,18 @@ function swapStats(s) {
 
 // ═══ MAIN ═══
 function generateBook(data) {
-  const { messages, stats, name1, name2, keyMoments, roman, nameMap, roseName } = data;
+  const { messages, stats, name1, name2, keyMoments, nameMap, roseName } = data;
   // Dynamic colors: rose person gets ROSE, other gets BLUE
   const roseIs1 = (roseName === name1);
   const COLOR1 = roseIs1 ? ROSE : BLUE;       // color for name1
   const COLOR2 = roseIs1 ? BLUE : ROSE;       // color for name2
   const BG1 = roseIs1 ? ROSE_BG : BLUE_BG;
   const BG2 = roseIs1 ? BLUE_BG : ROSE_BG;
-  const doc = new PDFDocument({ size: 'A4', margin: MARGIN, autoFirstPage: false, info: { Title: `Il était nous — ${name1} & ${name2}`, Author: 'Il était nous' } });
-  doc.registerFont('Inter', path.join(FONTS_DIR, 'Inter.ttf'));
-  doc.registerFont('Playfair', path.join(FONTS_DIR, 'Playfair.ttf'));
-  doc.registerFont('Playfair-Italic', path.join(FONTS_DIR, 'Playfair-Italic.ttf'));
-  doc.registerFont('NotoEmoji', path.join(FONTS_DIR, 'NotoEmoji.ttf'));
+  const doc = new PDFDocument({ size: 'A4', margin: MARGIN, autoFirstPage: false, info: { Title: `Nos premiers mots — ${name1} & ${name2}`, Author: 'Nos premiers mots' } });
+  doc.registerFont('Inter', path.join(FONTS_DIR, 'Inter.bin'));
+  doc.registerFont('Playfair', path.join(FONTS_DIR, 'Playfair.bin'));
+  doc.registerFont('Playfair-Italic', path.join(FONTS_DIR, 'Playfair-Italic.bin'));
+  doc.registerFont('NotoEmoji', path.join(FONTS_DIR, 'NotoEmoji.bin'));
 
   // Check if name1 maps to s1 or s2 — if s1 maps to name2, we need to swap stats
   const s1DisplayName = nameMap[stats.s1] || stats.s1;
@@ -598,8 +584,7 @@ function generateBook(data) {
   doc.addPage(); drawCover(doc, name1, name2, orderedStats, messages, colors);
   drawChapterTitle(doc, 'un', 'Nos premiers mots', 'Vos messages tels quels');
   drawConversation(doc, messages, name1, name2, nameMap, colors);
-  if (roman && roman.length > 50) { drawChapterTitle(doc, 'deux', 'Il était nous', 'Votre histoire racontée'); drawRoman(doc, roman); }
-  drawChapterTitle(doc, roman ? 'trois' : 'deux', 'Notre histoire en chiffres', 'Les statistiques de votre couple');
+  drawChapterTitle(doc, 'deux', 'Notre histoire en chiffres', 'Les statistiques de votre couple');
   drawStatsOverview(doc, orderedStats, name1, name2, colors);
   drawFaceAFace(doc, orderedStats, name1, name2, colors);
   drawNotreHistoire(doc, orderedStats, name1, name2, colors);
@@ -613,15 +598,15 @@ export default async function handler(req) {
   if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'POST only' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
   try {
     const body = await req.json();
-    const { messages, stats, name1, name2, keyMoments, roman } = body;
+    const { messages, stats, name1, name2, keyMoments } = body;
     if (!messages || !stats || !name1 || !name2) return new Response(JSON.stringify({ error: 'Données manquantes' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     const nameMap = body.nameMap || { [stats.s1]: name1, [stats.s2]: name2 };
     const roseName = body.roseName || name2;
-    const doc = generateBook({ messages, stats, name1, name2, keyMoments, roman, nameMap, roseName });
+    const doc = generateBook({ messages, stats, name1, name2, keyMoments, nameMap, roseName });
     const chunks = [];
     return new Promise((resolve, reject) => {
       doc.on('data', chunk => chunks.push(chunk));
-      doc.on('end', () => { const buf = Buffer.concat(chunks); resolve(new Response(buf, { status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="il-etait-nous-${name1.toLowerCase()}-${name2.toLowerCase()}.pdf"` } })); });
+      doc.on('end', () => { const buf = Buffer.concat(chunks); resolve(new Response(buf, { status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="nos-premiers-mots-${name1.toLowerCase()}-${name2.toLowerCase()}.pdf"` } })); });
       doc.on('error', reject); doc.end();
     });
   } catch (err) { console.error('PDF error:', err); return new Response(JSON.stringify({ error: 'Erreur: ' + err.message }), { status: 500, headers: { 'Content-Type': 'application/json' } }); }
