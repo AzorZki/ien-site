@@ -1,0 +1,7 @@
+{
+  "name": "ien-site",
+  "private": true,
+  "dependencies": {
+    "pdfkit": "^0.15.0"
+  }
+}

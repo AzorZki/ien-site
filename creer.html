@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créer mon livre — Il était nous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1A18;
+    --ink-soft: #4A4640;
+    --ink-muted: #8A857D;
+    --rose: #C27C5A;
+    --rose-light: #F0D5C8;
+    --rose-bg: #FDF0EA;
+    --cream: #FAF7F3;
+    --warm-white: #FDFCFA;
+    --border: #E8E2DA;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--warm-white); -webkit-font-smoothing: antialiased; }
+
+  nav {
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .logo em { color: var(--rose); font-style: italic; }
+  .back-link { font-size: 13px; color: var(--ink-muted); text-decoration: none; }
+  .back-link:hover { color: var(--rose); }
+
+  .container { max-width: 700px; margin: 0 auto; padding: 40px 24px; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  h1 em { font-style: italic; color: var(--rose); }
+  .subtitle { font-size: 15px; color: var(--ink-muted); text-align: center; margin-bottom: 32px; font-weight: 300; }
+
+  /* Steps indicator */
+  .steps-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .step-dot.active { background: var(--rose); }
+
+  /* Upload section */
+  .upload-section { margin-bottom: 32px; }
+  .upload-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .upload-tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: var(--font-body);
+  }
+  .upload-tab.active { color: var(--rose); border-bottom-color: var(--rose); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .paste-area {
+    width: 100%;
+    min-height: 200px;
+    padding: 16px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    background: var(--cream);
+    resize: vertical;
+    outline: none;
+    color: var(--ink);
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .paste-area:focus { border-color: var(--rose); border-style: solid; }
+  .paste-area::placeholder { color: var(--ink-muted); }
+
+  .file-drop {
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    background: var(--cream);
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .file-drop:hover { border-color: var(--rose); background: var(--rose-bg); }
+  .file-drop.dragover { border-color: var(--rose); background: var(--rose-bg); }
+  .file-drop-icon { font-size: 32px; margin-bottom: 8px; display: block; color: var(--ink-muted); }
+  .file-drop-text { font-size: 14px; color: var(--ink-soft); }
+  .file-drop-sub { font-size: 12px; color: var(--ink-muted); margin-top: 4px; }
+  .file-drop input[type="file"] { display: none; }
+
+  .period-selector {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--cream);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: none;
+  }
+  .period-selector.show { display: block; }
+  .period-label { font-size: 12px; font-weight: 500; color: var(--ink-soft); margin-bottom: 8px; }
+  .period-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .period-pill {
+    padding: 6px 14px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: white;
+    cursor: pointer;
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    transition: all 0.2s;
+  }
+  .period-pill:hover, .period-pill.active { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
+
+  .btn-generate {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-generate:hover { transform: scale(1.01); opacity: 0.9; }
+  .btn-generate:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; }
+
+  .result-header {
+    text-align: center;
+    padding: 24px 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-header h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .result-header h2 em { font-style: italic; color: var(--rose); }
+  .result-meta { font-size: 13px; color: var(--ink-muted); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-card .icon-wrap svg { width: 18px; height: 18px; }
+  .iw-rose { background: var(--rose-bg); }
+  .iw-rose svg { stroke: var(--rose); fill: none; }
+  .iw-blue { background: #EEF2FF; }
+  .iw-blue svg { stroke: #5A8FA8; fill: none; }
+  .iw-amber { background: #FFF8EC; }
+  .iw-amber svg { stroke: #C49A3B; fill: none; }
+  .stat-card .num {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--rose);
+    display: block;
+  }
+  .stat-card .label { font-size: 11px; color: var(--ink-muted); margin-top: 2px; display: block; }
+
+  .key-moments {
+    margin-bottom: 32px;
+    padding: 20px;
+    background: var(--cream);
+    border-radius: 12px;
+  }
+  .km-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .km-item {
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--border);
+    line-height: 1.5;
+  }
+  .km-item:last-child { border: none; }
+  .km-date { font-size: 11px; color: var(--ink-muted); }
+  .km-sender { font-weight: 500; color: var(--rose); }
+
+  .preview-section { margin-bottom: 32px; }
+  .preview-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .preview-tab {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: white;
+    cursor: pointer;
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    transition: all 0.2s;
+  }
+  .preview-tab.active { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
+
+  .preview-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .chat-bubble {
+    max-width: 75%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    clear: both;
+  }
+  .bubble-l { background: #DEECF1; float: left; border-bottom-left-radius: 4px; }
+  .bubble-r { background: #F4E4DA; float: right; border-bottom-right-radius: 4px; }
+  .bubble-sender { font-size: 10px; font-weight: 600; margin-bottom: 2px; }
+  .sender-1 { color: #5A8FA8; }
+  .sender-2 { color: #C27C5A; }
+  .bubble-time { font-size: 9px; color: #999; text-align: right; margin-top: 2px; }
+  .chat-date { clear: both; text-align: center; padding: 12px 0 6px; }
+  .chat-date span { font-size: 10px; color: var(--ink-muted); background: var(--cream); padding: 3px 10px; border-radius: 10px; }
+
+  .roman-text {
+    font-family: var(--font-display);
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    text-align: justify;
+  }
+  .roman-text .placeholder-note {
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-style: normal;
+    padding: 20px;
+    background: var(--cream);
+    border-radius: 8px;
+  }
+
+  .cta-section {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+  .cta-section p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+  }
+  .btn-buy {
+    display: inline-block;
+    padding: 14px 40px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-buy:hover { opacity: 0.9; }
+
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* ═══ TIMELINE VERTICALE ═══ */
+  .tl-vertical {
+    position: relative;
+    padding: 20px 0;
+  }
+  .tl-vertical::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--rose-light), var(--rose), var(--rose-light));
+    border-radius: 2px;
+  }
+  .tl-v-item {
+    position: relative;
+    padding-left: 64px;
+    margin-bottom: 24px;
+  }
+  .tl-v-dot {
+    position: absolute;
+    left: 18px;
+    top: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    z-index: 2;
+    box-shadow: 0 0 0 4px var(--warm-white);
+  }
+  .tl-v-dot-rose { background: var(--rose-bg); }
+  .tl-v-dot-blue { background: #EEF2FF; }
+  .tl-v-dot-amber { background: #FFF8EC; }
+  .tl-v-dot-green { background: #EEFBF3; }
+  .tl-v-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .tl-v-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  }
+  .tl-v-date {
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tl-v-tag {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--rose-bg);
+    color: var(--rose);
+  }
+  .tl-v-msg {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.5;
+    margin: 4px 0;
+  }
+  .tl-v-sender {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--rose);
+  }
+  .tl-v-sender.s2 { color: #C27C5A; }
+
+  /* ═══ TEASING / LOCKED CONTENT ═══ */
+  .locked-overlay {
+    position: relative;
+  }
+  .locked-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 70%;
+    background: linear-gradient(to bottom, transparent, var(--warm-white) 90%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .locked-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    background: white;
+    border: 1px solid var(--rose-light);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--rose);
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(184,105,106,0.1);
+    white-space: nowrap;
+  }
+  .stat-locked .num {
+    filter: blur(8px);
+    user-select: none;
+  }
+  .stat-locked .label:last-child {
+    filter: blur(4px);
+    user-select: none;
+  }
+  .h2h-locked .lp-h2h-val,
+  .h2h-locked span[style*="font-size:18px"] {
+    filter: blur(4px);
+    user-select: none;
+  }
+  .fun-locked {
+    filter: blur(3px);
+    user-select: none;
+    pointer-events: none;
+  }
+  .whats-inside-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #F0EDE8;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .whats-inside-item:last-child { border: none; }
+  .whats-inside-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--rose-bg);
+    color: var(--rose);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* ═══ SCROLL REVEAL ═══ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal-scale.visible { opacity: 1; transform: scale(1); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+  .delay-5 { transition-delay: 0.5s; }
+
+  /* ═══ ANIMATED COUNTER ═══ */
+  .anim-num {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  /* ═══ DONUT ANIMATION ═══ */
+  .donut-ring {
+    transition: stroke-dasharray 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .donut-ring.animate {
+    /* Animated via JS */
+  }
+
+  /* ═══ H2H ANIMATED ROWS ═══ */
+  .h2h-row-anim {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .h2h-row-anim.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ═══ STAT CARD HOVER ═══ */
+  .stat-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  /* File loaded state */
+  .file-loaded-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--rose-bg);
+    border: 1px solid var(--rose-light);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .file-loaded-info .file-name {
+    font-weight: 500;
+    color: var(--rose);
+  }
+  .file-loaded-info .btn-remove {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    font-family: var(--font-body);
+    padding: 4px 10px;
+    border-radius: 100px;
+    transition: all 0.2s;
+  }
+  .file-loaded-info .btn-remove:hover {
+    background: white;
+    color: var(--rose);
+  }
+
+  /* Fullscreen loader */
+  .fullscreen-loader {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,252,250,0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: loaderFadeIn 0.3s ease;
+  }
+  @keyframes loaderFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .loader-scene {
+    perspective: 800px;
+    width: 200px;
+    height: 260px;
+    position: relative;
+  }
+  .loader-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: loaderFlip 1.6s ease-in-out infinite;
+  }
+  @keyframes loaderFlip {
+    0%, 40% { transform: rotateY(0deg); }
+    60%, 100% { transform: rotateY(180deg); }
+  }
+  .loader-front, .loader-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+  .loader-front {
+    background: white;
+    border: 2px solid var(--border);
+  }
+  .loader-front::before {
+    content: '';
+    width: 60px; height: 100px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .loader-front::after {
+    content: '💬';
+    font-size: 24px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-60%);
+  }
+  .loader-back {
+    background: linear-gradient(135deg, #F5EDE6, #FAF7F3);
+    border: 2px solid var(--rose-light);
+    transform: rotateY(180deg);
+  }
+  .loader-back::before {
+    content: '📖';
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  .loader-back::after {
+    content: 'Il était nous';
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--rose);
+    font-style: italic;
+  }
+  .loader-text {
+    margin-top: 32px;
+    font-size: 14px;
+    color: var(--ink-muted);
+    text-align: center;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 24px 16px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Il était <em>nous</em></a>
+  <a href="index.html" class="back-link">Retour à l'accueil</a>
+</nav>
+
+<div class="container">
+  <h1>Créez votre <em>livre</em></h1>
+  <p class="subtitle">Revivez le début de votre histoire</p>
+
+  <div class="steps-bar">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+    <div class="step-dot" id="dot-4"></div>
+  </div>
+
+  <!-- STEP 0: Prénoms -->
+  <div class="names-section" id="step-names">
+    <div style="text-align:center; margin-bottom: 24px;">
+      <div style="font-size: 36px; margin-bottom: 8px;">💕</div>
+      <div style="font-size: 15px; color: var(--ink-soft);">Comment vous appelez-vous ?</div>
+    </div>
+    <div style="display: flex; gap: 16px; max-width: 400px; margin: 0 auto 24px;">
+      <div style="flex:1;">
+        <label style="font-size: 11px; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Prénom 1</label>
+        <input type="text" id="name-1" placeholder="Ex : Alexis" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 14px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
+      </div>
+      <div style="flex:1;">
+        <label style="font-size: 11px; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Prénom 2</label>
+        <input type="text" id="name-2" placeholder="Ex : Marie" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 14px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
+      </div>
+    </div>
+    <button class="btn-generate" id="btn-names" disabled onclick="goToUpload()" style="max-width: 400px; margin: 0 auto;">
+      Continuer
+    </button>
+    <div id="color-choice" style="display:none; text-align:center; margin: 20px auto 0; max-width: 400px;">
+      <div style="font-size: 13px; color: var(--ink-muted); margin-bottom: 10px;">Qui porte le rose dans votre livre ?</div>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button onclick="setRose(1)" id="rose-btn-1" class="color-pill" style="padding:8px 20px; border-radius:100px; border:2px solid var(--border); background:white; font-family:var(--font-body); font-size:13px; cursor:pointer; transition:all 0.2s;"></button>
+        <button onclick="setRose(2)" id="rose-btn-2" class="color-pill active" style="padding:8px 20px; border-radius:100px; border:2px solid var(--rose); background:var(--rose-bg); color:var(--rose); font-family:var(--font-body); font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s;"></button>
+      </div>
+    </div>
+    <p style="text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 12px;">Ces prénoms seront utilisés dans votre livre.</p>
+  </div>
+
+  <!-- STEP 1: Upload -->
+  <div class="upload-section" id="step-upload" style="display:none;">
+    <div style="text-align: center; margin-bottom: 16px; padding: 10px 16px; background: var(--rose-bg); border-radius: 100px; display: inline-block; font-size: 13px; color: var(--rose); font-weight: 500;" id="names-badge"></div>
+    <div class="upload-tabs">
+      <button class="upload-tab active" onclick="switchTab('paste')">Coller le texte</button>
+      <button class="upload-tab" onclick="switchTab('file')">Fichier WhatsApp</button>
+    </div>
+
+    <div class="tab-content active" id="tab-paste">
+      <textarea class="paste-area" id="paste-input" placeholder="Collez votre conversation ici...
+
+Exemple de format attendu :
+14/01/2024, 19:32 - Léa: Salut 😊
+14/01/2024, 19:35 - Hugo: Heyy !"></textarea>
+    </div>
+
+    <div class="tab-content" id="tab-file">
+      <div class="file-drop" id="file-drop" onclick="document.getElementById('file-input').click()">
+        <span class="file-drop-icon">📄</span>
+        <div class="file-drop-text">Glissez votre fichier .txt ici</div>
+        <div class="file-drop-sub">ou cliquez pour parcourir</div>
+        <input type="file" id="file-input" accept=".txt,.zip">
+      </div>
+      <div id="zip-warning" style="display:none; margin-top:12px; padding:12px 16px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:10px; font-size:13px; color:#8A6D2B;">
+        ⚠️ Fichier .zip détecté ! Décompressez-le d'abord (clic droit → Extraire), puis importez le fichier <strong>.txt</strong> qu'il contient.
+      </div>
+
+      <!-- Tuto WhatsApp -->
+      <details style="margin-top:16px; font-size:13px; color:var(--ink-soft);">
+        <summary style="cursor:pointer; font-weight:500; color:var(--rose); padding:8px 0;">Comment exporter ma conversation WhatsApp ?</summary>
+        <div style="padding:12px 16px; background:var(--cream); border-radius:10px; margin-top:8px; line-height:1.7;">
+          <div style="padding:8px 12px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:8px; margin-bottom:12px; font-size:12px; color:#8A6D2B;">
+            ⚠️ <strong>Important :</strong> choisissez toujours "Sans médias" lors de l'export. Les photos et vidéos ne sont pas nécessaires et alourdissent le fichier.
+          </div>
+          <div style="margin-bottom:10px;">
+            <strong>Sur Android :</strong>
+            <div style="color:var(--ink-muted); margin-top:4px;">
+              1. Ouvrez la conversation<br>
+              2. Appuyez sur ⋮ (les 3 points) → Plus → Exporter la discussion<br>
+              3. Choisissez <strong>"Sans médias"</strong><br>
+              4. Vous recevez un fichier .zip → décompressez-le<br>
+              5. Importez le fichier .txt ici
+            </div>
+          </div>
+          <div>
+            <strong>Sur iPhone :</strong>
+            <div style="color:var(--ink-muted); margin-top:4px;">
+              1. Ouvrez la conversation<br>
+              2. Appuyez sur le nom du contact en haut<br>
+              3. Scrollez → "Exporter la discussion"<br>
+              4. Choisissez <strong>"Sans médias"</strong><br>
+              5. Enregistrez le fichier .txt et importez-le ici
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="period-selector" id="period-selector">
+      <div class="period-label">Quelle période souhaitez-vous revivre ?</div>
+      <div class="period-pills">
+        <button class="period-pill" onclick="selectPeriod(this, '1m')">Notre premier mois</button>
+        <button class="period-pill" onclick="selectPeriod(this, '2m')">Nos 2 premiers mois</button>
+      </div>
+
+      <!-- Message count & filter info -->
+      <div id="filter-summary" style="display:none; margin-top:16px; padding:14px 16px; background:white; border:1px solid var(--border); border-radius:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:13px; font-weight:500; color:var(--ink);">Messages sélectionnés</span>
+          <span id="msg-count-badge" style="font-size:13px; font-weight:600; color:var(--rose);"></span>
+        </div>
+        <div id="msg-count-bar" style="height:6px; background:#F0EDE8; border-radius:3px; overflow:hidden; margin-bottom:8px;">
+          <div id="msg-count-fill" style="height:100%; background:var(--rose); border-radius:3px; transition:width 0.3s;"></div>
+        </div>
+        <div id="filter-details" style="font-size:11px; color:var(--ink-muted); line-height:1.6;"></div>
+        <div id="limit-warning" style="display:none; margin-top:8px; padding:8px 12px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:8px; font-size:12px; color:#8A6D2B;">
+          ⚠️ Beaucoup de messages sur cette période ! Les moments les plus marquants seront mis en avant dans votre livre.
+        </div>
+        <div id="moderation-info" style="display:none; margin-top:8px; padding:8px 12px; background:var(--rose-bg); border:1px solid var(--rose-light); border-radius:8px; font-size:12px; color:var(--rose);">
+          🔒 <span id="moderation-count"></span> message(s) au contenu sensible ont été automatiquement exclus. Vous pourrez vérifier la sélection finale.
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btn-generate" disabled onclick="showNameMapping()">
+      Découvrir mon livre
+    </button>
+
+    <!-- NAME MAPPING (appears after clicking generate) -->
+    <div id="name-mapping" style="display:none; margin-top:16px; padding:20px; background:white; border:1px solid var(--border); border-radius:16px;">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div style="font-size:20px; margin-bottom:4px;">🔍</div>
+        <div style="font-size:14px; font-weight:500;">Qui est qui ?</div>
+        <div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">Voici le premier message de votre conversation :</div>
+      </div>
+      <div id="first-msg-preview" style="background:var(--cream); border-radius:10px; padding:12px; font-size:13px; color:var(--ink-soft); margin-bottom:16px; text-align:center;"></div>
+      <div style="font-size:13px; color:var(--ink-soft); text-align:center; margin-bottom:12px;">Ce message a été envoyé par :</div>
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button class="period-pill" id="map-btn-1" onclick="confirmMapping(1)" style="padding:10px 24px; font-size:14px;"></button>
+        <button class="period-pill" id="map-btn-2" onclick="confirmMapping(2)" style="padding:10px 24px; font-size:14px;"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Results -->
+  <div class="results" id="results">
+
+    <div class="result-header reveal">
+      <h2>L'histoire de <em id="names-display">...</em></h2>
+      <div class="result-meta" id="meta-display">...</div>
+      <div style="font-size:12px; color:var(--rose); margin-top:6px; font-style:italic;">Le début de votre histoire</div>
+    </div>
+
+    <!-- Teaser intro -->
+    <div class="reveal" id="teaser-intro" style="text-align:center; padding:20px; margin-bottom:24px; background:var(--rose-bg); border-radius:16px; border:1px solid var(--rose-light);">
+      <div style="font-size:24px; margin-bottom:8px;">✨</div>
+      <div id="teaser-text" style="font-size:14px; color:var(--ink-soft); line-height:1.6;"></div>
+    </div>
+
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <div class="key-moments reveal" id="key-moments">
+      <div class="km-title">Votre histoire en moments clés</div>
+      <div id="km-list"></div>
+    </div>
+
+    <div class="preview-section reveal">
+      <div class="preview-tabs">
+        <button class="preview-tab active" onclick="switchPreview('conv')">Conversation</button>
+        <button class="preview-tab" onclick="switchPreview('roman')">Roman</button>
+      </div>
+
+      <div class="preview-box" id="preview-conv" style="position:relative;"></div>
+      <div class="preview-box" id="preview-roman" style="display:none; position:relative;"></div>
+    </div>
+
+    <!-- WHAT'S INSIDE -->
+    <div class="reveal" id="whats-inside" style="margin:32px 0; padding:28px 24px; background:white; border:2px solid var(--rose); border-radius:20px; text-align:center;">
+      <div style="font-size:28px; margin-bottom:8px;">📖</div>
+      <div style="font-family:var(--font-display); font-size:20px; margin-bottom:4px;">Votre livre contient</div>
+      <div style="font-size:13px; color:var(--ink-muted); margin-bottom:20px;">Tout ce que vous voyez ici, et bien plus encore</div>
+      <div id="whats-inside-list" style="text-align:left; max-width:360px; margin:0 auto 24px;"></div>
+    </div>
+
+    <div class="cta-section reveal">
+      <p style="font-family:var(--font-display); font-size:18px; margin-bottom:4px;">Le début de votre histoire, prêt à être offert</p>
+      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Toutes les stats, tous les messages, le récit complet</p>
+      <button class="btn-buy" id="btn-download" onclick="generatePDF()" style="font-size:16px; padding:16px 48px;">
+        📖 Obtenir notre livre — 4,99 €
+      </button>
+      <p style="font-size:12px; color:var(--ink-muted); margin-top:10px;">PDF immédiat · Satisfait ou remboursé</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ NAMES ═══
+let userName1 = '';
+let userName2 = '';
+let roseIdx = 2; // Default: prénom 2 gets rose
+
+function setRose(idx) {
+  roseIdx = idx;
+  const btn1 = document.getElementById('rose-btn-1');
+  const btn2 = document.getElementById('rose-btn-2');
+  if (idx === 1) {
+    btn1.style.cssText = 'padding:8px 20px;border-radius:100px;border:2px solid var(--rose);background:var(--rose-bg);color:var(--rose);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;';
+    btn2.style.cssText = 'padding:8px 20px;border-radius:100px;border:2px solid var(--border);background:white;color:var(--ink);font-family:var(--font-body);font-size:13px;cursor:pointer;transition:all 0.2s;';
+  } else {
+    btn2.style.cssText = 'padding:8px 20px;border-radius:100px;border:2px solid var(--rose);background:var(--rose-bg);color:var(--rose);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;';
+    btn1.style.cssText = 'padding:8px 20px;border-radius:100px;border:2px solid var(--border);background:white;color:var(--ink);font-family:var(--font-body);font-size:13px;cursor:pointer;transition:all 0.2s;';
+  }
+}
+
+function checkNames() {
+  const n1 = document.getElementById('name-1').value.trim();
+  const n2 = document.getElementById('name-2').value.trim();
+  const ok = n1.length >= 2 && n2.length >= 2;
+  document.getElementById('btn-names').disabled = !ok;
+  const colorDiv = document.getElementById('color-choice');
+  if (ok) {
+    colorDiv.style.display = 'block';
+    document.getElementById('rose-btn-1').textContent = n1;
+    document.getElementById('rose-btn-2').textContent = n2;
+  } else {
+    colorDiv.style.display = 'none';
+  }
+}
+// Check for autofilled values on page load
+setTimeout(checkNames, 300);
+setTimeout(checkNames, 1000);
+
+// Enter key validates names
+document.getElementById('name-1').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('name-2').focus(); }
+});
+document.getElementById('name-2').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); if (!document.getElementById('btn-names').disabled) goToUpload(); }
+});
+
+function goToUpload() {
+  userName1 = document.getElementById('name-1').value.trim();
+  userName2 = document.getElementById('name-2').value.trim();
+  
+  document.getElementById('step-names').style.display = 'none';
+  document.getElementById('step-upload').style.display = 'block';
+  document.getElementById('names-badge').textContent = '💕 ' + userName1 + ' & ' + userName2;
+  document.getElementById('dot-2').classList.add('active');
+}
+
+// ═══ TABS ═══
+function switchTab(tab) {
+  document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  if (tab === 'paste') {
+    document.querySelectorAll('.upload-tab')[0].classList.add('active');
+    document.getElementById('tab-paste').classList.add('active');
+  } else {
+    document.querySelectorAll('.upload-tab')[1].classList.add('active');
+    document.getElementById('tab-file').classList.add('active');
+  }
+}
+
+function switchPreview(type) {
+  document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+  if (type === 'conv') {
+    document.querySelectorAll('.preview-tab')[0].classList.add('active');
+    document.getElementById('preview-conv').style.display = 'block';
+    document.getElementById('preview-roman').style.display = 'none';
+  } else {
+    document.querySelectorAll('.preview-tab')[1].classList.add('active');
+    document.getElementById('preview-conv').style.display = 'none';
+    document.getElementById('preview-roman').style.display = 'block';
+  }
+}
+
+function selectPeriod(el, period) {
+  document.querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  
+  const raw = pasteInput.value;
+  if (!raw || raw.length < 20) return;
+  
+  const allMsgs = parseWhatsApp(raw);
+  if (allMsgs.length < 2) return;
+
+  // Step 1: Filter by period
+  let filtered = filterByPeriod(allMsgs, period);
+  const afterPeriod = filtered.length;
+  
+  // Step 2: Content moderation
+  const modResult = moderateContent(filtered);
+  filtered = modResult.clean;
+  const moderatedCount = modResult.removed;
+  const afterModeration = filtered.length;
+  
+  // Step 3: Smart limit if still too many
+  const max = 2000;
+  const wasLimited = filtered.length > max;
+  if (wasLimited) {
+    filtered = smartLimit(filtered, max);
+  }
+  const finalCount = filtered.length;
+  
+  // Store the FINAL list — generatePreview uses this directly
+  window._filteredMessages = filtered;
+  window._selectedPeriod = period;
+  
+  // Update UI
+  const summary = document.getElementById('filter-summary');
+  summary.style.display = 'block';
+  
+  document.getElementById('msg-count-badge').textContent = finalCount + ' messages';
+  document.getElementById('msg-count-fill').style.width = Math.min(100, (finalCount/max)*100) + '%';
+  document.getElementById('msg-count-fill').style.background = wasLimited ? '#C49A3B' : 'var(--rose)';
+  
+  // Period info
+  let periodLabel = '';
+  if (period === '1m') periodLabel = 'votre premier mois';
+  else if (period === '2m') periodLabel = 'vos 2 premiers mois';
+  
+  const dateRange = filtered.length > 0 ? filtered[0].date + ' → ' + filtered[filtered.length-1].date : '';
+  
+  let detailsHtml = `📅 Période : ${periodLabel} (${dateRange})<br>`;
+  detailsHtml += `💬 ${allMsgs.length} messages au total → ${afterPeriod} dans la période`;
+  if (moderatedCount > 0) detailsHtml += ` → ${afterModeration} après filtrage`;
+  if (wasLimited) detailsHtml += ` → ${finalCount} sélectionnés pour le livre`;
+  
+  document.getElementById('filter-details').innerHTML = detailsHtml;
+  
+  // Limit warning
+  document.getElementById('limit-warning').style.display = wasLimited ? 'block' : 'none';
+  
+  // Moderation info
+  if (moderatedCount > 0) {
+    document.getElementById('moderation-info').style.display = 'block';
+    document.getElementById('moderation-count').textContent = moderatedCount;
+  } else {
+    document.getElementById('moderation-info').style.display = 'none';
+  }
+  
+  // Enable generate button
+  btnGenerate.disabled = filtered.length < 2;
+}
+
+function filterByPeriod(msgs, period) {
+  if (!msgs.length) return msgs;
+  
+  const firstDate = parseDate(msgs[0].date);
+  if (!firstDate) return msgs;
+  
+  let endDate = new Date(firstDate);
+  if (period === '1m') endDate.setMonth(endDate.getMonth() + 1);
+  else if (period === '2m') endDate.setMonth(endDate.getMonth() + 2);
+  
+  return msgs.filter(m => {
+    const d = parseDate(m.date);
+    return d && d <= endDate;
+  });
+}
+
+function parseDate(dateStr) {
+  const parts = dateStr.split('/');
+  if (parts.length < 3) return null;
+  let [d, m, y] = parts.map(Number);
+  if (y < 100) y += 2000;
+  return new Date(y, m - 1, d);
+}
+
+function moderateContent(msgs) {
+  const sensitivePatterns = [
+    /\bnude?s?\b/i,
+    /\bsex[euy]?\b/i,
+    /\bni?quer?\b/i,
+    /\bbais[eé]r?\b/i,
+    /\bbit[eè]\b/i,
+    /\bchatt[eè]\b/i,
+    /\bsuc[eé]r?\b/i,
+    /\bjoui[rs]?\b/i,
+    /\bporno?\b/i,
+    /\borgasm/i,
+    /\b(p[uù]t[eai]|sal[oô]p|conn(ard|asse))\b/i,
+    /🍆🍑/,
+    /🍆.*💦/,
+    /🍑.*💦/,
+  ];
+  
+  const clean = [];
+  let removed = 0;
+  
+  for (const m of msgs) {
+    const isSensitive = sensitivePatterns.some(p => p.test(m.text));
+    if (isSensitive) {
+      removed++;
+    } else {
+      clean.push(m);
+    }
+  }
+  
+  return { clean, removed };
+}
+
+// ═══ FILE HANDLING ═══
+const pasteInput = document.getElementById('paste-input');
+const fileInput = document.getElementById('file-input');
+const btnGenerate = document.getElementById('btn-generate');
+const fileDrop = document.getElementById('file-drop');
+
+pasteInput.addEventListener('input', () => {
+  const hasContent = pasteInput.value.trim().length > 50;
+  if (hasContent) {
+    document.getElementById('period-selector').classList.add('show');
+  }
+  // Don't enable generate directly - user must select a period first
+  btnGenerate.disabled = true;
+});
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    // Detect zip files
+    if (file.name.endsWith('.zip')) {
+      document.getElementById('zip-warning').style.display = 'block';
+      document.querySelector('.file-drop-text').textContent = file.name;
+      return;
+    }
+    document.getElementById('zip-warning').style.display = 'none';
+    
+    // Show loader
+    showFullscreenLoader('Lecture de vos messages...');
+    
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      pasteInput.value = ev.target.result;
+      // Stay on file tab — show loaded state instead of switching
+      showFileLoaded(file.name);
+      document.getElementById('period-selector').classList.add('show');
+      // Remove loader after a beat
+      setTimeout(() => removeFullscreenLoader(), 800);
+    };
+    reader.readAsText(file);
+  }
+});
+
+fileDrop.addEventListener('dragover', (e) => { e.preventDefault(); fileDrop.classList.add('dragover'); });
+fileDrop.addEventListener('dragleave', () => { fileDrop.classList.remove('dragover'); });
+fileDrop.addEventListener('drop', (e) => {
+  e.preventDefault();
+  fileDrop.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    fileInput.files = e.dataTransfer.files;
+    fileInput.dispatchEvent(new Event('change'));
+  }
+});
+
+// ═══ PARSER ═══
+function parseWhatsApp(raw) {
+  const lines = raw.split('\n');
+  const messages = [];
+  const pattern = /^(\d{1,2}\/\d{1,2}\/\d{2,4}),?\s*(\d{1,2}:\d{2}(?:\s?[AP]M)?)\s*-\s*([^:]+):\s*(.+)$/;
+  let current = null;
+
+  // WhatsApp system messages to filter out (session 2)
+  const systemPatterns = [
+    /^<média omis>$/i, /^<media omitted>$/i,
+    /médias? omis/i, /image omise/i, /vidéo omise/i, /audio omis/i,
+    /^ce message a été supprimé$/i, /^this message was deleted$/i,
+    /^vous avez supprimé ce message$/i, /^you deleted this message$/i,
+    /^null$/i, /^sticker omis$/i, /^gif omis$/i, /^document omis$/i,
+    /^fichier joint omis$/i, /^contact omis$/i, /^position omise$/i,
+    /a changé le sujet/i, /a créé ce groupe/i, /a ajouté/i, /a quitté/i,
+    /les messages et les appels/i, /chiffrement de bout/i,
+  ];
+
+  // Clean emojis from sender names (session 2)
+  function cleanName(name) {
+    return name.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu, '').trim();
+  }
+
+  for (const line of lines) {
+    const m = line.match(pattern);
+    if (m) {
+      if (current) {
+        // Filter out system messages before pushing
+        if (!systemPatterns.some(p => p.test(current.text.trim()))) {
+          messages.push(current);
+        }
+      }
+      current = { date: m[1], time: m[2], sender: cleanName(m[3].trim()), text: m[4].trim() };
+    } else if (current && line.trim()) {
+      current.text += '\n' + line.trim();
+    }
+  }
+  // Don't forget the last message
+  if (current && !systemPatterns.some(p => p.test(current.text.trim()))) {
+    messages.push(current);
+  }
+  return messages;
+}
+
+// ═══ STATS ═══
+function getStats(msgs) {
+  const senders = [...new Set(msgs.map(m => m.sender))];
+  const s1 = senders[0], s2 = senders[1] || 'Inconnu';
+  const allText = msgs.map(m => m.text).join(' ');
+  const msgs1 = msgs.filter(m => m.sender === s1);
+  const msgs2 = msgs.filter(m => m.sender === s2);
+  
+  const hearts = ['❤️','💕','💗','💖','💘','💝','🥰','😍','💞','❤'].reduce((n,e) => n + (allText.split(e).length-1), 0);
+  const laughs = (allText.split('😂').length-1) + (allText.split('🤣').length-1);
+  const bonneNuit = msgs.filter(m => /bonne nuit/i.test(m.text)).length;
+  const jeTaime = msgs.filter(m => /je t'aime|je t aime|jtm|jtaime/i.test(m.text)).length;
+  const jeTaime1 = msgs1.filter(m => /je t'aime|je t aime|jtm|jtaime/i.test(m.text)).length;
+  const jeTaime2 = msgs2.filter(m => /je t'aime|je t aime|jtm|jtaime/i.test(m.text)).length;
+
+  // Hearts per sender
+  const heartsEmojis = ['❤️','💕','💗','💖','💘','💝','🥰','😍','💞','❤'];
+  const hearts1 = msgs1.reduce((n,m) => n + heartsEmojis.reduce((s,e) => s + (m.text.split(e).length-1), 0), 0);
+  const hearts2 = msgs2.reduce((n,m) => n + heartsEmojis.reduce((s,e) => s + (m.text.split(e).length-1), 0), 0);
+
+  // Laughs per sender
+  const laughs1 = msgs1.reduce((n,m) => n + (m.text.split('😂').length-1) + (m.text.split('🤣').length-1), 0);
+  const laughs2 = msgs2.reduce((n,m) => n + (m.text.split('😂').length-1) + (m.text.split('🤣').length-1), 0);
+
+  // Bonne nuit per sender
+  const bn1 = msgs1.filter(m => /bonne nuit/i.test(m.text)).length;
+  const bn2 = msgs2.filter(m => /bonne nuit/i.test(m.text)).length;
+
+  // Day record
+  const dayCounts = {};
+  msgs.forEach(m => { dayCounts[m.date] = (dayCounts[m.date]||0)+1; });
+  const record = Object.entries(dayCounts).sort((a,b) => b[1]-a[1])[0];
+
+  // Earliest message sender (le plus matinal)
+  let earliest1 = '23:59', earliest2 = '23:59';
+  msgs1.forEach(m => { const t = m.time; if (t > '05:00' && t < earliest1) earliest1 = t; });
+  msgs2.forEach(m => { const t = m.time; if (t > '05:00' && t < earliest2) earliest2 = t; });
+
+  // Latest message sender (couche-tard)
+  let latest1 = '00:00', latest2 = '00:00';
+  msgs1.forEach(m => { const t = m.time; if (t > '22:00' || t < '04:00') { if (t > latest1 || (t < '04:00' && latest1 > '22:00')) latest1 = t; }});
+  msgs2.forEach(m => { const t = m.time; if (t > '22:00' || t < '04:00') { if (t > latest2 || (t < '04:00' && latest2 > '22:00')) latest2 = t; }});
+
+  // Average response time
+  let totalResp = 0, respCount = 0;
+  for (let i = 1; i < msgs.length; i++) {
+    if (msgs[i].sender !== msgs[i-1].sender) {
+      const t1 = msgs[i-1].time.split(':').map(Number);
+      const t2 = msgs[i].time.split(':').map(Number);
+      const diff = (t2[0]*60+t2[1]) - (t1[0]*60+t1[1]);
+      if (diff > 0 && diff < 120) { totalResp += diff; respCount++; }
+    }
+  }
+  const avgResp = respCount > 0 ? Math.round(totalResp / respCount) : null;
+
+  // Fastest response per sender
+  let fast1 = 999, fast2 = 999;
+  for (let i = 1; i < msgs.length; i++) {
+    if (msgs[i].sender !== msgs[i-1].sender) {
+      const t1 = msgs[i-1].time.split(':').map(Number);
+      const t2 = msgs[i].time.split(':').map(Number);
+      const diff = (t2[0]*60+t2[1]) - (t1[0]*60+t1[1]);
+      if (diff > 0 && diff < 120) {
+        if (msgs[i].sender === s1 && diff < fast1) fast1 = diff;
+        if (msgs[i].sender === s2 && diff < fast2) fast2 = diff;
+      }
+    }
+  }
+
+  // Top word (stop words enrichis session 2)
+  const stopWords = new Set(['le','la','les','de','du','des','un','une','et','en','à','a','je','tu','il','on','ce','que','qui','ne','pas','se','est','ai','au','me','te','ma','mon','ta','ton','mais','ou','si','dans','pour','avec','sur','par','plus','bien','aussi','fait','suis','ça','oui','non','ok','moi','toi','son','sa','ses','nous','vous','ils','elle','lui','tout','très','trop','peut','vais','vas','quoi','comme','haha','c\'est','médias','omis','image','vidéo','média','omise','fichier','supprimé','modifié']);
+  const wordCounts = {};
+  allText.toLowerCase().match(/[a-zàâéèêëïîôùûüÿç]+/g)?.forEach(w => {
+    if (w.length > 2 && !stopWords.has(w)) wordCounts[w] = (wordCounts[w]||0)+1;
+  });
+  const topWord = Object.entries(wordCounts).sort((a,b) => b[1]-a[1])[0];
+
+  // First je t'aime
+  const firstJeTaime = msgs.find(m => /je t'aime|je t aime|jtm|jtaime/i.test(m.text));
+
+  // ═══ NEW FUN STATS ═══
+
+  // Average words per message
+  const words1 = msgs1.reduce((n, m) => n + m.text.split(/\s+/).length, 0);
+  const words2 = msgs2.reduce((n, m) => n + m.text.split(/\s+/).length, 0);
+  const avgWords1 = msgs1.length > 0 ? Math.round(words1 / msgs1.length) : 0;
+  const avgWords2 = msgs2.length > 0 ? Math.round(words2 / msgs2.length) : 0;
+  const totalWords = words1 + words2;
+
+  // Double-texteur (max consecutive messages without reply)
+  let maxConsec1 = 0, maxConsec2 = 0, currentConsec = 0, currentConsecSender = '';
+  let maxConsecDate1 = '', maxConsecDate2 = '';
+  for (const m of msgs) {
+    if (m.sender === currentConsecSender) {
+      currentConsec++;
+    } else {
+      currentConsec = 1;
+      currentConsecSender = m.sender;
+    }
+    if (m.sender === s1 && currentConsec > maxConsec1) { maxConsec1 = currentConsec; maxConsecDate1 = m.date; }
+    if (m.sender === s2 && currentConsec > maxConsec2) { maxConsec2 = currentConsec; maxConsecDate2 = m.date; }
+  }
+
+  // Who opens / closes the conversation each day
+  const dayMessages = {};
+  for (const m of msgs) {
+    if (!dayMessages[m.date]) dayMessages[m.date] = [];
+    dayMessages[m.date].push(m);
+  }
+  let opens1 = 0, opens2 = 0, closes1 = 0, closes2 = 0;
+  for (const day of Object.values(dayMessages)) {
+    if (day[0].sender === s1) opens1++; else opens2++;
+    if (day[day.length - 1].sender === s1) closes1++; else closes2++;
+  }
+  const totalDays = Object.keys(dayMessages).length;
+
+  // Questions (count "?")
+  const questions1 = msgs1.reduce((n, m) => n + (m.text.split('?').length - 1), 0);
+  const questions2 = msgs2.reduce((n, m) => n + (m.text.split('?').length - 1), 0);
+
+  // Streak (consecutive days)
+  const sortedDays = Object.keys(dayMessages).map(d => parseDate(d)).filter(Boolean).sort((a, b) => a - b);
+  let maxStreak = 1, currentStreak = 1;
+  for (let i = 1; i < sortedDays.length; i++) {
+    const diff = (sortedDays[i] - sortedDays[i - 1]) / (1000 * 60 * 60 * 24);
+    if (diff <= 1.5) { currentStreak++; if (currentStreak > maxStreak) maxStreak = currentStreak; }
+    else { currentStreak = 1; }
+  }
+
+  // Night owl chats (messages between 00:00 and 05:00)
+  const nightMsgs = msgs.filter(m => {
+    const h = parseInt(m.time.split(':')[0]);
+    return h >= 0 && h < 5;
+  }).length;
+
+  // First nickname
+  const nicknamePatterns = [
+    { pattern: /\bb[ée]b[ée]\b/i, label: 'bébé' },
+    { pattern: /\bch[ée]ri(e)?\b/i, label: 'chéri(e)' },
+    { pattern: /\bmon (cœur|coeur)\b/i, label: 'mon cœur' },
+    { pattern: /\bmon amour\b/i, label: 'mon amour' },
+    { pattern: /\bma puce\b/i, label: 'ma puce' },
+    { pattern: /\bmon ange\b/i, label: 'mon ange' },
+    { pattern: /\bdoudou\b/i, label: 'doudou' },
+  ];
+  let firstNickname = null;
+  for (const m of msgs) {
+    for (const np of nicknamePatterns) {
+      if (np.pattern.test(m.text)) {
+        firstNickname = { word: np.label, sender: m.sender, date: m.date };
+        break;
+      }
+    }
+    if (firstNickname) break;
+  }
+
+  // Book pages estimate (250 words per page)
+  const bookPages = Math.round(totalWords / 250);
+
+  return {
+    total: msgs.length, s1, s2,
+    count1: msgs1.length, count2: msgs2.length,
+    pct1: Math.round(msgs1.length / msgs.length * 100),
+    pct2: Math.round(msgs2.length / msgs.length * 100),
+    hearts, hearts1, hearts2,
+    laughs, laughs1, laughs2,
+    bonneNuit, bn1, bn2,
+    jeTaime, jeTaime1, jeTaime2, firstJeTaime,
+    recordDay: record ? record[0] : '-',
+    recordCount: record ? record[1] : 0,
+    earliest1, earliest2,
+    latest1, latest2,
+    fast1: fast1 < 999 ? fast1 : null,
+    fast2: fast2 < 999 ? fast2 : null,
+    avgResp,
+    topWord: topWord ? { word: topWord[0], count: topWord[1] } : null,
+    firstMsg: msgs[0],
+    // New fun stats
+    avgWords1, avgWords2, totalWords, bookPages,
+    maxConsec1, maxConsec2, maxConsecDate1, maxConsecDate2,
+    opens1, opens2, closes1, closes2, totalDays,
+    questions1, questions2,
+    streak: maxStreak,
+    nightMsgs,
+    firstNickname,
+  };
+}
+
+// ═══ KEY MOMENTS ═══
+function getKeyMoments(msgs) {
+  const patterns = [/je t'aime/i, /je t aime/i, /bonne nuit/i, /❤️/, /🥰/, /😍/,
+    /je crois/i, /amoureu/i, /mon coeur/i, /mon amour/i, /on se voit/i,
+    /premier/i, /voyage/i, /manque/i, /il faut que je te dise/i];
+  const key = [];
+  const seen = new Set();
+  for (const m of msgs) {
+    if (patterns.some(p => p.test(m.text)) && !seen.has(m.text)) {
+      key.push(m);
+      seen.add(m.text);
+      if (key.length >= 10) break;
+    }
+  }
+  return key;
+}
+
+// ═══ NAME MAPPING ═══
+let nameMapConfirmed = false;
+let detectedS1 = '';
+let detectedS2 = '';
+
+function showNameMapping() {
+  const msgs = window._filteredMessages;
+  if (!msgs || msgs.length < 2) return;
+  
+  // Detect the two senders
+  const senders = [...new Set(msgs.map(m => m.sender))];
+  detectedS1 = senders[0]; // First to message
+  detectedS2 = senders[1] || 'Inconnu';
+  
+  // Show the first message
+  const first = msgs[0];
+  document.getElementById('first-msg-preview').innerHTML = 
+    '<div style="font-size:11px;color:var(--ink-muted);margin-bottom:4px;">' + first.date + ' à ' + first.time + '</div>' +
+    '<div style="font-style:italic;">"' + first.text.substring(0, 100) + (first.text.length > 100 ? '...' : '') + '"</div>';
+  
+  // Show the two name buttons
+  document.getElementById('map-btn-1').textContent = userName1;
+  document.getElementById('map-btn-2').textContent = userName2;
+  
+  document.getElementById('name-mapping').style.display = 'block';
+  document.getElementById('name-mapping').scrollIntoView({ behavior: 'smooth' });
+}
+
+function confirmMapping(choice) {
+  // choice = 1: first message was sent by userName1
+  // choice = 2: first message was sent by userName2
+  if (choice === 1) {
+    // s1 (first sender) = userName1, s2 = userName2
+    window._nameMapOrder = { [detectedS1]: userName1, [detectedS2]: userName2 };
+  } else {
+    // s1 (first sender) = userName2, s2 = userName1
+    window._nameMapOrder = { [detectedS1]: userName2, [detectedS2]: userName1 };
+  }
+  nameMapConfirmed = true;
+  document.getElementById('name-mapping').style.display = 'none';
+  showFullscreenLoader('Création de votre livre...');
+  setTimeout(() => {
+    generatePreview();
+    removeFullscreenLoader();
+  }, 1200);
+}
+
+// ═══ GENERATE ═══
+function generatePreview() {
+  // Use the already-filtered messages from selectPeriod
+  let msgs = window._filteredMessages;
+  
+  if (!msgs || msgs.length < 2) {
+    alert("Impossible de lire la conversation. Vérifiez le format (export WhatsApp .txt).");
+    return;
+  }
+
+  const stats = getStats(msgs);
+  const keyMoments = getKeyMoments(msgs);
+  
+  // Use the confirmed name mapping
+  const nameMap = window._nameMapOrder || { [stats.s1]: userName1, [stats.s2]: userName2 };
+  function displayName(sender) { return nameMap[sender] || sender; }
+  
+  // Figure out which userName corresponds to which stats sender
+  const n1forS1 = nameMap[stats.s1];
+  const n1forS2 = nameMap[stats.s2];
+
+  // Store for PDF generation
+  window._lastStats = stats;
+  window._nameMap = nameMap;
+
+  // Update steps
+  document.getElementById('dot-3').classList.add('active');
+  document.getElementById('step-upload').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+
+  // Header
+  document.getElementById('names-display').textContent = userName1 + ' & ' + userName2;
+  document.getElementById('meta-display').textContent = 
+    msgs[0].date + ' → ' + msgs[msgs.length-1].date + ' · ' + stats.total + ' messages';
+
+  // Teaser intro
+  const teaserParts = [];
+  if (stats.hearts > 0) teaserParts.push(stats.hearts + ' cœurs');
+  if (stats.bonneNuit > 0) teaserParts.push(stats.bonneNuit + ' bonne nuit');
+  if (stats.laughs > 0) teaserParts.push(stats.laughs + ' fous rires');
+  if (stats.jeTaime > 0) teaserParts.push(stats.jeTaime + ' "je t\'aime"');
+  document.getElementById('teaser-text').innerHTML = 
+    'Nous avons analysé <strong>' + stats.total + ' messages</strong> entre ' + userName1 + ' et ' + userName2 + '.<br>' +
+    'On y a trouvé ' + teaserParts.join(', ') + '... et bien plus encore.';
+
+  // Stats - Rich version with animations
+  // Use mapped names for s1 and s2
+  const n1 = nameMap[stats.s1];
+  const n2 = nameMap[stats.s2];
+  const grid = document.getElementById('stats-grid');
+
+  // Dynamic colors based on rose choice
+  const roseName = roseIdx === 1 ? userName1 : userName2;
+  const c1 = (n1 === roseName) ? '#C27C5A' : '#5A8FA8';  // color for s1
+  const c2 = (n1 === roseName) ? '#5A8FA8' : '#C27C5A';  // color for s2
+  const bg1 = (n1 === roseName) ? '#F4E4DA' : '#DEECF1';
+  const bg2 = (n1 === roseName) ? '#DEECF1' : '#F4E4DA';
+
+  // Donut values
+  const circumference = 2 * Math.PI * 45; // ~282.74
+  const dash1 = stats.pct1 / 100 * circumference;
+  const gap1 = circumference - dash1;
+  const dash2 = stats.pct2 / 100 * circumference;
+  const gap2 = circumference - dash2;
+  const offset2 = 70.69 - dash1;
+
+  grid.innerHTML = `
+    <!-- Donut — visible but numbers blurred -->
+    <div class="reveal-scale" style="display:flex; align-items:center; justify-content:center; gap:20px; padding:20px; background:white; border:1px solid var(--border); border-radius:16px; margin-bottom:16px; grid-column:1/-1; position:relative;">
+      <svg width="140" height="140" viewBox="0 0 120 120" id="donut-svg">
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#F0EDE8" stroke-width="14"/>
+        <circle id="donut-ring-1" cx="60" cy="60" r="45" fill="none" stroke="${c1}" stroke-width="14"
+          stroke-dasharray="0 ${circumference}" stroke-dashoffset="70.69" transform="rotate(-90 60 60)"
+          data-target-dash="${dash1}" data-target-gap="${gap1}"/>
+        <circle id="donut-ring-2" cx="60" cy="60" r="45" fill="none" stroke="${c2}" stroke-width="14"
+          stroke-dasharray="0 ${circumference}" stroke-dashoffset="${offset2}" transform="rotate(-90 60 60)"
+          data-target-dash="${dash2}" data-target-gap="${gap2}"/>
+        <text x="60" y="57" text-anchor="middle" font-family="'Playfair Display',serif" font-size="22" font-weight="500" fill="#1A1A18" id="donut-count">0</text>
+        <text x="60" y="72" text-anchor="middle" font-size="8" fill="#8A857D">messages</text>
+      </svg>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; align-items:center; gap:6px; font-size:13px;"><div style="width:10px;height:10px;border-radius:50%;background:${c1};"></div>${n1} — <span style="filter:blur(3px);user-select:none;">${stats.pct1}%</span></div>
+        <div style="display:flex; align-items:center; gap:6px; font-size:13px;"><div style="width:10px;height:10px;border-radius:50%;background:${c2};"></div>${n2} — <span style="filter:blur(3px);user-select:none;">${stats.pct2}%</span></div>
+      </div>
+      <div class="locked-badge">🔒 Détails dans votre livre</div>
+    </div>
+
+    <!-- Big stats — visible -->
+    <div class="stat-card reveal delay-1"><span class="num counter" style="color:${c1};" data-target="${stats.hearts}">0</span><span class="label">❤️ coeurs</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.hearts1} · ${n2}: ${stats.hearts2}</span></div>
+    <div class="stat-card reveal delay-2"><span class="num counter" style="color:${c2};" data-target="${stats.bonneNuit}">0</span><span class="label">🌙 bonne nuit</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.bn1} · ${n2}: ${stats.bn2}</span></div>
+    <div class="stat-card reveal delay-3"><span class="num counter" style="color:#C49A3B;" data-target="${stats.laughs}">0</span><span class="label">😂 fous rires</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.laughs1} · ${n2}: ${stats.laughs2}</span></div>
+    <div class="stat-card reveal delay-4"><span class="num counter" style="color:#5BA87A;" data-target="${stats.jeTaime}">0</span><span class="label">💕 je t'aime</span><span class="label" style="font-size:10px;color:#C0B8AE;">${stats.jeTaime > 0 ? 'Qui l\'a dit en premier ?' : 'Pas encore... patience 🥰'}</span></div>
+
+    <!-- Face à face — mix visible/locked -->
+    <div class="reveal" style="grid-column:1/-1; background:white; border:1px solid var(--border); border-radius:16px; padding:20px; margin-top:8px; position:relative;" id="h2h-section">
+      <div style="font-family:'Playfair Display',serif; font-size:16px; text-align:center; margin-bottom:4px;">Face à face</div>
+      <div style="font-size:11px; color:var(--ink-muted); text-align:center; margin-bottom:14px;">${n1} vs ${n2} — qui gagne ?</div>
+      <div class="h2h-row-anim" style="transition-delay:0.1s">${buildH2hRow('❤️', 'Cœurs', stats.hearts1, stats.hearts2, n1, n2, false, false, c1, c2)}</div>
+      <div class="h2h-row-anim" style="transition-delay:0.2s">${buildH2hRow('😂', 'Fous rires', stats.laughs1, stats.laughs2, n1, n2, false, false, c1, c2)}</div>
+      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.3s">${buildH2hRow('💬', 'Le + bavard', stats.count1, stats.count2, n1, n2, false, false, c1, c2)}</div>
+      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.4s">${buildH2hRow('📏', 'Écrit des pavés', stats.avgWords1+'mots', stats.avgWords2+'mots', n1, n2, false, false, c1, c2)}</div>
+      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.5s">${buildH2hRow('❓', 'Le + curieux', stats.questions1, stats.questions2, n1, n2, false, false, c1, c2)}</div>
+      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.6s">${buildH2hRow('☀️', 'Ouvre la conv.', stats.opens1+'j', stats.opens2+'j', n1, n2, false, false, c1, c2)}</div>
+      ${stats.fast1 && stats.fast2 ? `<div class="h2h-row-anim h2h-locked" style="transition-delay:0.7s">${buildH2hRow('⚡', 'Réponse rapide', stats.fast1+'min', stats.fast2+'min', n1, n2, true, false, c1, c2)}</div>` : ''}
+      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.8s">${buildH2hRow('🌙', 'Dit bonne nuit', stats.bn1, stats.bn2, n1, n2, false, false, c1, c2)}</div>
+      <div class="locked-badge">🔒 Qui gagne ? Découvrez dans votre livre</div>
+    </div>
+
+    <!-- Fun facts — mix of visible and teased -->
+    <div class="reveal" style="grid-column:1/-1; background:white; border:1px solid var(--border); border-radius:16px; padding:20px; margin-top:8px;">
+      <div style="font-family:'Playfair Display',serif; font-size:16px; text-align:center; margin-bottom:4px;">Notre histoire</div>
+      <div style="font-size:11px; color:var(--ink-muted); text-align:center; margin-bottom:14px;">Les chiffres de votre couple</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+
+        <!-- VISIBLE: classics -->
+        <div class="reveal-scale delay-1" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
+          <div style="font-size:20px;">📖</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Mot préféré</div>
+          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">"${stats.topWord ? stats.topWord.word : '...'}"</div>
+          <div style="font-size:10px; color:#C0B8AE;">${stats.topWord ? stats.topWord.count + ' fois' : ''}</div>
+        </div>
+        <div class="reveal-scale delay-2" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
+          <div style="font-size:20px;">🏆</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Jour record</div>
+          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.recordCount}</div>
+          <div style="font-size:10px; color:#C0B8AE;">messages le ${stats.recordDay}</div>
+        </div>
+        <div class="reveal-scale delay-3" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
+          <div style="font-size:20px;">🔥</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Jours d'affilée</div>
+          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.streak} jours</div>
+          <div style="font-size:10px; color:#C0B8AE;">de conversation sans interruption</div>
+        </div>
+        <div class="reveal-scale delay-4" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
+          <div style="font-size:20px;">📚</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Si c'était un livre</div>
+          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.bookPages} pages</div>
+          <div style="font-size:10px; color:#C0B8AE;">${stats.totalWords.toLocaleString('fr-FR')} mots échangés</div>
+        </div>
+
+        <!-- TEASED: new fun ones — label visible, value blurred -->
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
+          <div style="font-size:20px;">📏</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Qui écrit des pavés ?</div>
+          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.avgWords1 > stats.avgWords2 ? n1 : n2}</div>
+          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.avgWords1, stats.avgWords2)} mots/msg en moy.</div>
+        </div>
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
+          <div style="font-size:20px;">💌</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Le double-texteur</div>
+          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.maxConsec1 > stats.maxConsec2 ? n1 : n2}</div>
+          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.maxConsec1, stats.maxConsec2)} msgs d'affilée</div>
+        </div>
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
+          <div style="font-size:20px;">❓</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Le + curieux</div>
+          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.questions1 > stats.questions2 ? n1 : n2}</div>
+          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.questions1, stats.questions2)} questions posées</div>
+        </div>
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
+          <div style="font-size:20px;">😴</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Nuits blanches</div>
+          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.nightMsgs}</div>
+          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">messages après minuit</div>
+        </div>
+        ${stats.firstNickname ? `
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; grid-column:1/-1; position:relative;">
+          <div style="font-size:20px;">💕</div>
+          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Premier surnom</div>
+          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">"${stats.firstNickname.word}" — ${displayName(stats.firstNickname.sender)}</div>
+          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">le ${stats.firstNickname.date}</div>
+        </div>` : ''}
+      </div>
+      <div style="text-align:center; margin-top:12px;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 + double-texteur, nuits blanches, premier surnom... dans votre livre</span></div>
+    </div>
+  `;
+
+  // H2H helper is defined below
+
+  // Key moments — Timeline verticale
+  const kmList = document.getElementById('km-list');
+
+  // Detect moment type for icon/color/tag
+  function getMomentMeta(m, idx) {
+    const t = m.text.toLowerCase();
+    if (idx === 0 && m === msgs[0]) return { icon: '💬', color: 'rose', tag: 'Premier message' };
+    if (/je t'aime|je t aime|jtm|jtaime/i.test(m.text)) return { icon: '💕', color: 'rose', tag: 'Premier je t\'aime' };
+    if (/bonne nuit/i.test(t)) return { icon: '🌙', color: 'blue', tag: null };
+    if (/rendez.vous|on se voit|on se retrouve/i.test(t)) return { icon: '☕', color: 'amber', tag: 'Rendez-vous' };
+    if (/tu me manques|je pense à toi/i.test(t)) return { icon: '🥺', color: 'blue', tag: null };
+    if (/❤️|💕|💗|💖|🥰|😍/.test(m.text)) return { icon: '😍', color: 'rose', tag: null };
+    if (/😂|🤣|haha|hihi|mdr/i.test(m.text)) return { icon: '😂', color: 'amber', tag: null };
+    if (/voyage|vacances/i.test(t)) return { icon: '✈️', color: 'green', tag: null };
+    if (/chanson|musique|écoute|spotify/i.test(t)) return { icon: '🎵', color: 'green', tag: null };
+    if (/mon (cœur|coeur|amour|bébé|chéri)/i.test(t)) return { icon: '💕', color: 'rose', tag: null };
+    return { icon: '✨', color: 'rose', tag: null };
+  }
+
+  kmList.innerHTML = '<div class="tl-vertical">' + keyMoments.map((m, i) => {
+    const meta = getMomentMeta(m, i);
+    const isS2 = m.sender === stats.s2;
+    const truncText = m.text.length > 80 ? m.text.substring(0, 80) + '...' : m.text;
+    const isLocked = i >= 2;
+    return `<div class="tl-v-item reveal" style="transition-delay:${i * 0.1}s;${isLocked ? 'filter:blur(3px);user-select:none;pointer-events:none;' : ''}">
+      <div class="tl-v-dot tl-v-dot-${meta.color}">${meta.icon}</div>
+      <div class="tl-v-card">
+        <div class="tl-v-date">${m.date} · ${m.time}${meta.tag ? ` <span class="tl-v-tag">${meta.tag}</span>` : ''}</div>
+        <div class="tl-v-msg">"${truncText}"</div>
+        <div class="tl-v-sender${isS2 ? ' s2' : ''}">${displayName(m.sender)}</div>
+      </div>
+    </div>`;
+  }).join('') + '</div>' +
+  (keyMoments.length > 2 ? '<div style="text-align:center;margin-top:-10px;position:relative;z-index:3;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 ' + (keyMoments.length - 2) + ' autres moments dans votre livre</span></div>' : '');
+
+  // Conversation preview — teased (first messages + fade)
+  const convBox = document.getElementById('preview-conv');
+  let convHtml = '';
+  let lastDate = '';
+  const previewMsgs = msgs.slice(0, 4);
+  
+  for (const m of previewMsgs) {
+    if (m.date !== lastDate) {
+      convHtml += `<div class="chat-date"><span>${m.date}</span></div>`;
+      lastDate = m.date;
+    }
+    const isRight = m.sender === stats.s2;
+    const isRose = (displayName(m.sender) === roseName);
+    const senderStyle = isRose ? 'color:#C27C5A;' : 'color:#5A8FA8;';
+    const bubbleBg = isRose ? 'background:#FBF0ED;' : 'background:#EAF0FA;';
+    const bubbleClass = isRight ? 'bubble-r' : 'bubble-l';
+    convHtml += `
+      <div class="chat-bubble ${bubbleClass}" style="${bubbleBg}">
+        <div class="bubble-sender" style="${senderStyle}">${displayName(m.sender)}</div>
+        ${m.text}
+        <div class="bubble-time">${m.time}</div>
+      </div>
+    `;
+  }
+  convHtml += '<div style="clear:both"></div>';
+  convHtml += `<div style="position:relative;height:80px;">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom, transparent, var(--warm-white));"></div>
+    <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:3;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 ${msgs.length} messages dans votre livre</span></div>
+  </div>`;
+  convBox.innerHTML = convHtml;
+
+  // Roman preview — teased (locked, just a taste)
+  const romanBox = document.getElementById('preview-roman');
+  romanBox.classList.add('locked-overlay');
+  romanBox.innerHTML = `
+    <div class="roman-text">
+      <div style="font-family:var(--font-display); font-size:15px; line-height:1.8; color:var(--ink-soft); text-align:justify;">
+        <p style="margin-bottom:10px;">Tout a commencé le ${msgs[0].date}, à ${msgs[0].time}. Un message, un simple message, envoyé sans savoir qu'il serait le premier d'une longue histoire...</p>
+        <p style="margin-bottom:10px; filter:blur(2.5px); user-select:none;">La réponse n'a pas tardé. Et la conversation s'est installée, naturellement, comme si ces deux-là s'étaient toujours connus. Les premières heures ressemblaient à toutes les premières conversations.</p>
+        <p style="filter:blur(3px); user-select:none;">Il y avait ces petits rituels qui s'installaient sans qu'on s'en rende compte. Un bonjour le matin, un bonne nuit le soir. Et entre les deux, des heures de conversation sur tout et sur rien.</p>
+      </div>
+    </div>
+    <div class="locked-badge">🔒 Récit complet dans votre livre (~1500 mots)</div>
+  `;
+
+  // "What's inside" checklist
+  const insideList = document.getElementById('whats-inside-list');
+  const insideItems = [
+    'Vos ' + msgs.length + ' messages fidèlement reproduits',
+    'Le récit complet de votre histoire (~1500 mots)',
+    keyMoments.length + ' moments clés illustrés en timeline',
+    'Face-à-face complet : ' + n1 + ' vs ' + n2 + ' en 8 catégories',
+    '9 fun facts sur votre couple',
+    stats.firstNickname ? 'Premier surnom, premier je t\'aime, nuits blanches...' : 'Records, jours d'affilée, nuits blanches...',
+    'Page de couverture personnalisée',
+  ];
+  insideList.innerHTML = insideItems.map(item => `
+    <div class="whats-inside-item">
+      <span class="whats-inside-check">✓</span>
+      <span>${item}</span>
+    </div>
+  `).join('');
+
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+  // Trigger animations after a short delay
+  setTimeout(() => animateResults(stats), 400);
+}
+
+// ═══ AI ROMAN GENERATION ═══
+async function generateRoman(msgs, stats, displayName) {
+  const romanBox = document.getElementById('preview-roman');
+  
+  try {
+    const response = await fetch('/.netlify/functions/generate-roman', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: msgs.slice(0, 500).map(m => ({
+          date: m.date, time: m.time, sender: m.sender, text: m.text
+        })),
+        name1: userName1,
+        name2: userName2,
+        style: 'romantique',
+        stats: {
+          total: msgs.length,
+          hearts: msgs.reduce((n,m) => n + ['❤️','💕','💗','🥰','😍'].reduce((s,e) => s + (m.text.split(e).length-1), 0), 0),
+          laughs: msgs.reduce((n,m) => n + (m.text.split('😂').length-1), 0),
+          jeTaime: msgs.filter(m => /je t'aime|je t aime/i.test(m.text)).length,
+        }
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.roman) {
+      let html = data.roman.split('\n\n').map(para => {
+        if (/^CHAPITRE|^—/.test(para.trim())) {
+          return '<h3 style="font-family:var(--font-display);font-size:16px;color:var(--rose);margin:20px 0 8px;font-weight:500;">' + para.trim() + '</h3>';
+        }
+        if (/^\[.+\]\s*«/.test(para.trim())) {
+          const match = para.match(/^\[(.+?)\]\s*«(.+?)»/s);
+          if (match) {
+            return '<div style="margin:8px 0 8px 12px;padding:6px 12px;border-left:2px solid var(--rose);background:var(--rose-bg);border-radius:0 8px 8px 0;"><span style="font-size:11px;font-weight:600;color:var(--rose);display:block;margin-bottom:2px;">' + match[1].trim() + '</span><span style="font-size:13px;color:var(--ink-soft);">' + match[2].trim() + '</span></div>';
+          }
+        }
+        return '<p style="margin-bottom:10px;">' + para.trim() + '</p>';
+      }).join('');
+
+      if (data.mode === 'demo') {
+        html += '<div style="margin-top:20px;padding:12px 16px;background:#FFF8EC;border:1px solid #F0E0C0;border-radius:10px;font-family:var(--font-body);font-size:12px;color:#8A6D2B;text-align:center;font-style:normal;">✨ Aperçu démo — Le récit complet personnalisé sera disponible au lancement</div>';
+      }
+      romanBox.innerHTML = '<div class="roman-text">' + html + '</div>';
+    } else {
+      throw new Error(data.error || 'Erreur');
+    }
+  } catch (err) {
+    romanBox.innerHTML = '<div class="roman-text"><div class="placeholder-note"><div style="font-size:24px;margin-bottom:8px;">📖</div>Le format Roman sera généré par l\'IA à partir des messages de ' + userName1 + ' et ' + userName2 + '.<br><br><span style="font-size:11px;color:#C0B8AE;">Déployez sur Netlify pour tester la génération IA, ou testez en local pour voir les stats et le format conversation.</span></div></div>';
+  }
+}
+// ═══ PDF GENERATION ═══
+async function generatePDF() {
+  const btn = document.getElementById('btn-download');
+  btn.textContent = '⏳ Génération en cours...';
+  btn.disabled = true;
+
+  const msgs = window._filteredMessages || [];
+  const stats = window._lastStats || (msgs.length >= 2 ? getStats(msgs) : null);
+  const nameMap = window._nameMap || {};
+
+  // Get roman text if available
+  const romanEl = document.querySelector('#preview-roman .roman-text');
+  const roman = (romanEl && romanEl.textContent.trim().length > 50) ? romanEl.textContent.trim() : '';
+
+  // Get key moments
+  const keyMoments = getKeyMoments(msgs).map(m => ({
+    date: m.date, time: m.time, sender: m.sender, text: m.text
+  }));
+
+  try {
+    showFullscreenLoader('Création de votre PDF...');
+
+    const response = await fetch('/.netlify/functions/generate-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: msgs.map(m => ({ date: m.date, time: m.time, sender: m.sender, text: m.text })),
+        stats: stats,
+        name1: userName1,
+        name2: userName2,
+        keyMoments: keyMoments,
+        roman: roman,
+        nameMap: nameMap,
+        roseName: roseIdx === 1 ? userName1 : userName2,
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Erreur serveur' }));
+      throw new Error(err.error || 'Erreur lors de la génération');
+    }
+
+    // Download the PDF
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `il-etait-nous-${userName1.toLowerCase()}-${userName2.toLowerCase()}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    btn.textContent = '📖 Télécharger l\'aperçu PDF gratuit';
+    btn.disabled = false;
+  } catch (err) {
+    console.error('PDF error:', err);
+    btn.textContent = 'Erreur — réessayez';
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = '📖 Télécharger l\'aperçu PDF gratuit';
+    }, 3000);
+  } finally {
+    removeFullscreenLoader();
+  }
+}
+
+
+// ═══ SMART LIMIT ═══
+function smartLimit(msgs, max) {
+  // Keep all important messages
+  const keepPatterns = [
+    /je t'aime/i, /je t aime/i, /bonne nuit/i, /bonjour/i,
+    /❤️|💕|💗|💖|🥰|😍/, /tu me manques/i, /je pense à toi/i,
+    /premier/i, /anniversaire/i, /mon (cœur|coeur|amour|bébé|chéri)/i,
+    /je crois que/i, /il faut que je te dise/i, /on se voit/i,
+    /voyage/i, /vacances/i, /rendez.vous/i
+  ];
+  
+  const important = [];
+  const normal = [];
+  
+  for (const m of msgs) {
+    if (keepPatterns.some(p => p.test(m.text))) {
+      important.push(m);
+    } else {
+      normal.push(m);
+    }
+  }
+  
+  // Fill remaining slots with evenly sampled normal messages
+  const remaining = max - important.length;
+  if (remaining <= 0) return important.slice(0, max);
+  
+  const step = Math.ceil(normal.length / remaining);
+  const sampled = normal.filter((_, i) => i % step === 0);
+  
+  // Merge and sort by original order
+  return [...important, ...sampled]
+    .sort((a, b) => msgs.indexOf(a) - msgs.indexOf(b))
+    .slice(0, max);
+}
+
+// ═══ ANIMATIONS ═══
+function animateCounter(el, target, duration = 1200) {
+  const start = performance.now();
+  const isInt = Number.isInteger(target);
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    el.textContent = current.toLocaleString('fr-FR');
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toLocaleString('fr-FR');
+  }
+  requestAnimationFrame(tick);
+}
+
+function animateDonut(stats) {
+  const circumference = 2 * Math.PI * 45;
+  const ring1 = document.getElementById('donut-ring-1');
+  const ring2 = document.getElementById('donut-ring-2');
+  const countEl = document.getElementById('donut-count');
+  
+  if (!ring1 || !ring2) return;
+  
+  // Animate donut strokes
+  const dash1 = stats.pct1 / 100 * circumference;
+  const gap1 = circumference - dash1;
+  const dash2 = stats.pct2 / 100 * circumference;
+  const gap2 = circumference - dash2;
+  
+  ring1.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+  ring2.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s';
+  
+  requestAnimationFrame(() => {
+    ring1.setAttribute('stroke-dasharray', `${dash1} ${gap1}`);
+    ring2.setAttribute('stroke-dasharray', `${dash2} ${gap2}`);
+  });
+  
+  // Animate center counter
+  if (countEl) animateCounter(countEl, stats.total, 1400);
+}
+
+function animateResults(stats) {
+  // 1. Animate donut
+  animateDonut(stats);
+  
+  // 2. Animate all counters
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    if (!isNaN(target)) animateCounter(el, target);
+  });
+  
+  // 3. Set up IntersectionObserver for reveal elements
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  
+  document.querySelectorAll('#results .reveal, #results .reveal-scale, #results .h2h-row-anim').forEach(el => {
+    observer.observe(el);
+  });
+  
+  // 4. Immediately reveal elements already in viewport
+  setTimeout(() => {
+    document.querySelectorAll('#results .reveal, #results .reveal-scale, #results .h2h-row-anim').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.classList.add('visible');
+      }
+    });
+  }, 100);
+}
+
+// ═══ FULLSCREEN LOADER ═══
+function showFullscreenLoader(text) {
+  removeFullscreenLoader(); // prevent duplicates
+  const loader = document.createElement('div');
+  loader.className = 'fullscreen-loader';
+  loader.id = 'fullscreen-loader';
+  loader.innerHTML = `
+    <div class="loader-scene">
+      <div class="loader-card">
+        <div class="loader-front"></div>
+        <div class="loader-back"></div>
+      </div>
+    </div>
+    <div class="loader-text">${text || 'Préparation en cours...'}</div>
+  `;
+  document.body.appendChild(loader);
+}
+
+function removeFullscreenLoader() {
+  const el = document.getElementById('fullscreen-loader');
+  if (el) el.remove();
+}
+
+// ═══ FILE LOADED STATE ═══
+function showFileLoaded(fileName) {
+  const fileDrop = document.getElementById('file-drop');
+  fileDrop.style.display = 'none';
+  
+  // Create or update loaded info
+  let info = document.getElementById('file-loaded-info');
+  if (!info) {
+    info = document.createElement('div');
+    info.id = 'file-loaded-info';
+    info.className = 'file-loaded-info';
+    fileDrop.parentNode.insertBefore(info, fileDrop.nextSibling);
+  }
+  info.innerHTML = `
+    <span>✓ <span class="file-name">${fileName}</span></span>
+    <button class="btn-remove" onclick="removeFile()">✕ Supprimer</button>
+  `;
+  info.style.display = 'flex';
+}
+
+function removeFile() {
+  // Reset file input
+  fileInput.value = '';
+  pasteInput.value = '';
+  
+  // Reset UI
+  document.getElementById('file-drop').style.display = '';
+  document.querySelector('.file-drop-text').textContent = 'Glissez votre fichier .txt ici';
+  const info = document.getElementById('file-loaded-info');
+  if (info) info.style.display = 'none';
+  
+  // Reset period & filters
+  document.getElementById('period-selector').classList.remove('show');
+  document.getElementById('filter-summary').style.display = 'none';
+  document.querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
+  btnGenerate.disabled = true;
+  
+  // Reset stored data
+  window._filteredMessages = null;
+  window._selectedPeriod = null;
+  window._nameMapOrder = null;
+  nameMapConfirmed = false;
+  document.getElementById('name-mapping').style.display = 'none';
+}
+
+// ═══ H2H HELPER ═══
+function buildH2hRow(emoji, label, val1, val2, name1, name2, lowerWins = false, higherWins = false, color1 = '#C27C5A', color2 = '#5A8FA8') {
+  let w1 = '', w2 = '';
+  const v1 = typeof val1 === 'string' ? val1 : Number(val1);
+  const v2 = typeof val2 === 'string' ? val2 : Number(val2);
+  
+  if (lowerWins) {
+    if (v1 < v2) w1 = ' style="position:relative;" '; else if (v2 < v1) w2 = ' style="position:relative;" ';
+  } else if (higherWins) {
+    if (v1 > v2) w1 = ' style="position:relative;" '; else if (v2 > v1) w2 = ' style="position:relative;" ';
+  } else {
+    if (v1 > v2) w1 = ' style="position:relative;" '; else if (v2 > v1) w2 = ' style="position:relative;" ';
+  }
+  
+  const crown = '<span style="position:absolute;top:-2px;right:15%;font-size:11px;">👑</span>';
+  
+  return `<div style="display:flex;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--border);">
+    <div style="flex:1;text-align:center;"${w1}>${w1 ? crown : ''}<span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:${color1};display:block;">${val1}</span><span style="font-size:10px;color:var(--ink-muted);">${name1}</span></div>
+    <div style="width:80px;text-align:center;flex-shrink:0;"><span style="font-size:14px;display:block;">${emoji}</span><span style="font-size:9px;font-weight:600;color:var(--ink-soft);">${label}</span></div>
+    <div style="flex:1;text-align:center;"${w2}>${w2 ? crown : ''}<span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:${color2};display:block;">${val2}</span><span style="font-size:10px;color:var(--ink-muted);">${name2}</span></div>
+  </div>`;
+}
+</script>
+
+</body>
+</html>

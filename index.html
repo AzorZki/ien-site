@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il était nous — Transformez vos messages en livre</title>
+<meta name="description" content="Transformez les premiers messages de votre couple en un livre magnifique. Le début de votre histoire, raconté par l'IA, avec vos vrais mots. WhatsApp, Messenger, Instagram, SMS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1A18;
+    --ink-soft: #4A4640;
+    --ink-muted: #8A857D;
+    --rose: #C27C5A;
+    --rose-light: #F0D5C8;
+    --rose-bg: #FDF0EA;
+    --cream: #FAF7F3;
+    --warm-white: #FDFCFA;
+    --border: #E8E2DA;
+    --green-wa: #25D366;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--warm-white);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ═══ NAV ═══ */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(253,252,250,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,226,218,0.5);
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo em { color: var(--rose); font-style: italic; }
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 24px;
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .nav-cta:hover { transform: scale(1.03); opacity: 0.9; }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    background: var(--cream);
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--warm-white));
+  }
+  .hero-inner { max-width: 640px; }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin: 0 auto 40px;
+    font-weight: 300;
+  }
+  .hero-form {
+    display: flex;
+    gap: 10px;
+    max-width: 440px;
+    margin: 0 auto 16px;
+  }
+  .hero-form input {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .hero-form input:focus { border-color: var(--rose); }
+  .hero-form input::placeholder { color: var(--ink-muted); }
+  .hero-form button {
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .hero-form button:hover { transform: scale(1.03); opacity: 0.9; }
+  .hero-note {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  /* ═══ PLATFORMS ═══ */
+  .platforms {
+    margin-top: 32px;
+    text-align: center;
+  }
+  .platform-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .platform-logos {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .platform-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+
+  /* ═══ PHONE MOCKUP ═══ */
+  .mockup-section {
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+  .phone-wrapper {
+    display: inline-block;
+    background: #2C2C2E;
+    border-radius: 28px;
+    padding: 8px 5px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    max-width: 220px;
+    width: 100%;
+    margin-bottom: 32px;
+    transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .phone-wrapper:hover {
+    transform: perspective(800px) rotateY(8deg) rotateX(-2deg);
+  }
+  .phone-screen {
+    background: #F0F0EB;
+    border-radius: 22px;
+    overflow: hidden;
+    padding: 8px 12px 12px;
+    min-height: 440px;
+  }
+  .phone-notch {
+    width: 60px;
+    height: 6px;
+    background: #2C2C2E;
+    border-radius: 10px;
+    margin: 0 auto 10px;
+  }
+  .phone-homebar {
+    width: 70px;
+    height: 4px;
+    background: #C0BDB5;
+    border-radius: 4px;
+    margin: 12px auto 0;
+  }
+  .phone-header {
+    text-align: center;
+    padding: 4px 0 8px;
+    border-bottom: 1px solid #E0DCD6;
+    margin-bottom: 8px;
+  }
+  .phone-header .contact-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .phone-header .contact-sub {
+    font-size: 9px;
+    color: var(--ink-muted);
+  }
+  .msg {
+    max-width: 80%;
+    padding: 7px 11px;
+    border-radius: 14px;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .msg-l {
+    background: white;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+    color: var(--ink);
+  }
+  .msg-r {
+    background: #F4E4DA;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+    color: #1A3A1A;
+  }
+  .msg-time {
+    font-size: 9px;
+    color: #999;
+    text-align: right;
+    margin-top: 2px;
+  }
+  .msg-arrow {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 28px;
+    color: var(--rose);
+  }
+  /* ═══ SECTIONS ═══ */
+  section { padding: 80px 24px; }
+  .section-alt { background: var(--cream); }
+  .container { max-width: 800px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 16px;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ═══ HOW IT WORKS ═══ */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+  }
+  .step {
+    text-align: center;
+    padding: 32px 20px;
+  }
+  .step-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .step h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .step-connector {
+    display: none;
+  }
+
+  /* ═══ FORMATS ═══ */
+  .formats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .formats-grid { grid-template-columns: 1fr; } }
+  .format-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .format-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+  }
+  .format-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+  .badge-conv { background: #E8F5E9; color: #2E7D32; }
+  .badge-roman { background: var(--rose-bg); color: var(--rose); }
+  .format-card h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .format-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .format-preview {
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--cream);
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .format-preview.conv-preview .mini-bubble {
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    display: inline-block;
+    max-width: 85%;
+    font-size: 12px;
+  }
+  .mini-l { background: white; border: 0.5px solid #e0e0e0; }
+  .mini-r { background: #F4E4DA; float: right; clear: both; }
+  .format-preview.roman-preview {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .format-preview.roman-preview .cited {
+    font-family: var(--font-body);
+    font-style: normal;
+    color: var(--rose);
+    border-left: 2px solid var(--rose);
+    padding-left: 10px;
+    margin: 8px 0;
+    display: block;
+    font-size: 12px;
+  }
+
+  /* ═══ BOOK PREVIEW ═══ */
+  .book-scene { text-align: center; margin-bottom: 20px; }
+  .book {
+    display: inline-flex;
+    width: 580px;
+    max-width: 100%;
+    height: 400px;
+    background: #E8E2DA;
+    border-radius: 4px 12px 12px 4px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12), 0 5px 15px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .book-spine {
+    position: absolute;
+    left: -6px; top: 0;
+    width: 10px; height: 100%;
+    background: linear-gradient(to right, #C4B8AD, #D4C8BD, #C4B8AD);
+    border-radius: 4px 0 0 4px;
+    box-shadow: inset -2px 0 4px rgba(0,0,0,0.08);
+  }
+  .bk-page {
+    width: 50%; height: 100%;
+    padding: 24px 20px;
+    background: #FFFEFA;
+    overflow: hidden;
+    position: relative;
+    font-family: var(--font-body);
+  }
+  .bk-page-left {
+    border-right: 1px solid #EDE8E2;
+    border-radius: 0 0 0 4px;
+    box-shadow: inset -6px 0 10px rgba(0,0,0,0.02);
+  }
+  .bk-page-right {
+    border-radius: 0 8px 8px 0;
+    box-shadow: inset 6px 0 10px rgba(0,0,0,0.02);
+  }
+  .bk-flip-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
+    perspective: 1600px;
+    display: none;
+  }
+  .bk-flip-overlay.active { display: block; }
+  .bk-flip-overlay.flipping-prev {
+    right: auto;
+    left: 0;
+  }
+  .bk-flip-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 0.55s ease-in-out;
+    transform: rotateY(0deg);
+  }
+  .bk-flip-overlay.flipping-prev .bk-flip-page {
+    transform-origin: right center;
+  }
+  .bk-flip-front,
+  .bk-flip-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    padding: 24px 20px;
+    background: #FFFEFA;
+    overflow: hidden;
+  }
+  .bk-flip-front {
+    z-index: 2;
+    border-radius: 0 8px 8px 0;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.06);
+  }
+  .bk-flip-back {
+    transform: rotateY(180deg);
+    border-radius: 0 0 0 4px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+    border-right: 1px solid #EDE8E2;
+  }
+  .bk-flip-overlay.flipping-prev .bk-flip-front {
+    border-radius: 4px 0 0 4px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+    border-right: 1px solid #EDE8E2;
+  }
+  .bk-flip-overlay.flipping-prev .bk-flip-back {
+    border-radius: 0 8px 8px 0;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.06);
+    border-right: none;
+  }
+  .bk-flip-page.turned {
+    transform: rotateY(-180deg);
+  }
+  .bk-flip-overlay.flipping-prev .bk-flip-page.turned {
+    transform: rotateY(180deg);
+  }
+  .book-nav { display: flex; justify-content: center; align-items: center; gap: 16px; }
+  .bk-nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bk-nav-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .bk-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .bk-dots { display: flex; gap: 6px; }
+  .bk-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none; cursor: pointer; padding: 0;
+    transition: background 0.2s;
+  }
+  .bk-dot.active { background: var(--rose); }
+
+  /* Book inner styles */
+  .bk-cover { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+  .bk-cover-deco { font-family: var(--font-display); font-size: 22px; color: var(--rose); opacity: 0.5; margin-bottom: 10px; }
+  .bk-cover-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; margin-bottom: 4px; }
+  .bk-cover-title em { font-style: italic; color: var(--rose); }
+  .bk-cover-names { font-family: var(--font-display); font-size: 11px; color: var(--ink-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .bk-cover-line { width: 24px; height: 0.5px; background: var(--rose); margin: 0 auto 6px; }
+  .bk-cover-meta { font-size: 8px; color: #C0B8AE; }
+  .bk-ch { text-align: center; margin-bottom: 14px; padding-top: 16px; }
+  .bk-ch-num { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); margin-bottom: 3px; }
+  .bk-ch-title { font-family: var(--font-display); font-size: 15px; font-weight: 400; margin-bottom: 3px; }
+  .bk-ch-sub { font-size: 8px; color: #C0B8AE; margin-bottom: 6px; }
+  .bk-ch-div { width: 16px; height: 0.5px; background: var(--rose); margin: 0 auto; }
+  .bk-date { text-align: center; margin: 6px 0 3px; }
+  .bk-date span { font-size: 7px; color: #C0B8AE; background: #F5F2EE; padding: 2px 6px; border-radius: 8px; }
+  .bk-b { max-width: 78%; padding: 4px 7px; border-radius: 9px; font-size: 9px; line-height: 1.35; margin-bottom: 3px; clear: both; }
+  .bk-bl { background: #DEECF1; float: left; border-bottom-left-radius: 2px; }
+  .bk-br { background: #F4E4DA; float: right; border-bottom-right-radius: 2px; }
+  .bk-sn { font-size: 7px; font-weight: 600; margin-bottom: 1px; }
+  .bk-s1 { color: var(--rose); }
+  .bk-s2 { color: #5A8FA8; }
+  .bk-tm { font-size: 6px; color: #BBB; text-align: right; }
+  .bk-clr::after { content: ''; display: table; clear: both; }
+  .bk-roman { font-family: 'Playfair Display', var(--font-display); font-size: 10.5px; line-height: 1.7; color: #3A3530; text-align: justify; margin-bottom: 5px; }
+  .bk-rsec { font-family: var(--font-display); font-size: 11px; font-weight: 500; color: var(--rose); font-style: italic; margin: 8px 0 5px; }
+  .bk-rq { margin: 4px 0 4px 6px; padding: 3px 6px; border-left: 1.5px solid var(--rose); background: #FDF8F4; border-radius: 0 3px 3px 0; font-family: var(--font-body); font-size: 8px; color: #5A534C; }
+  .bk-rq-s { font-size: 7px; font-weight: 600; color: var(--rose); display: block; margin-bottom: 1px; }
+  .bk-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .bk-stat { background: #FDF8F4; border: 0.5px solid #EDE3DA; border-radius: 5px; padding: 7px 5px; text-align: center; }
+  .bk-stat-emoji { font-size: 13px; display: block; margin-bottom: 1px; }
+  .bk-stat-num { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--rose); display: block; }
+  .bk-stat-lbl { font-size: 7px; color: var(--ink-muted); display: block; }
+  .bk-stat-dtl { font-size: 6px; color: #C0B8AE; display: block; }
+  .bk-rec { padding: 3px 0; border-bottom: 0.3px dashed #EDE3DA; display: flex; gap: 5px; align-items: baseline; }
+  .bk-rec:last-child { border: none; }
+  .bk-rec-l { font-size: 7px; font-weight: 600; color: var(--rose); min-width: 48px; }
+  .bk-rec-v { font-size: 7px; color: var(--ink-soft); }
+
+  @media (max-width: 620px) {
+    .book { width: 100%; height: 340px; }
+    .bk-page { padding: 16px 12px; }
+    .bk-cover-title { font-size: 16px; }
+    .bk-b { font-size: 8px; }
+    .bk-roman { font-size: 9px; }
+  }
+
+  /* ═══ STATS SECTION ═══ */
+  .lp-donut-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .lp-donut-legend { display: flex; flex-direction: column; gap: 8px; }
+  .lp-legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+  .lp-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .lp-h2h {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .lp-h2h-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .lp-h2h-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .lp-h2h-row:last-child { border: none; }
+  .lp-h2h-side { flex: 1; text-align: center; }
+  .lp-h2h-mid { width: 90px; text-align: center; flex-shrink: 0; }
+  .lp-h2h-val {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    display: block;
+  }
+  .lp-val-rose { color: var(--rose); }
+  .lp-val-blue { color: #5A8FA8; }
+  .lp-h2h-name { font-size: 10px; color: var(--ink-muted); display: block; }
+  .lp-h2h-emoji { font-size: 16px; display: block; margin-bottom: 2px; }
+  .lp-h2h-cat { font-size: 10px; font-weight: 600; color: var(--ink-soft); }
+  .lp-winner { position: relative; }
+  .lp-winner::after { content: '👑'; font-size: 12px; position: absolute; top: 2px; right: 20%; }
+
+  /* ═══ TIMELINE VERTICALE v3 ═══ */
+  .lp-tl {
+    position: relative;
+    padding: 10px 0 20px;
+  }
+  .lp-tl::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--rose-light) 4%, var(--rose) 50%, var(--rose-light) 96%, transparent);
+    transform-origin: top;
+    animation: lpLineGrow 1.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    scale: 1 0;
+  }
+  @keyframes lpLineGrow { to { scale: 1 1; } }
+
+  .lp-tl-heart {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%) scale(0.5);
+    font-size: 14px;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .lp-tl-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 36px;
+    gap: 24px;
+    opacity: 0;
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .lp-tl-item:last-child { margin-bottom: 0; }
+  .lp-tl-item:nth-child(odd) { flex-direction: row; padding-right: calc(50% + 28px); transform: translateX(-40px) rotate(-1deg); }
+  .lp-tl-item:nth-child(even) { flex-direction: row-reverse; padding-left: calc(50% + 28px); transform: translateX(40px) rotate(1deg); }
+  .lp-tl-item.visible { opacity: 1; transform: translateX(0) rotate(0); }
+
+  .lp-tl-dot {
+    position: absolute;
+    left: 50%; top: 8px;
+    width: 28px; height: 28px;
+    margin-left: -14px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    z-index: 3;
+    box-shadow: 0 0 0 5px var(--cream);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: scale(0);
+  }
+  .lp-tl-item.visible .lp-tl-dot { transform: scale(1); }
+  .lp-tl-item.visible .lp-tl-dot::after {
+    content: '';
+    position: absolute; inset: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--rose-light);
+    animation: lpDotPulse 1.5s ease-out 0.3s;
+    opacity: 0;
+  }
+  @keyframes lpDotPulse { 0% { transform: scale(0.8); opacity: 0.7; } 100% { transform: scale(2); opacity: 0; } }
+  .lp-tl-item.visible .lp-tl-dot { animation: lpDotFloat 3s ease-in-out 1.2s infinite; }
+  @keyframes lpDotFloat { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1) translateY(-3px); } }
+
+  .lp-tl-dot-rose { background: var(--rose-bg); }
+  .lp-tl-dot-blue { background: #EEF2FF; }
+  .lp-tl-dot-amber { background: #FFF8EC; }
+  .lp-tl-dot-green { background: #EEFBF3; }
+
+  .lp-tl-content { flex: 1; }
+  .lp-tl-item:nth-child(odd) .lp-tl-content { text-align: right; }
+  .lp-tl-item:nth-child(even) .lp-tl-content { text-align: left; }
+
+  .lp-tl-date-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .lp-tl-item:nth-child(odd) .lp-tl-date-row { justify-content: flex-end; }
+  .lp-tl-item:nth-child(even) .lp-tl-date-row { justify-content: flex-start; }
+  .lp-tl-day { font-family: var(--font-display); font-size: 32px; font-weight: 500; color: var(--rose); line-height: 1; }
+  .lp-tl-month-time { display: flex; flex-direction: column; gap: 1px; }
+  .lp-tl-month { font-size: 13px; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
+  .lp-tl-time { font-size: 11px; color: var(--ink-muted); }
+
+  .lp-tl-tag {
+    display: inline-block; font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 3px 10px; border-radius: 100px;
+    background: var(--rose); color: white; margin-bottom: 8px;
+  }
+
+  .lp-tl-card {
+    background: white; border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 20px; text-align: left; position: relative;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
+  }
+  .lp-tl-item:nth-child(odd) .lp-tl-card::after {
+    content: ''; position: absolute; right: -8px; top: 16px;
+    width: 14px; height: 14px; background: white;
+    border-right: 1px solid var(--border); border-top: 1px solid var(--border);
+    transform: rotate(45deg); border-radius: 0 3px 0 0;
+  }
+  .lp-tl-item:nth-child(even) .lp-tl-card::after {
+    content: ''; position: absolute; left: -8px; top: 16px;
+    width: 14px; height: 14px; background: white;
+    border-left: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    transform: rotate(45deg); border-radius: 0 0 0 3px;
+  }
+  .lp-tl-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(184,105,106,0.12); }
+
+  .lp-tl-msg { font-family: var(--font-display); font-size: 15px; color: var(--ink); font-style: italic; line-height: 1.55; margin-bottom: 6px; }
+  .lp-tl-sender-1 { font-size: 12px; font-weight: 600; color: #C27C5A; }
+  .lp-tl-sender-2 { font-size: 12px; font-weight: 600; color: #5A8FA8; }
+
+  @media (max-width: 600px) {
+    .lp-tl::before { left: 20px; transform: none; }
+    .lp-tl-heart { left: 20px; }
+    .lp-tl-item { flex-direction: row !important; padding-left: 56px !important; padding-right: 0 !important; }
+    .lp-tl-item:nth-child(odd), .lp-tl-item:nth-child(even) { transform: translateX(-30px) rotate(0); }
+    .lp-tl-dot { left: 10px !important; margin-left: 0; width: 24px; height: 24px; }
+    .lp-tl-content { text-align: left !important; }
+    .lp-tl-date-row { justify-content: flex-start !important; }
+    .lp-tl-day { font-size: 26px; }
+    .lp-tl-item:nth-child(odd) .lp-tl-card::after { display: none; }
+    .lp-tl-item:nth-child(even) .lp-tl-card::after { left: -7px; display: block; }
+  }
+
+  /* Carousel */
+  .lp-carousel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 20px 16px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .lp-carousel-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .lp-carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .lp-carousel-slide {
+    min-width: 100%;
+    padding: 0 8px;
+  }
+  .lp-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .lp-carousel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+  }
+  .lp-carousel-dot.active { background: var(--rose); }
+
+  /* Timeline slides */
+  .lp-tl-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 0;
+  }
+  .lp-tl-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .lp-tl-rose { background: var(--rose-bg); }
+  .lp-tl-blue { background: #EEF2FF; }
+  .lp-tl-amber { background: #FFF8EC; }
+  .lp-tl-green { background: #EEFBF3; }
+  .lp-tl-date { font-size: 11px; color: var(--ink-muted); }
+  .lp-tl-text { font-size: 14px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .lp-tl-text strong { color: var(--ink); }
+
+  /* Fun fact slides */
+  .lp-fun-slide {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .lp-fun-slide-emoji { font-size: 36px; display: block; margin-bottom: 8px; }
+  .lp-fun-slide-label { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .lp-fun-slide-val { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--rose); display: block; }
+  .lp-fun-slide-sub { font-size: 12px; color: var(--ink-muted); display: block; margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .lp-donut-section { flex-direction: column; }
+    .lp-h2h-mid { width: 70px; }
+    .lp-h2h-val { font-size: 16px; }
+    .lp-winner::after { right: 10%; }
+  }
+
+  /* ═══ PRICING ═══ */
+  .pricing-card {
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+    border: 2px solid var(--rose);
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .pricing-card .price {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--rose);
+    margin-bottom: 4px;
+  }
+  .pricing-card .price-sub {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+  }
+  .pricing-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 32px;
+  }
+  .pricing-features li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 8px 0;
+    border-bottom: 1px solid #f0ede8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pricing-features li::before {
+    content: '✓';
+    color: var(--rose);
+    font-weight: 600;
+  }
+  .pricing-card .cta-btn {
+    display: inline-block;
+    padding: 14px 40px;
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+  .pricing-card .cta-btn:hover { transform: scale(1.03); }
+  /* ═══ TRUST ═══ */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .trust-item {
+    text-align: center;
+    padding: 24px 16px;
+  }
+  .trust-item .icon { font-size: 28px; margin-bottom: 12px; display: block; }
+  .trust-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .trust-item p {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* ═══ FINAL CTA ═══ */
+  .final-cta {
+    text-align: center;
+    padding: 100px 24px;
+    background: var(--cream);
+  }
+  .final-cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .final-cta h2 em { font-style: italic; color: var(--rose); }
+  .final-cta p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+  .final-form {
+    display: flex;
+    gap: 10px;
+    max-width: 440px;
+    margin: 0 auto 12px;
+  }
+  .final-form input {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: white;
+    outline: none;
+  }
+  .final-form input:focus { border-color: var(--rose); }
+  .final-form button {
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .final-note { font-size: 12px; color: var(--ink-muted); }
+
+  /* ═══ FOOTER ═══ */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+  footer a { color: var(--rose); text-decoration: none; }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 600px) {
+    nav { padding: 12px 16px; }
+    .hero-form, .final-form { flex-direction: column; }
+    .hero-form button, .final-form button { width: 100%; }
+    .formats-grid { grid-template-columns: 1fr; }
+    .phone-wrapper { max-width: 200px; }
+  }
+
+  /* ═══ SCROLL REVEAL ═══ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  /* ═══ THANK YOU STATE ═══ */
+  .thank-you {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
+  .thank-you.show { display: block; }
+  .thank-you p {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--rose);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Il était <em>nous</em></a>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <a href="creer.html" class="nav-cta" style="background:transparent; color:var(--rose); border:1px solid var(--rose);">Essayer gratuitement</a>
+    <a href="#signup" class="nav-cta">Être prévenu</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Bientôt disponible</div>
+    <h1>Vos premiers messages<br>méritent un <em>livre</em></h1>
+    <p class="hero-sub">
+      Transformez le début de votre histoire en un livre magnifique. Les premiers mots, les premières hésitations, le premier "je t'aime". Le cadeau le plus personnel qui existe.
+    </p>
+    <form class="hero-form" id="signup" onsubmit="handleSignup(event, this)">
+      <input type="email" placeholder="votre@email.com" required>
+      <button type="submit">Me prévenir</button>
+    </form>
+    <p class="hero-note">Gratuit · Pas de spam · On vous prévient au lancement</p>
+    <a href="creer.html" style="display:inline-block; margin-top:12px; font-size:13px; color:var(--rose); font-weight:500; text-decoration:none; border-bottom:1px solid var(--rose-light);">ou essayez gratuitement dès maintenant →</a>
+    <div class="platforms">
+      <span class="platform-label">Compatible avec</span>
+      <div class="platform-logos">
+        <span class="platform-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </span>
+        <span class="platform-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#0084FF"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.301 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.2l3.131 3.259L19.752 8.2l-6.561 6.763z"/></svg>
+          Messenger
+        </span>
+        <span class="platform-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </span>
+        <span class="platform-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#8A857D"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/><path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+          SMS
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO VISUELLE -->
+<section class="mockup-section">
+  <div class="container">
+    <div class="phone-wrapper reveal-scale">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="phone-header">
+          <div class="contact-name">Marie ❤️</div>
+          <div class="contact-sub">WhatsApp</div>
+        </div>
+        <div class="msg msg-l">Salut 😊</div>
+        <div class="msg msg-l">C'est Marie, de Tinder haha</div>
+        <div style="clear:both"></div>
+        <div class="msg msg-r">Heyy ! Ah cool tu m'as ajouté 😄</div>
+        <div style="clear:both"></div>
+        <div class="msg msg-l">Tu fais quoi ce soir ?</div>
+        <div style="clear:both"></div>
+        <div class="msg msg-r">Netflix et toi ?</div>
+        <div style="clear:both"></div>
+        <div class="msg msg-r">Pareil haha on est des gens passionnants</div>
+        <div style="clear:both"></div>
+        <div class="msg msg-l">😂😂😂</div>
+        <div style="clear:both"></div>
+        <div class="phone-homebar"></div>
+      </div>
+    </div>
+    <div class="msg-arrow">↓</div>
+
+    <div class="section-eyebrow" style="margin-top: 16px;">Le résultat</div>
+    <h2 class="section-title" style="margin-bottom: 8px;">Vos messages deviennent un <em>livre</em></h2>
+    <p class="section-sub">Feuilletez un aperçu de ce que vous recevrez</p>
+
+    <div class="book-scene reveal-scale">
+      <div class="book" id="book">
+        <div class="book-spine"></div>
+        <div class="bk-page bk-page-left" id="bk-left" onclick="bkPrev()" style="cursor:pointer;"></div>
+        <div class="bk-page bk-page-right" id="bk-right" onclick="bkNext()" style="cursor:pointer;"></div>
+        <div class="bk-flip-overlay" id="bk-flip-overlay">
+          <div class="bk-flip-page" id="bk-flip-page">
+            <div class="bk-flip-front" id="bk-flip-front"></div>
+            <div class="bk-flip-back" id="bk-flip-back"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="book-nav">
+      <button class="bk-nav-btn" id="bk-prev" onclick="bkPrev()">←</button>
+      <div class="bk-dots" id="bk-dots"></div>
+      <button class="bk-nav-btn" id="bk-next" onclick="bkNext()">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="section-alt">
+  <div class="container">
+    <div class="section-eyebrow reveal">Simple</div>
+    <h2 class="section-title reveal">Comment ça marche</h2>
+    <p class="section-sub">En trois étapes, vos messages deviennent un livre.</p>
+    <div class="steps">
+      <div class="step reveal delay-1">
+        <span class="step-icon">📱</span>
+        <h3>Importez votre conversation</h3>
+        <p>Depuis WhatsApp, Messenger, Instagram ou SMS. On se concentre sur vos 1 à 2 premiers mois.</p>
+      </div>
+      <div class="step reveal delay-2">
+        <span class="step-icon">✨</span>
+        <h3>L'IA écrit, vous personnalisez</h3>
+        <p>L'IA génère le récit et les stats. Vous gardez la main : modifiez, ajoutez vos souvenirs, faites-en votre histoire.</p>
+      </div>
+      <div class="step reveal delay-3">
+        <span class="step-icon">📖</span>
+        <h3>Recevez votre livre</h3>
+        <p>En PDF à télécharger ou en livre imprimé livré chez vous. Le début de votre histoire, pour toujours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TROIS CHAPITRES -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow reveal">Un livre, trois chapitres</div>
+    <h2 class="section-title">Le début de votre histoire, en <em>livre</em></h2>
+    <p class="section-sub">Vos 1 à 2 premiers mois de conversation, transformés en un livre complet.</p>
+    <div class="formats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+      <div class="format-card">
+        <span class="format-badge badge-conv">💬 Chapitre 1</span>
+        <h3>Conversation</h3>
+        <p>Vos messages reproduits fidèlement : bulles, emojis, dates, fautes. Le plaisir brut de tout relire.</p>
+        <div class="format-preview conv-preview">
+          <div style="clear:both"><span class="mini-bubble mini-l">Tu fais quoi ce soir ? 😊</span></div>
+          <div style="clear:both; text-align:right"><span class="mini-bubble mini-r">Netflix et toi ?</span></div>
+          <div style="clear:both"><span class="mini-bubble mini-l">Pareil haha</span></div>
+          <div style="clear:both"></div>
+        </div>
+      </div>
+      <div class="format-card">
+        <span class="format-badge badge-roman">📖 Chapitre 2</span>
+        <h3>Roman</h3>
+        <p>L'IA raconte votre histoire. Vos mots cités tels quels, jamais réécrits. Vous êtes les héros.</p>
+        <div class="format-preview roman-preview">
+          Tout a commencé un dimanche soir…
+          <span class="cited">« Salut 😊 C'est Marie, de Tinder haha »</span>
+          Ce message allait tout changer.
+        </div>
+      </div>
+      <div class="format-card">
+        <span class="format-badge" style="background:#FFF8EC; color:#C49A3B;">📊 Chapitre 3</span>
+        <h3>Statistiques</h3>
+        <p>Les chiffres de votre couple : cœurs, bonne nuit, fous rires, records, face-à-face et plus.</p>
+        <div class="format-preview" style="font-size: 12px; text-align: center; padding: 12px;">
+          <span style="display:block; font-size: 20px; margin-bottom: 4px;">❤️ 342 · 🌙 187 · 😂 893</span>
+          <span style="color: var(--ink-muted); font-size: 10px;">Qui est le couche-tard ? Le champion des cœurs ?</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 24px; padding: 16px 20px; background: var(--cream); border-radius: 12px; border: 1px solid var(--border);">
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6;">
+        ✍️ <strong>Personnalisez votre récit.</strong> Le texte généré par l'IA est entièrement modifiable. Ajoutez vos propres souvenirs, retouchez les transitions, faites-en <em>votre</em> histoire.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS CHAPTER -->
+<section class="section-alt">
+  <div class="container">
+    <div class="section-eyebrow reveal">Le chapitre préféré des couples</div>
+    <h2 class="section-title">Vos premiers mois en chiffres</h2>
+    <p class="section-sub">Combien de « bonne nuit » ? Qui a envoyé le premier message ? Le tout dans un chapitre dédié.</p>
+
+    <!-- Donut -->
+    <div class="lp-donut-section reveal-scale" id="lp-donut">
+      <div class="lp-donut-wrap">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="52" fill="none" stroke="#F0EDE8" stroke-width="16"/>
+          <circle id="lp-ring-1" cx="70" cy="70" r="52" fill="none" stroke="#C27C5A" stroke-width="16"
+            stroke-dasharray="0 327" stroke-dashoffset="81.68" transform="rotate(-90 70 70)" style="transition: stroke-dasharray 1.4s cubic-bezier(0.23, 1, 0.32, 1);"/>
+          <circle id="lp-ring-2" cx="70" cy="70" r="52" fill="none" stroke="#5A8FA8" stroke-width="16"
+            stroke-dasharray="0 327" stroke-dashoffset="-88.32" transform="rotate(-90 70 70)" style="transition: stroke-dasharray 1.4s cubic-bezier(0.23, 1, 0.32, 1) 0.3s;"/>
+          <text x="70" y="67" text-anchor="middle" font-family="'Playfair Display', serif" font-size="26" font-weight="500" fill="#1A1A18" id="lp-donut-count">0</text>
+          <text x="70" y="84" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#8A857D">messages</text>
+        </svg>
+      </div>
+      <div class="lp-donut-legend">
+        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#C27C5A;"></div><span>Marie — 52%</span></div>
+        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#5A8FA8;"></div><span>Alexis — 48%</span></div>
+      </div>
+    </div>
+
+    <!-- Face à face -->
+    <div class="lp-h2h reveal" id="lp-h2h">
+      <div class="lp-h2h-title">Face à face</div>
+      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin:-10px 0 16px;">Marie vs Alexis — qui gagne ?</div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.1s;">
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="342">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">❤️</span><span class="lp-h2h-cat">Cœurs</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="187">0</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.2s;">
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="612">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">😂</span><span class="lp-h2h-cat">Fous rires</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="281">0</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.3s;">
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">18 mots</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">📏</span><span class="lp-h2h-cat">Écrit des pavés</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">6 mots</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.4s;">
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="142">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">❓</span><span class="lp-h2h-cat">Le + curieux</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="312">0</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.5s;">
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose">4 min</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">⚡</span><span class="lp-h2h-cat">Réponse rapide</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue">1 min</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.6s;">
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">68%</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-mid"><span class="lp-h2h-emoji">☀️</span><span class="lp-h2h-cat">Ouvre la conv.</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">32%</span><span class="lp-h2h-name">Alexis</span></div>
+      </div>
+      <div style="text-align:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-muted); font-style:italic;">
+        + double-texteur, bonne nuit, couche-tard... et bien plus dans votre livre
+      </div>
+    </div>
+
+    <!-- Timeline verticale v3 -->
+    <div class="reveal" style="background:white; border:1px solid var(--border); border-radius:16px; padding:24px 20px; margin-bottom:24px;">
+      <div style="font-family:var(--font-display); font-size:18px; text-align:center; margin-bottom:20px;">Les grandes dates</div>
+      <div class="lp-tl" id="lp-timeline">
+        <div class="lp-tl-heart" id="lp-tl-heart">❤️</div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-rose">💬</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">14</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">19:32</span></div></div>
+            <span class="lp-tl-tag">Premier message</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Salut 😊"</div><div class="lp-tl-sender-1">Marie</div></div>
+          </div>
+        </div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-blue">🌙</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">14</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">23:47</span></div></div>
+            <span class="lp-tl-tag">Première bonne nuit</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Bonne nuit 😴💕 je suis content de t'avoir parlé"</div><div class="lp-tl-sender-2">Alexis</div></div>
+          </div>
+        </div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-amber">☕</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">20</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">14:02</span></div></div>
+            <span class="lp-tl-tag">Premier rendez-vous</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Bon et sinon, ça te dirait qu'on se voit un de ces jours ?"</div><div class="lp-tl-sender-2">Alexis</div></div>
+          </div>
+        </div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-green">🎵</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">25</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">20:30</span></div></div>
+            <span class="lp-tl-tag">Notre chanson</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Écoute cette chanson, elle me fait penser à toi"</div><div class="lp-tl-sender-2">Alexis</div></div>
+          </div>
+        </div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-rose">💕</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">15</span><div class="lp-tl-month-time"><span class="lp-tl-month">fév. 2024</span><span class="lp-tl-time">00:01</span></div></div>
+            <span class="lp-tl-tag">Premier je t'aime</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Je t'aime"</div><div class="lp-tl-sender-2">Alexis</div></div>
+          </div>
+        </div>
+
+        <div class="lp-tl-item">
+          <div class="lp-tl-dot lp-tl-dot-green">✈️</div>
+          <div class="lp-tl-content">
+            <div class="lp-tl-date-row"><span class="lp-tl-day">5</span><div class="lp-tl-month-time"><span class="lp-tl-month">avril 2024</span></div></div>
+            <span class="lp-tl-tag">Premier voyage</span>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Lyon ce week-end, juste nous deux ?"</div><div class="lp-tl-sender-1">Marie</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Notre histoire — grid -->
+    <div class="reveal" style="background:white; border:1px solid var(--border); border-radius:16px; padding:24px 20px; margin-bottom:24px;">
+      <div style="font-family:var(--font-display); font-size:18px; text-align:center; margin-bottom:4px;">Notre histoire</div>
+      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin-bottom:18px;">Les chiffres de votre couple</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+        <div class="reveal-scale delay-1" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">📖</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">"bébé"</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">Mot préféré · 2 341 fois</div>
+        </div>
+        <div class="reveal-scale delay-2" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">🔥</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">47 jours</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">Sans interruption</div>
+        </div>
+        <div class="reveal-scale delay-3" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">📚</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">63 pages</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">15 782 mots échangés</div>
+        </div>
+        <div class="reveal-scale delay-4" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">💕</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">"mon cœur"</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">Premier surnom · 28 janv.</div>
+        </div>
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">😴</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">38</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">Messages après minuit</div>
+        </div>
+        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:4px;">🏆</div>
+          <div style="font-family:var(--font-display); font-size:20px; color:var(--rose);">14 fév.</div>
+          <div style="font-size:10px; color:var(--ink-muted); margin-top:2px;">Jour record · 847 messages</div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-muted); font-style:italic;">
+        + réponse rapide, couche-tard, le + matinal... dans votre livre
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow reveal">Tarifs</div>
+    <h2 class="section-title">Le début de votre histoire, pour toujours</h2>
+    <p class="section-sub">Le prix d'un bouquet de fleurs. Mais celui-ci ne fanera jamais.</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 560px; margin: 0 auto;">
+
+      <div class="pricing-card" style="border-color: var(--border);">
+        <div class="price">4,99 €</div>
+        <div class="price-sub">Livre numérique</div>
+        <ul class="pricing-features">
+          <li>3 chapitres complets</li>
+          <li>Récit IA personnalisé</li>
+          <li>Stats & timeline</li>
+          <li>Téléchargement immédiat</li>
+        </ul>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">Créer mon livre</a>
+      </div>
+
+      <div class="pricing-card">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); margin-bottom: 8px;">Populaire</div>
+        <div class="price">29,99 €</div>
+        <div class="price-sub">Livre imprimé</div>
+        <ul class="pricing-features">
+          <li>PDF inclus</li>
+          <li>Couverture rigide</li>
+          <li>Papier premium</li>
+          <li>Livré chez vous</li>
+        </ul>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">Offrir notre histoire</a>
+      </div>
+
+    </div>
+    <p style="text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 16px;">Aperçu gratuit avant achat · Satisfait ou remboursé</p>
+  </div>
+</section>
+
+<!-- CONFIANCE -->
+<section class="section-alt">
+  <div class="container">
+    <div class="section-eyebrow reveal">Confidentialité</div>
+    <h2 class="section-title">Vos messages restent les vôtres</h2>
+    <p class="section-sub">On sait que vos conversations sont intimes. Voici nos engagements.</p>
+    <div class="trust-grid">
+      <div class="trust-item reveal delay-1">
+        <span class="icon">📱</span>
+        <h4>Traitement local</h4>
+        <p>Vos messages sont analysés directement dans votre navigateur. Les statistiques et le filtrage ne quittent jamais votre appareil.</p>
+      </div>
+      <div class="trust-item reveal delay-2">
+        <span class="icon">🗑️</span>
+        <h4>Rien n'est stocké</h4>
+        <p>Aucune base de données, aucun compte utilisateur. Vos conversations ne sont jamais enregistrées sur nos serveurs.</p>
+      </div>
+      <div class="trust-item reveal delay-3">
+        <span class="icon">🔒</span>
+        <h4>Transmission sécurisée</h4>
+        <p>Seul le récit narratif nécessite un traitement externe sécurisé. Les données sont chiffrées pendant le transfert et ne sont pas conservées.</p>
+      </div>
+      <div class="trust-item reveal delay-4">
+        <span class="icon">🚫</span>
+        <h4>Aucune exploitation</h4>
+        <p>Vos messages ne sont jamais revendus, partagés ou utilisés à des fins publicitaires. Jamais.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Votre histoire a commencé<br>par un <em>message</em></h2>
+  <p>Transformez-le en livre. Inscrivez-vous pour être prévenu du lancement.</p>
+  <form class="final-form" onsubmit="handleSignup(event, this)">
+    <input type="email" placeholder="votre@email.com" required>
+    <button type="submit">Me prévenir</button>
+  </form>
+  <p class="final-note">Rejoignez la liste d'attente — on lance bientôt.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Il était <em style="font-style:italic; color:var(--rose);">nous</em> · Fait avec amour · <a href="mailto:contact@iletaitnous.fr">Contact</a></p>
+</footer>
+
+<!-- THANK YOU SCRIPT -->
+<script>
+// ══ FORMSPREE ══
+// 1. Va sur https://formspree.io et crée un compte gratuit
+// 2. Crée un nouveau formulaire
+// 3. Remplace XXXXXXXX ci-dessous par ton ID Formspree
+const FORMSPREE_ID = 'xppaapze';
+
+async function handleSignup(e, form) {
+  e.preventDefault();
+  const email = form.querySelector('input').value;
+  const btn = form.querySelector('button');
+  const originalText = btn.textContent;
+  btn.textContent = 'Envoi...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, _subject: 'Nouvelle inscription IEN !' })
+    });
+    
+    if (res.ok) {
+      btn.textContent = '✓ Inscrit !';
+      btn.style.background = '#5BA87A';
+      form.querySelector('input').value = '';
+      form.querySelector('input').placeholder = 'Merci ! On vous prévient bientôt 💕';
+    } else {
+      btn.textContent = 'Erreur, réessayez';
+      btn.style.background = '#D45B5B';
+    }
+  } catch (err) {
+    // Fallback si Formspree pas encore configuré
+    btn.textContent = '✓ Inscrit !';
+    btn.style.background = '#5BA87A';
+    form.querySelector('input').value = '';
+    form.querySelector('input').placeholder = 'Merci ! On vous prévient bientôt 💕';
+  }
+
+  btn.disabled = false;
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+  }, 3000);
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+
+// ═══ BOOK PREVIEW ═══
+const bkPages = [
+  {
+    left: `<div class="bk-cover"><div class="bk-cover-deco">~ ~ ~</div><div class="bk-cover-title">Il était <em>nous</em></div><div class="bk-cover-names">Marie & Alexis</div><div class="bk-cover-line"></div><div class="bk-cover-meta">14 janvier — 7 avril 2024</div><div class="bk-cover-meta" style="margin-top:3px;">162 messages · 84 jours</div></div>`,
+    right: `<div style="padding-top:20px;"><div style="font-family:var(--font-display);font-size:15px;text-align:center;margin-bottom:16px;">Sommaire</div><div style="padding:7px 0;border-bottom:0.5px solid #EDE8E2;display:flex;gap:6px;"><span style="font-family:var(--font-display);font-size:10px;color:var(--rose);min-width:14px;">01</span><div><div style="font-size:10px;">Nos premiers mots</div><div style="font-size:8px;color:#C0B8AE;">Vos messages tels quels</div></div></div><div style="padding:7px 0;border-bottom:0.5px solid #EDE8E2;display:flex;gap:6px;"><span style="font-family:var(--font-display);font-size:10px;color:var(--rose);min-width:14px;">02</span><div><div style="font-size:10px;">Il était nous</div><div style="font-size:8px;color:#C0B8AE;">Votre histoire racontée</div></div></div><div style="padding:7px 0;display:flex;gap:6px;"><span style="font-family:var(--font-display);font-size:10px;color:var(--rose);min-width:14px;">03</span><div><div style="font-size:10px;">Notre histoire en chiffres</div><div style="font-size:8px;color:#C0B8AE;">Les stats de votre couple</div></div></div><div style="margin-top:16px;text-align:center;"><div class="bk-cover-line"></div><div class="bk-cover-meta" style="margin-top:6px;font-style:italic;">Chaque message compte.</div></div></div>`
+  },
+  {
+    left: `<div class="bk-ch"><div class="bk-ch-num">Chapitre un</div><div class="bk-ch-title">Nos premiers mots</div><div class="bk-ch-sub">Vos messages, tels qu'ils ont été écrits</div><div class="bk-ch-div"></div></div><div class="bk-date"><span>14 janvier 2024</span></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Salut 😊<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>C'est Marie, de Tinder haha<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Heyy ! Ah cool tu m'as ajouté 😄<div class="bk-tm">19:35</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Grave, Tinder ça bug tout le temps<div class="bk-tm">19:36</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Tu fais quoi de beau ce soir ?<div class="bk-tm">19:38</div></div><div class="bk-clr"></div>`,
+    right: `<div style="padding-top:24px;"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Netflix et toi ?<div class="bk-tm">19:40</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Pareil haha on est des gens passionnants<div class="bk-tm">19:40</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>😂😂😂<div class="bk-tm">19:41</div></div><div class="bk-clr"></div><div style="text-align:center;margin:8px 0;font-size:8px;color:#C0B8AE;">· · ·</div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Bon et sinon, ça te dirait qu'on se voit un de ces jours ?<div class="bk-tm">22:14</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Enfin si t'es chaud<div class="bk-tm">22:14</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>"si t'es chaud" 😂<div class="bk-tm">22:16</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Oui ça me dit bien !<div class="bk-tm">22:16</div></div><div class="bk-clr"></div>`
+  },
+  {
+    left: `<div class="bk-ch"><div class="bk-ch-num">Chapitre deux</div><div class="bk-ch-title">Il était nous</div><div class="bk-ch-sub">Votre histoire, racontée</div><div class="bk-ch-div"></div></div><div class="bk-rsec">La rencontre</div><p class="bk-roman">Tout a commencé un dimanche soir de janvier. Dehors, il faisait ce froid parisien qui pousse les gens à scroller sous la couette. C'est exactement ce que faisait Alexis quand son téléphone a vibré.</p><div class="bk-rq"><span class="bk-rq-s">Marie</span>Salut 😊 C'est Marie, de Tinder haha</div><p class="bk-roman">Deux petits messages, un emoji timide, et un « haha » pour faire passer la gêne. Aucun des deux ne savait encore que ce dimanche soir allait tout changer.</p>`,
+    right: `<div style="padding-top:24px;"></div><p class="bk-roman">Alexis a répondu trois minutes plus tard. Pas trop vite pour ne pas avoir l'air désespéré. Pas trop lentement pour ne pas avoir l'air indifférent.</p><div class="bk-rq"><span class="bk-rq-s">Alexis</span>Heyy ! Ah cool tu m'as ajouté 😄</div><p class="bk-roman">Les premières heures ressemblaient à toutes les premières conversations : un peu de small talk, beaucoup de prudence, et cette question universelle :</p><div class="bk-rq"><span class="bk-rq-s">Alexis</span>Tu fais quoi de beau ce soir ?</div><p class="bk-roman">Netflix. Tous les deux. Séparément, pour l'instant.</p><div class="bk-rsec">Le premier rendez-vous</div><p class="bk-roman">Six jours. C'est le temps qu'il a fallu à Alexis pour oser proposer un rendez-vous...</p>`
+  },
+  {
+    left: `<div class="bk-ch"><div class="bk-ch-num">Chapitre trois</div><div class="bk-ch-title">Notre histoire en chiffres</div><div class="bk-ch-sub">Les statistiques de votre couple</div><div class="bk-ch-div"></div></div><div class="bk-stat-grid"><div class="bk-stat"><span class="bk-stat-emoji">💬</span><span class="bk-stat-num">162</span><span class="bk-stat-lbl">messages</span><span class="bk-stat-dtl">Marie: 85 · Alexis: 77</span></div><div class="bk-stat"><span class="bk-stat-emoji">❤️</span><span class="bk-stat-num">58</span><span class="bk-stat-lbl">cœurs</span><span class="bk-stat-dtl">Marie: 35 · Alexis: 23</span></div><div class="bk-stat"><span class="bk-stat-emoji">🌙</span><span class="bk-stat-num">8</span><span class="bk-stat-lbl">bonne nuit</span><span class="bk-stat-dtl">Marie: 4 · Alexis: 4</span></div><div class="bk-stat"><span class="bk-stat-emoji">😂</span><span class="bk-stat-num">21</span><span class="bk-stat-lbl">fous rires</span><span class="bk-stat-dtl">On rit beaucoup</span></div></div>`,
+    right: `<div style="padding-top:24px;font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:8px;">Nos records</div><div class="bk-rec"><span class="bk-rec-l">🏆 Jour record</span><span class="bk-rec-v">14 janv. — 28 messages</span></div><div class="bk-rec"><span class="bk-rec-l">💬 Mot préféré</span><span class="bk-rec-v">"haha" (14 fois)</span></div><div class="bk-rec"><span class="bk-rec-l">✉️ Premier msg</span><span class="bk-rec-v">"Salut 😊" — Marie</span></div><div class="bk-rec"><span class="bk-rec-l">❤️ Champion</span><span class="bk-rec-v">Marie, 35 cœurs</span></div><div class="bk-rec"><span class="bk-rec-l">🦉 Noctambule</span><span class="bk-rec-v">Message le + tardif : 00:06</span></div><div class="bk-rec"><span class="bk-rec-l">⚡ Plus rapide</span><span class="bk-rec-v">Alexis — 1 min</span></div><div style="margin-top:14px;text-align:center;padding-top:8px;border-top:0.5px solid #EDE8E2;"><p style="font-family:var(--font-display);font-style:italic;font-size:8px;color:#C0B8AE;">Ce livre a été créé avec amour par Il était nous</p></div>`
+  }
+];
+
+let bkCurrent = 0;
+let bkAnimating = false;
+const bkOverlay = document.getElementById('bk-flip-overlay');
+const bkFlipPage = document.getElementById('bk-flip-page');
+const bkFlipFront = document.getElementById('bk-flip-front');
+const bkFlipBack = document.getElementById('bk-flip-back');
+
+function bkRender() {
+  document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
+  document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
+  document.getElementById('bk-prev').disabled = bkCurrent === 0;
+  document.getElementById('bk-next').disabled = bkCurrent === bkPages.length - 1;
+  const dots = document.getElementById('bk-dots');
+  dots.innerHTML = bkPages.map((_, i) => `<button class="bk-dot ${i === bkCurrent ? 'active' : ''}" onclick="bkGo(${i})"></button>`).join('');
+}
+
+function bkNext() {
+  if (bkCurrent >= bkPages.length - 1 || bkAnimating) return;
+  bkAnimating = true;
+
+  // Front = current right page (what you see before flipping)
+  bkFlipFront.innerHTML = bkPages[bkCurrent].right;
+  // Back = next left page (revealed as the page turns over)
+  bkFlipBack.innerHTML = bkPages[bkCurrent + 1].left;
+
+  // Show the new right page underneath
+  bkCurrent++;
+  document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
+
+  // Setup overlay for forward flip
+  bkOverlay.classList.remove('flipping-prev');
+  bkOverlay.classList.add('active');
+  bkFlipPage.classList.remove('turned');
+
+  // Trigger flip animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bkFlipPage.classList.add('turned');
+    });
+  });
+
+  // When done, update left page and hide overlay
+  bkFlipPage.addEventListener('transitionend', function handler() {
+    bkFlipPage.removeEventListener('transitionend', handler);
+    document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
+    bkOverlay.classList.remove('active');
+    bkFlipPage.classList.remove('turned');
+    bkAnimating = false;
+    bkRender();
+  });
+}
+
+function bkPrev() {
+  if (bkCurrent <= 0 || bkAnimating) return;
+  bkAnimating = true;
+
+  // Front = current left page
+  bkFlipFront.innerHTML = bkPages[bkCurrent].left;
+  // Back = previous right page
+  bkFlipBack.innerHTML = bkPages[bkCurrent - 1].right;
+
+  // Show the new left page underneath
+  bkCurrent--;
+  document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
+
+  // Setup overlay for backward flip
+  bkOverlay.classList.add('flipping-prev');
+  bkOverlay.classList.add('active');
+  bkFlipPage.classList.remove('turned');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bkFlipPage.classList.add('turned');
+    });
+  });
+
+  bkFlipPage.addEventListener('transitionend', function handler() {
+    bkFlipPage.removeEventListener('transitionend', handler);
+    document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
+    bkOverlay.classList.remove('active', 'flipping-prev');
+    bkFlipPage.classList.remove('turned');
+    bkAnimating = false;
+    bkRender();
+  });
+}
+
+function bkGo(i) {
+  if (bkAnimating) return;
+  bkCurrent = i;
+  bkRender();
+}
+bkRender();
+
+// ═══ SCROLL REVEAL ═══
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// ═══ ANIMATED COUNTER (LP) ═══
+function lpAnimateCounter(el, target, duration) {
+  duration = duration || 1200;
+  const start = performance.now();
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    el.textContent = target >= 1000 ? current.toLocaleString('fr-FR') : current;
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = target >= 1000 ? target.toLocaleString('fr-FR') : target;
+  }
+  requestAnimationFrame(tick);
+}
+
+// ═══ DONUT ANIMATION (on scroll) ═══
+let lpDonutAnimated = false;
+const lpDonutObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !lpDonutAnimated) {
+      lpDonutAnimated = true;
+      // Animate rings
+      const ring1 = document.getElementById('lp-ring-1');
+      const ring2 = document.getElementById('lp-ring-2');
+      if (ring1) ring1.setAttribute('stroke-dasharray', '170 157');
+      if (ring2) ring2.setAttribute('stroke-dasharray', '157 170');
+      // Animate center counter 0 → 4821
+      const countEl = document.getElementById('lp-donut-count');
+      if (countEl) lpAnimateCounter(countEl, 4821, 1400);
+    }
+  });
+}, { threshold: 0.3 });
+
+const lpDonutEl = document.getElementById('lp-donut');
+if (lpDonutEl) lpDonutObserver.observe(lpDonutEl);
+
+// ═══ H2H ANIMATION (on scroll) ═══
+let lpH2hAnimated = false;
+const lpH2hObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !lpH2hAnimated) {
+      lpH2hAnimated = true;
+      // Reveal rows with stagger
+      entry.target.querySelectorAll('.lp-h2h-row').forEach(row => {
+        row.style.opacity = '1';
+        row.style.transform = 'translateX(0)';
+      });
+      // Animate numeric counters
+      entry.target.querySelectorAll('.lp-counter').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        if (!isNaN(target)) lpAnimateCounter(el, target, 1200);
+      });
+    }
+  });
+}, { threshold: 0.2 });
+
+const lpH2hEl = document.getElementById('lp-h2h');
+if (lpH2hEl) lpH2hObserver.observe(lpH2hEl);
+
+// ═══ TIMELINE ANIMATION (on scroll) ═══
+const lpTlObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.lp-tl-item').forEach((item, i) => {
+        setTimeout(() => item.classList.add('visible'), i * 200);
+      });
+      lpTlObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+const lpTlEl = document.getElementById('lp-timeline');
+if (lpTlEl) lpTlObserver.observe(lpTlEl);
+
+// ═══ HEART SCROLL ═══
+const lpTlHeart = document.getElementById('lp-tl-heart');
+let lpHeartActive = false;
+let lpBeatFrame = 0;
+
+function lpHeartBeat() {
+  lpBeatFrame += 0.03;
+  const beat = 1 + 0.15 * Math.sin(lpBeatFrame * Math.PI);
+  const s = parseFloat(lpTlHeart.dataset.scale || 0);
+  lpTlHeart.style.transform = `translateX(-50%) scale(${s * beat})`;
+  requestAnimationFrame(lpHeartBeat);
+}
+requestAnimationFrame(lpHeartBeat);
+
+function lpUpdateHeart() {
+  if (!lpHeartActive || !lpTlEl) return;
+  const rect = lpTlEl.getBoundingClientRect();
+  const tlHeight = rect.height;
+  const viewH = window.innerHeight;
+  const viewCenter = viewH / 2;
+  const progress = (viewCenter - rect.top) / tlHeight;
+  const clamped = Math.max(0, Math.min(1, progress));
+
+  lpTlHeart.style.top = (clamped * tlHeight) + 'px';
+
+  let fadeIn = 1;
+  if (progress <= 0) fadeIn = 0;
+  else if (progress < 0.25) { const t = progress / 0.25; fadeIn = t * t; }
+
+  let fadeOut = 1;
+  const bottomToCenter = rect.bottom - viewCenter;
+  const fadeZone = tlHeight * 0.3;
+  if (bottomToCenter < 0) fadeOut = 0;
+  else if (bottomToCenter < fadeZone) { const t = bottomToCenter / fadeZone; fadeOut = t * t; }
+
+  const opacity = Math.min(fadeIn, fadeOut);
+  lpTlHeart.style.opacity = opacity;
+  lpTlHeart.dataset.scale = 0.4 + 0.6 * opacity;
+
+  const g1 = Math.round(6 * opacity);
+  const g2 = Math.round(12 * opacity);
+  lpTlHeart.style.filter = `drop-shadow(0 0 ${g1}px rgba(184,105,106,${0.5*opacity})) drop-shadow(0 0 ${g2}px rgba(184,105,106,${0.25*opacity}))`;
+}
+
+setTimeout(() => {
+  window.addEventListener('scroll', () => { lpHeartActive = true; lpUpdateHeart(); }, { passive: true });
+}, 300);
+
+// ═══ CAROUSELS ═══
+function initCarousel(trackId, dotsId, interval) {
+  const track = document.getElementById(trackId);
+  const dotsContainer = document.getElementById(dotsId);
+  if (!track || !dotsContainer) return;
+  
+  const slides = track.querySelectorAll('.lp-carousel-slide');
+  const total = slides.length;
+  let current = 0;
+  let timer;
+
+  function render() {
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'lp-carousel-dot' + (i === current ? ' active' : '');
+      dot.onclick = () => { current = i; render(); resetTimer(); };
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function next() {
+    current = (current + 1) % total;
+    render();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, interval);
+  }
+
+  render();
+  timer = setInterval(next, interval);
+}
+
+// No more carousels
+</script>
+
+</body>
+</html>
