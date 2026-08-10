@@ -36,6 +36,39 @@
     overflow-x: hidden;
   }
 
+  /* ═══ STORY DA v5 ═══ */
+  .gn {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #C27C5A, #D4956B, #5A8FA8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .st-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+    z-index: 1;
+  }
+  .st-shape {
+    position: absolute;
+    border-radius: 50%;
+    animation: stShapeFloat 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes stShapeFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes stPulseHeart {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
   /* ═══ NAV ═══ */
   nav {
     position: fixed;
@@ -1193,9 +1226,9 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Gratuit · En 30 secondes</div>
-    <h1>Offrez-lui le début<br>de votre <em>histoire</em></h1>
+    <h1>Revivez vos premiers <em>messages</em></h1>
     <p class="hero-sub">
-      Importez votre conversation WhatsApp et revivez ensemble vos premiers mots : qui est le plus bavard, qui envoie le plus de cœurs, votre premier "je t'aime"… Le cadeau le plus personnel qui existe.
+      Importez votre conversation WhatsApp et redécouvrez vos tout premiers mots, votre emoji préféré, qui est le plus bavard, votre premier je t'aime… À swiper ensemble.
     </p>
     <a href="creer.html" class="nav-cta" style="display:inline-block; padding:16px 40px; font-size:15px; text-decoration:none; box-shadow:0 4px 16px rgba(194,124,90,0.3);">Créer votre story →</a>
     <p class="hero-note" style="margin-top:16px;">100% gratuit · Aucun compte requis · Vos données restent privées</p>
@@ -1307,7 +1340,7 @@
         <div class="price" style="color:var(--ink);">Gratuit</div>
         <div class="price-sub">Story interactive</div>
         <ul class="pricing-features">
-          <li>8 écrans animés à swiper</li>
+          <li>16 slides animées à swiper</li>
           <li>Chacun son style, fun facts</li>
           <li>Premier « je t'aime »</li>
           <li>À envoyer à votre moitié</li>
@@ -1468,58 +1501,132 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ═══ STORY PREVIEW ═══
+// ═══ STORY PREVIEW — DA v5 ═══
+
+// Ring SVG helper (matching creer.html)
+function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*ci;return '<div style="position:relative;width:'+sz+'px;height:'+sz+'px;z-index:1;"><svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="'+th+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+th+'" stroke-dasharray="0 '+ci+'" stroke-linecap="round" transform="rotate(-90 '+sz/2+' '+sz/2+')" data-ring="'+da+' '+ci+'" style="transition:stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1);"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+inner+'</div></div>';}
+
+// Shapes helper
+function mkShapes(v){var cfgs=[[['60px','rgba(194,124,90,0.07)','top:8%;right:5%'],['90px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['75px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['45px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['75px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['60px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
+
+// Donut for slide 12
+var donutData=[{l:'Matin',p:18,c:'#F0B888',e:'\u2600\uFE0F'},{l:'Après-midi',p:22,c:'#E8956A',e:'\u{1F324}\uFE0F'},{l:'Soirée',p:42,c:'#7BBAD0',e:'\u{1F319}'},{l:'Nuit',p:18,c:'#A0D0E0',e:'\u{1F30C}'}];
+var donutSvg='<svg width="120" height="120" viewBox="0 0 180 180" style="z-index:1;margin-bottom:16px;">';var dCum=0;
+donutData.forEach(function(d){donutSvg+='<circle cx="90" cy="90" r="70" fill="none" stroke="'+d.c+'" stroke-width="18" stroke-dasharray="'+(d.p/100*439.8)+' 439.8" stroke-dashoffset="'+(-dCum/100*439.8)+'" transform="rotate(-90 90 90)"/>';dCum+=d.p;});
+donutSvg+='</svg>';
+
 const stSlides = [
-  {bg:'#FDF0EA',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:20px;font-weight:500;">Nos premiers mots</div><div style="font-family:var(--font-display);font-size:34px;color:#1A1A1A;text-align:center;line-height:1.15;">Marine<br><span style="font-size:16px;color:rgba(0,0,0,0.2);">&</span><br>Baptiste</div><div style="width:32px;height:1px;background:#C27C5A;margin:24px 0;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.6;max-width:220px;">2 mois de conversation<br>condensés en quelques instants</div>'},
-  {bg:'#FFF9F5',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Au total, vous avez échangé</div><div id="st-counter" style="font-family:var(--font-display);font-size:56px;font-weight:700;color:#1A1A1A;line-height:1;">0</div><div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-style:italic;margin-top:6px;">messages</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin-top:20px;">Soit 44 messages par jour \u{1F4AC}</div>'},
-  {bg:'#5A8FA8',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:24px;">Bavard(e) ?</div><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:24px;"><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;">58%</div><div id="st-bar-m" style="width:64px;height:0;background:linear-gradient(to top,rgba(255,255,255,0.9),rgba(255,255,255,0.3));border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.8);">Marine</div></div><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;">42%</div><div id="st-bar-a" style="width:64px;height:0;background:linear-gradient(to top,rgba(255,255,255,0.5),rgba(255,255,255,0.15));border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.8);">Baptiste</div></div></div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;font-style:italic;">Marine : 27 692 \u00B7 Baptiste : 20 140</div>'},
-  {bg:'#F4E4DA',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:8px;">Chacun son style</div><div style="display:flex;justify-content:space-between;width:100%;padding:0 2px;margin-bottom:10px;"><span style="font-size:11px;font-weight:600;color:#C27C5A;">Marine</span><span style="font-size:11px;font-weight:600;color:#5A8FA8;">Baptiste</span></div><div style="width:100%;display:flex;flex-direction:column;gap:8px;"><div><div style="font-size:8px;color:rgba(0,0,0,0.5);text-align:center;margin-bottom:3px;font-weight:500;">\u{1F451} Messages envoyés</div><div style="display:flex;height:20px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);"><div data-w="58" style="width:0%;background:#C27C5A;display:flex;align-items:center;padding-left:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">58%</span></div><div data-w="42" style="width:0%;background:#5A8FA888;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">42%</span></div></div></div><div><div style="font-size:8px;color:rgba(0,0,0,0.5);text-align:center;margin-bottom:3px;font-weight:500;">Emojis utilisés \u{1F451}</div><div style="display:flex;height:20px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);"><div data-w="37" style="width:0%;background:#C27C5A88;display:flex;align-items:center;padding-left:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">37%</span></div><div data-w="63" style="width:0%;background:#5A8FA8;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">63%</span></div></div></div><div><div style="font-size:8px;color:rgba(0,0,0,0.5);text-align:center;margin-bottom:3px;font-weight:500;">\u{1F451} Photos envoyées</div><div style="display:flex;height:20px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);"><div data-w="71" style="width:0%;background:#C27C5A;display:flex;align-items:center;padding-left:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">71%</span></div><div data-w="29" style="width:0%;background:#5A8FA888;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">29%</span></div></div></div><div><div style="font-size:8px;color:rgba(0,0,0,0.5);text-align:center;margin-bottom:3px;font-weight:500;">Vocaux envoyés \u{1F451}</div><div style="display:flex;height:20px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);"><div data-w="22" style="width:0%;background:#C27C5A88;display:flex;align-items:center;padding-left:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">22%</span></div><div data-w="78" style="width:0%;background:#5A8FA8;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">78%</span></div></div></div><div><div style="font-size:8px;color:rgba(0,0,0,0.5);text-align:center;margin-bottom:3px;font-weight:500;">\u{1F451} 1er msg du jour</div><div style="display:flex;height:20px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);"><div data-w="66" style="width:0%;background:#C27C5A;display:flex;align-items:center;padding-left:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">66%</span></div><div data-w="34" style="width:0%;background:#5A8FA888;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;"><span style="font-size:8px;font-weight:700;color:#fff;white-space:nowrap;">34%</span></div></div></div></div><div style="margin-top:12px;text-align:center;"><span style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-weight:700;">3</span><span style="font-size:11px;color:rgba(0,0,0,0.2);margin:0 6px;">\u2014</span><span style="font-family:var(--font-display);font-size:16px;color:#5A8FA8;font-weight:700;">2</span></div>'},
-  {bg:'#DEECF1',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:16px;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:12px;line-height:1.4;background:#F4E4DA;margin-right:auto;border-radius:14px 14px 14px 4px;box-shadow:0 1px 4px rgba(0,0,0,0.06);"><div style="font-size:8px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:7px;color:rgba(0,0,0,0.25);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:12px;line-height:1.4;background:#fff;margin-left:auto;border-radius:14px 14px 4px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);"><div style="font-size:8px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div style="font-size:7px;color:rgba(0,0,0,0.25);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:12px;line-height:1.4;background:#F4E4DA;margin-right:auto;border-radius:14px 14px 14px 4px;box-shadow:0 1px 4px rgba(0,0,0,0.06);"><div style="font-size:8px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:7px;color:rgba(0,0,0,0.25);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.3);text-align:center;margin-top:10px;font-style:italic;">+ 243 messages dans votre PDF</div>'},
-  {bg:'#FFF9F5',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Votre emoji préféré</div><div style="font-size:64px;margin-bottom:8px;">\u{1F602}</div><div id="st-emoji-demo" style="font-family:var(--font-display);font-size:36px;font-weight:700;color:#1A1A1A;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-top:4px;">fois utilisé</div><div style="display:flex;gap:12px;margin-top:20px;"><div style="text-align:center;"><span style="font-size:24px;">\u2764\uFE0F</span><div style="font-size:9px;color:rgba(0,0,0,0.3);margin-top:2px;">2 156</div></div><div style="text-align:center;"><span style="font-size:24px;">\u{1F62D}</span><div style="font-size:9px;color:rgba(0,0,0,0.3);margin-top:2px;">891</div></div><div style="text-align:center;"><span style="font-size:24px;">\u{1F970}</span><div style="font-size:9px;color:rgba(0,0,0,0.3);margin-top:2px;">743</div></div></div>'},
-  {bg:'#FDF0EA',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:24px;font-weight:500;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:10px;color:rgba(0,0,0,0.3);margin-bottom:12px;font-weight:500;">14 février 2022 \u00B7 23:42</div><div style="background:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:8px;"><div style="font-size:13px;color:#1A1A1A;line-height:1.5;">Bon je crois que je dois te dire un truc\u2026 je t\u2019aime. Voilà c\u2019est dit \u{1F648}</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:#C27C5A;">Marine</span> \u00B7 23:42</div></div><div style="background:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-left:30px;"><div style="font-size:13px;color:#1A1A1A;line-height:1.5;">\u2026 je t\u2019aime aussi \u2764\uFE0F</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:#5A8FA8;">Baptiste</span> \u00B7 23:43</div></div>'},
-  {bg:'#C27C5A',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">\u{1F989}</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">Votre heure préférée pour discuter : <strong>23h</strong></div><div style="font-size:11px;color:rgba(255,255,255,0.6);text-align:center;margin-top:12px;">38% de vos messages sont envoyés à cette heure</div>'},
-  {bg:'#DEECF1',html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Votre jour record</div><div style="font-size:40px;margin-bottom:12px;">\u{1F3C6}</div><div id="st-record-demo" style="font-family:var(--font-display);font-size:48px;font-weight:700;color:#1A1A1A;line-height:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:4px;">messages en une journée</div><div style="font-size:12px;color:rgba(0,0,0,0.3);margin-top:12px;">Le 14 février 2024</div><div style="display:flex;align-items:center;gap:6px;margin-top:16px;background:rgba(0,0,0,0.05);padding:8px 14px;border-radius:100px;"><span style="font-size:14px;">\u{1F525}</span><span style="font-size:11px;color:rgba(0,0,0,0.5);">47 jours sans interruption</span></div>'},
-  {bg:'#FDF0EA',html:'<div style="font-size:36px;margin-bottom:16px;">\u2728</div><div style="font-family:var(--font-display);font-size:24px;color:#1A1A1A;text-align:center;line-height:1.3;margin-bottom:8px;">Votre story<br>est prête</div><div style="font-size:12px;color:rgba(0,0,0,0.4);text-align:center;margin-bottom:24px;max-width:220px;line-height:1.6;">Screenshotez vos slides préférés et envoyez-les à votre moitié</div><div style="background:#C27C5A;color:#fff;border-radius:24px;padding:11px 28px;font-size:13px;font-weight:600;text-align:center;box-shadow:0 3px 12px rgba(194,124,90,0.3);width:100%;max-width:220px;">\u{1F4F8} Screenshotez & envoyez</div><div style="border:1.5px solid rgba(0,0,0,0.12);border-radius:24px;padding:9px 24px;font-size:12px;font-weight:500;text-align:center;margin-top:8px;width:100%;max-width:220px;color:#1A1A1A;">Obtenir le PDF \u2014 3,99\u20AC</div>'}
+  // 1. Intro
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:32px;text-align:center;line-height:1.15;z-index:1;">Marine<br/>&amp;<br/>Baptiste</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">60 jours de conversation</div>'},
+
+  // 2. Total
+  {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez échangé</div><div id="st-counter" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:20px;padding:8px 18px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 80 par jour</div>'},
+
+  // 3. Bavard — two rings
+  {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:16px;align-items:center;z-index:1;">'+mkRing(52,'rgba(255,255,255,0.85)',100,8,'<span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#fff;">52%</span><span style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">Marine</span>')+mkRing(48,'rgba(255,255,255,0.4)',85,7,'<span style="font-family:var(--font-display);font-size:19px;font-weight:700;color:rgba(255,255,255,0.8);">48%</span><span style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:2px;">Baptiste</span>')+'</div><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:16px;z-index:1;">2 510 vs 2 311 messages</div>'},
+
+  // 4. Double-texteur
+  {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:11px;color:rgba(0,0,0,0.4);margin-bottom:12px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affilée sans réponse ?</div><div style="width:100%;max-width:200px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:16px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:17px;color:#C27C5A;font-weight:600;">Marine \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:30px;">12</span><span style="font-size:11px;color:rgba(0,0,0,0.35);">d\u2019affilée</span></div></div>'},
+
+  // 5. Hearts — liquid fill
+  {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Cœurs envoyés</div><div style="position:relative;width:80px;height:72px;margin-bottom:12px;z-index:1;"><svg viewBox="0 0 100 90" width="80" height="72"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:42px;z-index:1;">0</div><div style="display:flex;gap:14px;margin-top:16px;z-index:1;"><div style="text-align:center;padding:6px 14px;background:rgba(0,0,0,0.03);border-radius:10px;"><div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:#C27C5A;">342</div><div style="font-size:9px;color:rgba(0,0,0,0.35);">Marine \u{1F451}</div></div><div style="text-align:center;padding:6px 14px;background:rgba(0,0,0,0.03);border-radius:10px;"><div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:#5A8FA8;">187</div><div style="font-size:9px;color:rgba(0,0,0,0.35);">Baptiste</div></div></div>'},
+
+  // 6. Laughs
+  {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:'<div style="position:absolute;inset:0;pointer-events:none;"><span style="position:absolute;font-size:24px;top:15%;left:10%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:18px;top:10%;left:75%;opacity:0.06;">\u{1F602}</span><span style="position:absolute;font-size:16px;top:50%;left:85%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:20px;top:70%;left:15%;opacity:0.05;">\u{1F602}</span></div><div class="st-label" style="color:#C27C5A;">Fous rires partagés</div><div id="st-l-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:6px;z-index:1;">éclats de rire</div><div style="display:flex;gap:14px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:6px 14px;background:rgba(0,0,0,0.03);border-radius:10px;"><div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:#C27C5A;">612</div><div style="font-size:9px;color:rgba(0,0,0,0.35);">Marine \u{1F451}</div></div><div style="text-align:center;padding:6px 14px;background:rgba(0,0,0,0.03);border-radius:10px;"><div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:#5A8FA8;">281</div><div style="font-size:9px;color:rgba(0,0,0,0.35);">Baptiste</div></div></div>'},
+
+  // 7. Questions — ring
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="st-label" style="color:#5A8FA8;">Le plus curieux ?</div>'+mkRing(69,'#5A8FA8',110,8,'<span id="st-q-count" class="gn" style="font-size:32px;">0</span>')+'<div style="font-family:var(--font-display);font-size:18px;color:#5A8FA8;font-weight:600;margin-top:12px;z-index:1;">Baptiste \u{1F451}</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">questions posées</div><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-top:10px;z-index:1;">Marine : 142 · Baptiste : 312</div>'},
+
+  // 8. Bonjour — ring
+  {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(68,'#C27C5A',130,10,'<span id="st-bj-count" class="gn" style="font-size:40px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-weight:600;margin-top:14px;z-index:1;">Marine</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
+
+  // 9. Premiers mots
+  {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+'<div class="st-label" style="color:#5A8FA8;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px;transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre PDF</div>'},
+
+  // 10. Emoji podium
+  {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis préférés</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:6px;z-index:1;margin-bottom:12px;"></div><div style="display:flex;gap:6px;font-size:9px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
+
+  // 11. Je t'aime
+  {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-bottom:12px;z-index:1;">15 fév. · 00:01</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:210px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 16px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:12px;color:#2A2320;line-height:1.55;">Bon je crois que je dois te dire un truc\u2026 je t\u2019aime \u{1F648}</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:#5A8FA8;font-weight:600;">Baptiste</span></div></div>'},
+
+  // 12. Donut — dark bg
+  {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.6);">Quand discutez-vous ?</div>'+donutSvg+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;z-index:1;">'+donutData.map(function(d){return '<div style="display:flex;align-items:center;gap:5px;"><div style="width:7px;height:7px;border-radius:50%;background:'+d.c+';"></div><span style="font-size:10px;color:rgba(255,255,255,0.8);">'+d.e+' '+d.l+' <strong style="color:#fff;font-size:11px;">'+d.p+'%</strong></span></div>';}).join('')+'</div>'},
+
+  // 13. Heure — clock
+  {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div><div style="position:relative;width:110px;height:110px;margin-bottom:16px;z-index:1;"><svg width="110" height="110" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="8" stroke-dasharray="62.8 377" stroke-dashoffset="-329.9" stroke-linecap="round" transform="rotate(-90 70 70)" style="filter:drop-shadow(0 0 6px rgba(255,255,255,0.3));"/><text x="70" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">0h</text><text x="95" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">21h</text></svg></div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;z-index:1;">Votre heure préférée</div><div style="font-family:var(--font-display);font-size:42px;font-weight:700;color:#fff;z-index:1;">23h</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:6px;z-index:1;">38% de vos messages</div>'},
+
+  // 14. Bonne nuit
+  {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos rituels du soir</div><div style="font-size:36px;margin-bottom:10px;z-index:1;">\u{1F319}</div><div id="st-bn-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:12px;color:rgba(0,0,0,0.4);margin-top:6px;z-index:1;">bonne nuit échangés</div><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-top:14px;text-align:center;line-height:1.6;max-width:200px;z-index:1;font-style:italic;">Chaque soir, un petit mot<br/>avant de dormir</div>'},
+
+  // 15. Record — bar chart
+  {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Votre jour record</div><div id="st-bars" style="display:flex;align-items:flex-end;gap:3px;height:100px;margin-bottom:12px;z-index:1;"></div><div id="st-record-count" class="gn" style="font-size:44px;z-index:1;">0</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">messages le 14 fév.</div><div style="margin-top:14px;padding:7px 14px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:5px;z-index:1;"><span style="font-size:13px;">\u{1F525}</span><span style="font-size:10px;color:rgba(0,0,0,0.4);">47 jours sans interruption</span></div>'},
+
+  // 16. CTA
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:10px;z-index:1;">Votre story<br/>est prête</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin:0 0 24px;max-width:200px;line-height:1.6;z-index:1;">Screenshotez vos slides préférés et envoyez-les à votre moitié</div><div style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:24px;padding:11px 28px;font-size:12px;font-weight:600;text-align:center;box-shadow:0 4px 16px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:210px;">\u{1F4F8} Screenshotez & envoyez</div><div style="background:rgba(0,0,0,0.03);color:#2A2320;border:1px solid rgba(0,0,0,0.06);border-radius:24px;padding:10px 24px;font-size:11px;font-weight:500;text-align:center;margin-top:8px;z-index:1;width:100%;max-width:210px;">Obtenir le PDF complet \u2192</div><div style="font-size:8px;color:rgba(0,0,0,0.15);margin-top:20px;letter-spacing:2px;text-transform:uppercase;z-index:1;">nospremiersmots.fr</div>'},
 ];
 
 let stCurrent = 0;
+
+function stAC(id,tgt,dur){var el=document.getElementById(id);if(!el)return;var v=0,st=Math.ceil(tgt/(dur/16));var t=setInterval(function(){v+=st;if(v>=tgt){v=tgt;clearInterval(t);}el.textContent=v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');},16);}
 
 function stRender() {
   const slide = stSlides[stCurrent];
   const el = document.getElementById('story-slide');
   el.style.background = slide.bg;
   el.innerHTML = slide.html;
+  // Dark slide detection
+  const dark = slide.bg.indexOf('#2A3A4A')>-1 || slide.bg.indexOf('#D4956B 50%')>-1;
   // Update watermark color
   const wm = document.querySelector('.story-watermark');
-  if (wm) wm.style.color = (slide.bg === '#1A1A1A' || slide.bg === '#C27C5A') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+  if (wm) wm.style.color = dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
   // Progress bars
   const prog = document.getElementById('story-progress');
   prog.innerHTML = stSlides.map((_,i) => {
-    const dark = slide.bg === '#1A1A1A' || slide.bg === '#C27C5A';
-    return `<div class="st-bar ${i<=stCurrent?'done':''}" style="background:${i<=stCurrent ? (dark?'rgba(255,255,255,0.8)':'rgba(0,0,0,0.3)') : (dark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.08)')}"></div>`;
+    return '<div class="st-bar" style="background:'+(i<=stCurrent ? (dark?'rgba(255,255,255,0.8)':'rgba(0,0,0,0.3)') : (dark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.08)'))+';"></div>';
   }).join('');
   // Dots
   const dots = document.getElementById('st-dots');
-  dots.innerHTML = stSlides.map((_, i) => `<button class="bk-dot ${i === stCurrent ? 'active' : ''}" onclick="stGo(${i})"></button>`).join('');
-  // Update nav
+  dots.innerHTML = stSlides.map((_, i) => '<button class="bk-dot '+(i===stCurrent?'active':'')+'" onclick="stGo('+i+')"></button>').join('');
   document.getElementById('st-prev').disabled = stCurrent === 0;
   document.getElementById('st-next').disabled = stCurrent === stSlides.length - 1;
-  // Animations
-  if (stCurrent === 1) stAnimateCounter();
-  if (stCurrent === 2) { setTimeout(()=>{ const bm=document.getElementById('st-bar-m'); const ba=document.getElementById('st-bar-a'); if(bm)bm.style.height='110px'; if(ba)ba.style.height='80px'; },50); }
-  if (stCurrent === 3) { setTimeout(()=>{ document.querySelectorAll('#st-h2h [data-w]').forEach((b,i)=>{ setTimeout(()=>{b.style.width=b.dataset.w+'%';},i*80); }); },100); }
-  if (stCurrent === 5) { const el=document.getElementById('st-emoji-demo'); if(el){let v=0;const id=setInterval(()=>{v+=48;if(v>=3842){v=3842;clearInterval(id);}el.textContent=v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');},16);} }
-  if (stCurrent === 8) { const el=document.getElementById('st-record-demo'); if(el){let v=0;const id=setInterval(()=>{v+=11;if(v>=847){v=847;clearInterval(id);}el.textContent=v;},16);} }
-  
-}
 
-function stAnimateCounter() {
-  const el = document.getElementById('st-counter');
-  if (!el) return;
-  let v = 0;
-  const target = 47832;
-  const step = Math.ceil(target / 80);
-  const id = setInterval(() => { v += step; if (v >= target) { v = target; clearInterval(id); } el.textContent = v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }, 16);
+  // ═══ DA v5 Animations ═══
+  // Counter (slide 2)
+  if(document.getElementById('st-counter')) stAC('st-counter',4821,1400);
+  // Rings
+  document.querySelectorAll('#story-slide [data-ring]').forEach(function(r){var d=r.dataset.ring.split(' ');setTimeout(function(){r.setAttribute('stroke-dasharray',d[0]+' '+d[1]);},100);});
+  // Heart fill (slide 5)
+  var hf=document.getElementById('st-heart-fill');if(hf)setTimeout(function(){hf.setAttribute('y','0');},100);
+  if(document.getElementById('st-h-count'))stAC('st-h-count',529,1000);
+  // Laughs (slide 6)
+  if(document.getElementById('st-l-count'))stAC('st-l-count',893,1000);
+  // Questions (slide 7)
+  if(document.getElementById('st-q-count'))stAC('st-q-count',312,800);
+  // Bonjour (slide 8)
+  var bjEl=document.getElementById('st-bj-count');if(bjEl){stAC('st-bj-count',68,1000);setTimeout(function(){bjEl.textContent=bjEl.textContent+'%';},1100);}
+  // Premiers mots cascade (slide 9)
+  document.querySelectorAll('#story-slide [data-delay]').forEach(function(el){var d=parseFloat(el.dataset.delay);setTimeout(function(){el.style.opacity='1';el.style.transform='translateY(0)';},d*1000);});
+  // Emoji podium (slide 10)
+  var podEl=document.getElementById('st-podium');
+  if(podEl){var te=[['\u{1F602}',3842],['\u2764\uFE0F',2156],['\u{1F970}',743]];var order=[1,0,2];var mx=te[0][1];var heights=te.map(function(e){return Math.round(e[1]/mx*130);});var delays=[0.15,0.3,0.45];
+    podEl.innerHTML=order.map(function(idx){var e=te[idx];var isF=idx===0;return '<div style="display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:all 0.6s ease '+delays[idx]+'s;" data-pod><div style="font-size:'+(isF?40:30)+'px;margin-bottom:6px;">'+e[0]+'</div><div style="width:'+(isF?56:44)+'px;height:0;background:'+(isF?'linear-gradient(to top,#C27C5A,#D4956B)':'linear-gradient(to top,rgba(0,0,0,0.06),rgba(0,0,0,0.03))')+';border-radius:10px 10px 0 0;transition:height 0.8s cubic-bezier(0.34,1.56,0.64,1) '+delays[idx]+'s;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;" data-podh="'+heights[idx]+'"><span style="font-family:var(--font-display);font-size:'+(isF?13:11)+'px;font-weight:700;color:'+(isF?'#fff':'rgba(0,0,0,0.5)')+';">'+e[1]+'</span></div></div>';}).join('');
+    setTimeout(function(){document.querySelectorAll('[data-pod]').forEach(function(p){p.style.opacity='1';p.style.transform='translateY(0)';});document.querySelectorAll('[data-podh]').forEach(function(b){b.style.height=b.dataset.podh+'px';});},100);
+  }
+  // Double-texteur bubbles (slide 4)
+  var dtBub=document.getElementById('st-dt-bubbles');
+  if(dtBub){var dtMsgs=["T'es où ?","Allooo","???","Ok boude pas \u{1F624}","Bon je vais dormir","... \u{1F622}"];
+    dtBub.innerHTML=dtMsgs.map(function(t,i){return '<div style="max-width:75%;padding:6px 10px;margin-bottom:3px;font-size:10px;line-height:1.4;background:rgba(194,124,90,'+(0.08+i*0.02)+');border-radius:10px 10px 4px 10px;margin-left:auto;opacity:0;transform:translateX(20px);transition:all 0.4s ease '+(0.15+i*0.12)+'s;">'+t+'</div>';}).join('');
+    setTimeout(function(){dtBub.querySelectorAll('div').forEach(function(d){d.style.opacity='1';d.style.transform='translateX(0)';});},100);
+  }
+  // Record bars (slide 15)
+  var barsEl=document.getElementById('st-bars');
+  if(barsEl){var vals=[120,200,340,847,250,180,90];var mx=Math.max.apply(null,vals);
+    barsEl.innerHTML=vals.map(function(v,i){return '<div style="width:'+(i===3?32:14)+'px;border-radius:5px;height:0;background:'+(i===3?'linear-gradient(to top,#C27C5A,#5A8FA8)':'rgba(0,0,0,0.05)')+';transition:height 1s cubic-bezier(0.23,1,0.32,1) '+(i*0.08)+'s;" data-barh="'+(v/mx*100)+'%"></div>';}).join('');
+    setTimeout(function(){barsEl.querySelectorAll('[data-barh]').forEach(function(b){b.style.height=b.dataset.barh;});},100);
+  }
+  if(document.getElementById('st-record-count'))stAC('st-record-count',847,1000);
+  // Bonne nuit (slide 14)
+  if(document.getElementById('st-bn-count'))stAC('st-bn-count',94,1000);
 }
 
 function stNext() { if (stCurrent < stSlides.length-1) { stCurrent++; stRender(); } }
@@ -1532,6 +1639,11 @@ document.getElementById('story-phone').addEventListener('click', function(e) {
   const x = e.clientX - rect.left;
   if (x > rect.width / 2) stNext(); else stPrev();
 });
+
+// Touch swipe
+var stTsx = null;
+document.getElementById('story-phone').addEventListener('touchstart', function(e){ stTsx=e.touches[0].clientX; });
+document.getElementById('story-phone').addEventListener('touchend', function(e){ if(stTsx===null)return; var d=stTsx-e.changedTouches[0].clientX; if(d>40)stNext();else if(d<-40)stPrev(); stTsx=null; });
 
 stRender();
 
