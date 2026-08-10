@@ -826,14 +826,37 @@ Exemple de format attendu :
     </div>
 
     <!-- PDF Upsell -->
-    <div style="text-align:center; padding:24px; margin:0 -24px; background:var(--cream); border-radius:16px;">
-      <div style="font-size:13px; color:var(--ink-muted); margin-bottom:6px;">Envie du livre complet ?</div>
-      <div style="font-family:var(--font-display); font-size:20px; margin-bottom:4px;">40 pages de souvenirs</div>
-      <div style="font-size:12px; color:var(--ink-muted); margin-bottom:16px;">Vos 250 premiers messages + toutes les statistiques détaillées</div>
-      <button class="btn-buy" id="btn-download" onclick="generatePDF()" style="font-size:15px; padding:14px 40px;">
-        Obtenir le PDF — 3,99 €
-      </button>
-      <div style="font-size:11px; color:var(--ink-muted); margin-top:8px;">PDF immédiat · Le prix d'une rose 🌹</div>
+    <div style="padding:28px 24px; margin:0 -24px; background:var(--cream); border-radius:16px;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="font-size:13px; color:var(--ink-muted); margin-bottom:6px;">Envie d'aller plus loin ?</div>
+        <div style="font-family:var(--font-display); font-size:22px;">Votre PDF de <span style="color:var(--rose);">40 pages</span></div>
+      </div>
+      <div style="max-width:320px; margin:0 auto 20px;">
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> Tout ce que la story contient +
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> 250 premiers messages en bulles
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> 10 catégories "chacun son style"
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> 20+ statistiques détaillées
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> Timeline complète mois par mois
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:8px 0; font-size:13px; color:var(--ink-soft);">
+          <span style="color:var(--rose); font-weight:600;">✓</span> Records, surnoms, nuits blanches…
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <button class="btn-buy" id="btn-download" onclick="generatePDF()" style="font-size:15px; padding:14px 40px;">
+          Obtenir le PDF — 3,99 €
+        </button>
+        <div style="font-size:11px; color:var(--ink-muted); margin-top:8px;">PDF immédiat · Le prix d'une rose 🌹</div>
+      </div>
     </div>
   </div>
 </div>
