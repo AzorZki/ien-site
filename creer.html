@@ -1550,7 +1550,7 @@ function generatePreview() {
   const jtaSender = jta ? dn(jta.sender) : null;
   const jtaColor = jta ? ((dn(jta.sender)===roseName)?'#C27C5A':'#5A8FA8') : '#C27C5A';
 
-  // ═══ Build slides — DA v5 — 16 slides ═══
+  // ═══ Build slides — DA v5 — 26 slides (8 free + teaser + 17 paid + CTA) ═══
   var firstMsgs = convMsgs.slice(0, 4);
 
   // Top emoji
@@ -1576,17 +1576,27 @@ function generatePreview() {
   // First messages HTML
   var fmHtml='<div class="st-label" style="color:#5A8FA8;">Vos tout premiers mots</div>';
   firstMsgs.forEach(function(m,i){var isR=(dn(m.sender)===roseName);var col=isR?'#C27C5A':'#5A8FA8';fmHtml+='<div data-delay="'+(0.2+i*0.15)+'" style="max-width:85%;padding:10px 14px;margin-bottom:5px;font-size:13px;line-height:1.45;background:rgba('+(isR?'194,124,90':'90,143,168')+',0.1);border-radius:'+(isR?'16px 16px 4px 16px':'16px 16px 16px 4px')+';margin-'+(isR?'left':'right')+':auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);opacity:0;transform:translateY(10px);transition:all 0.5s ease;z-index:1;"><div style="font-size:8px;font-weight:600;color:'+col+';margin-bottom:2px;">'+dn(m.sender)+'</div>'+m.text+'<div style="font-size:7px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">'+m.time+'</div></div>';});
-  fmHtml+='<div style="font-size:10px;color:rgba(0,0,0,0.25);margin-top:14px;font-style:italic;text-align:center;z-index:1;">+ '+(convMsgs.length-4)+' messages dans votre PDF</div>';
 
-  // Double-texteur
+  // Winners
   var dtWinner=stats.maxConsec1>stats.maxConsec2?n1:n2;
   var dtColor=stats.maxConsec1>stats.maxConsec2?c1:c2;
   var dtVal=Math.max(stats.maxConsec1||0,stats.maxConsec2||0);
-
-  // Bonjour winner
   var bjWinner=stats.opens1>stats.opens2?n1:n2;
   var bjPct=Math.round(Math.max(stats.opens1,stats.opens2)/Math.max(stats.totalDays,1)*100);
   var qWinner=stats.questions1>stats.questions2?n1:n2;
+  var clWinner=stats.closes1>stats.closes2?n1:n2;
+  var clPct=Math.round(Math.max(stats.closes1,stats.closes2)/Math.max(stats.totalDays,1)*100);
+  var earlyWinner=(stats.earliest1<stats.earliest2)?n1:n2;
+  var earlyTime=(stats.earliest1<stats.earliest2)?stats.earliest1:stats.earliest2;
+  var earlyColor=(earlyWinner===roseName)?'#C27C5A':'#5A8FA8';
+  var lateWinner=(stats.latest1>stats.latest2)?n1:n2;
+  var lateTime=(stats.latest1>stats.latest2)?stats.latest1:stats.latest2;
+  var lateColor=(lateWinner===roseName)?'#C27C5A':'#5A8FA8';
+  var fastWinner=(stats.fast1!==null&&stats.fast2!==null)?(stats.fast1<stats.fast2?n1:n2):(stats.fast1!==null?n1:n2);
+  var fastVal=Math.min(stats.fast1||999,stats.fast2||999);
+  var fastColor=(fastWinner===roseName)?'#C27C5A':'#5A8FA8';
+  var pavWinner=stats.avgWords1>stats.avgWords2?n1:n2;
+  var pavColor=(pavWinner===roseName)?'#C27C5A':'#5A8FA8';
 
   // Ring SVG helper
   function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*ci;return '<div style="position:relative;width:'+sz+'px;height:'+sz+'px;z-index:1;"><svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="'+th+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+th+'" stroke-dasharray="0 '+ci+'" stroke-linecap="round" transform="rotate(-90 '+sz/2+' '+sz/2+')" data-ring="'+da+' '+ci+'" style="transition:stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1);"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+inner+'</div></div>';}
@@ -1594,59 +1604,81 @@ function generatePreview() {
   // Shapes helper
   function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
-  window._stSlides=[
+  // ═══ FREE SLIDES (7) ═══
+  var freeSlides = [
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
-
     // 2. Total
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
-
     // 3. Bavard — two rings
     {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:20px;align-items:center;z-index:1;">'+mkRing(stats.pct1,'rgba(255,255,255,0.85)',120,10,'<span style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;">'+stats.pct1+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">'+n1+'</span>')+mkRing(stats.pct2,'rgba(255,255,255,0.4)',100,8,'<span style="font-family:var(--font-display);font-size:24px;font-weight:700;color:rgba(255,255,255,0.8);">'+stats.pct2+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">'+n2+'</span>')+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:20px;z-index:1;">'+stats.count1.toLocaleString("fr-FR")+' vs '+stats.count2.toLocaleString("fr-FR")+' messages</div>'},
-
-    // 4. Double-texteur
-    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affil\u00E9e sans r\u00E9ponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">messages d\u2019affil\u00E9e</span></div></div>'},
-
-    // 5. Hearts — liquid fill
-    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">C\u0153urs envoy\u00E9s</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.hearts1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.hearts1>stats.hearts2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.hearts2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.hearts2>stats.hearts1?' \u{1F451}':'')+'</div></div></div>'},
-
-    // 6. Laughs
-    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:'<div style="position:absolute;inset:0;pointer-events:none;"><span style="position:absolute;font-size:28px;top:15%;left:10%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:22px;top:10%;left:75%;opacity:0.06;">\u{1F602}</span><span style="position:absolute;font-size:18px;top:50%;left:85%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:24px;top:70%;left:15%;opacity:0.05;">\u{1F602}</span><span style="position:absolute;font-size:20px;top:80%;left:60%;opacity:0.06;">\u{1F602}</span></div><div class="st-label" style="color:#C27C5A;">Fous rires partag\u00E9s</div><div id="st-l-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:8px;z-index:1;">\u00E9clats de rire</div><div style="display:flex;gap:16px;margin-top:24px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.laughs1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.laughs1>stats.laughs2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.laughs2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.laughs2>stats.laughs1?' \u{1F451}':'')+'</div></div></div>'},
-
-    // 7. Questions — ring
-    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="st-label" style="color:#5A8FA8;">Le plus curieux ?</div>'+mkRing(Math.round(Math.max(stats.questions1,stats.questions2)/(stats.questions1+stats.questions2||1)*100),'#5A8FA8',140,10,'<span id="st-q-count" class="gn" style="font-size:40px;">0</span>')+'<div style="font-family:var(--font-display);font-size:22px;color:#5A8FA8;font-weight:600;margin-top:14px;z-index:1;">'+qWinner+' \u{1F451}</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">questions pos\u00E9es</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:12px;z-index:1;">'+n1+' : '+stats.questions1+' \u00B7 '+n2+' : '+stats.questions2+'</div>'},
-
-    // 8. Bonjour — ring
-    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(bjPct,'#C27C5A',160,12,'<span id="st-bj-count" class="gn" style="font-size:48px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:20px;color:#C27C5A;font-weight:600;margin-top:16px;z-index:1;">'+bjWinner+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
-
-    // 9. Premiers mots
+    // 4. Premiers mots
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+fmHtml},
-
-    // 10. Emoji podium
-    {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis pr\u00E9f\u00E9r\u00E9s</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:8px;z-index:1;margin-bottom:16px;"></div><div style="display:flex;gap:8px;font-size:10px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
-
-    // 11. Je t'aime
+    // 5. Je t'aime
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
-
-    // 12. Donut — dark bg
-    {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.6);">Quand discutez-vous ?</div>'+donutSvg+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;z-index:1;">'+donutData.map(function(d){return '<div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:'+d.c+';"></div><span style="font-size:11px;color:rgba(255,255,255,0.8);">'+d.e+' '+d.l+' <strong style="color:#fff;font-size:13px;">'+d.p+'%</strong></span></div>';}).join('')+'</div>'},
-
-    // 13. Heure — clock
-    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div><div style="position:relative;width:140px;height:140px;margin-bottom:20px;z-index:1;"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="8" stroke-dasharray="62.8 377" stroke-dashoffset="-329.9" stroke-linecap="round" transform="rotate(-90 70 70)" style="filter:drop-shadow(0 0 6px rgba(255,255,255,0.3));"/><text x="70" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">0h</text><text x="120" y="43" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Inter,sans-serif">3h</text><text x="120" y="97" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Inter,sans-serif">6h</text><text x="70" y="120" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Inter,sans-serif">9h</text><text x="20" y="97" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Inter,sans-serif">12h</text><text x="20" y="43" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Inter,sans-serif">18h</text><text x="95" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">21h</text></svg></div><div style="font-family:var(--font-display);font-size:20px;color:#fff;text-align:center;z-index:1;">Votre heure pr\u00E9f\u00E9r\u00E9e</div><div style="font-family:var(--font-display);font-size:48px;font-weight:700;color:#fff;z-index:1;">'+peakLabel+'</div><div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:8px;z-index:1;">'+peakSub+'</div>'},
-
-    // 14. Bonne nuit
-    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos rituels du soir</div><div style="font-size:40px;margin-bottom:12px;z-index:1;">\u{1F319}</div><div id="st-bn-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:6px;z-index:1;">bonne nuit \u00E9chang\u00E9s</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:16px;text-align:center;line-height:1.6;max-width:220px;z-index:1;font-style:italic;">Chaque soir, un petit mot<br/>avant de dormir</div>'},
-
-    // 15. Record — bar chart
+    // 6. Emoji podium
+    {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis pr\u00E9f\u00E9r\u00E9s</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:8px;z-index:1;margin-bottom:16px;"></div><div style="display:flex;gap:8px;font-size:10px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
+    // 7. Record
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Votre jour record</div><div id="st-bars" style="display:flex;align-items:flex-end;gap:4px;height:120px;margin-bottom:16px;z-index:1;"></div><div id="st-record-count" class="gn" style="font-size:52px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">messages le '+stats.recordDay+'</div>'+(stats.streak>3?'<div style="margin-top:16px;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:6px;z-index:1;"><span style="font-size:14px;">\u{1F525}</span><span style="font-size:11px;color:rgba(0,0,0,0.4);">'+stats.streak+' jours sans interruption</span></div>':'')},
-
-    // 16. CTA
-    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:28px;text-align:center;line-height:1.3;margin-bottom:12px;z-index:1;">Votre story<br/>est pr\u00EAte</div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;margin:0 0 28px;max-width:220px;line-height:1.6;z-index:1;">Screenshotez vos slides pr\u00E9f\u00E9r\u00E9s et envoyez-les \u00E0 votre moiti\u00E9</div><div onclick="shareStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">\u{1F4F8} Screenshotez & envoyez</div><div onclick="document.getElementById(\'btn-download\').scrollIntoView({behavior:\'smooth\'})" style="background:rgba(0,0,0,0.03);color:#2A2320;border:1px solid rgba(0,0,0,0.06);border-radius:28px;padding:12px 28px;font-size:13px;font-weight:500;text-align:center;cursor:pointer;margin-top:10px;z-index:1;width:100%;max-width:240px;">Obtenir le PDF complet \u2192</div><div style="font-size:9px;color:rgba(0,0,0,0.15);margin-top:24px;letter-spacing:2px;text-transform:uppercase;z-index:1;">nospremiersmots.fr</div>'},
   ];
 
+  // ═══ TEASER SLIDE ═══
+  var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:22px;text-align:center;line-height:1.3;margin-bottom:6px;z-index:1;">Il reste encore<br/>18 slides</div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;margin-bottom:20px;max-width:230px;line-height:1.6;z-index:1;">C\u0153urs, fous rires, nuits blanches, couche-tard, temps de r\u00E9ponse, mot pr\u00E9f\u00E9r\u00E9\u2026</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:20px;z-index:1;max-width:220px;"><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">❤️</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">C\u0153urs</div></div><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">😂</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">Fous rires</div></div><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">⚡</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">R\u00E9ponse</div></div><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">🦉</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">Couche-tard</div></div><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">📚</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">Biblioth.</div></div><div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px 4px;text-align:center;"><div style="font-size:20px;">💌</div><div style="font-size:8px;color:rgba(0,0,0,0.3);margin-top:2px;">Lien surprise</div></div></div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">+ envoyez un lien interactif \u00E0 votre moiti\u00E9</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 3,99\u20AC</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:10px;z-index:1;">Le prix d\u2019une rose \u{1F339}</div>'};
+
+  // ═══ PAID SLIDES (17) ═══
+  var paidSlides = [
+    // 8. Double-texteur
+    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affil\u00E9e sans r\u00E9ponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">messages d\u2019affil\u00E9e</span></div></div>'},
+    // 9. Hearts — liquid fill
+    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">C\u0153urs envoy\u00E9s</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.hearts1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.hearts1>stats.hearts2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.hearts2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.hearts2>stats.hearts1?' \u{1F451}':'')+'</div></div></div>'},
+    // 10. Laughs
+    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:'<div style="position:absolute;inset:0;pointer-events:none;"><span style="position:absolute;font-size:28px;top:15%;left:10%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:22px;top:10%;left:75%;opacity:0.06;">\u{1F602}</span><span style="position:absolute;font-size:18px;top:50%;left:85%;opacity:0.07;">\u{1F602}</span><span style="position:absolute;font-size:24px;top:70%;left:15%;opacity:0.05;">\u{1F602}</span></div><div class="st-label" style="color:#C27C5A;">Fous rires partag\u00E9s</div><div id="st-l-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:8px;z-index:1;">\u00E9clats de rire</div><div style="display:flex;gap:16px;margin-top:24px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.laughs1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.laughs1>stats.laughs2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.laughs2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.laughs2>stats.laughs1?' \u{1F451}':'')+'</div></div></div>'},
+    // 11. Questions — ring
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="st-label" style="color:#5A8FA8;">Le plus curieux ?</div>'+mkRing(Math.round(Math.max(stats.questions1,stats.questions2)/(stats.questions1+stats.questions2||1)*100),'#5A8FA8',140,10,'<span id="st-q-count" class="gn" style="font-size:40px;">0</span>')+'<div style="font-family:var(--font-display);font-size:22px;color:#5A8FA8;font-weight:600;margin-top:14px;z-index:1;">'+qWinner+' \u{1F451}</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">questions pos\u00E9es</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:12px;z-index:1;">'+n1+' : '+stats.questions1+' \u00B7 '+n2+' : '+stats.questions2+'</div>'},
+    // 12. Bonjour — ring
+    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(bjPct,'#C27C5A',160,12,'<span id="st-bj-count" class="gn" style="font-size:48px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:20px;color:#C27C5A;font-weight:600;margin-top:16px;z-index:1;">'+bjWinner+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
+    // 13. Donut — dark bg
+    {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.6);">Quand discutez-vous ?</div>'+donutSvg+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;z-index:1;">'+donutData.map(function(d){return '<div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:'+d.c+';"></div><span style="font-size:11px;color:rgba(255,255,255,0.8);">'+d.e+' '+d.l+' <strong style="color:#fff;font-size:13px;">'+d.p+'%</strong></span></div>';}).join('')+'</div>'},
+    // 14. Heure pr\u00E9f\u00E9r\u00E9e — clock
+    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Votre heure pr\u00E9f\u00E9r\u00E9e</div><div style="font-family:var(--font-display);font-size:48px;font-weight:700;color:#fff;z-index:1;margin-bottom:8px;">'+peakLabel+'</div><div style="font-size:13px;color:rgba(255,255,255,0.5);z-index:1;">'+peakSub+'</div>'},
+    // 15. Bonne nuit
+    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos rituels du soir</div><div style="font-size:40px;margin-bottom:12px;z-index:1;">\u{1F319}</div><div id="st-bn-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:6px;z-index:1;">bonne nuit \u00E9chang\u00E9s</div>'},
+    // ═══ 8 NEW SLIDES ═══
+    // 16. L\u00E8ve-t\u00F4t
+    {bg:'linear-gradient(145deg,#FFF8F0,#F5E6D8)',html:mkShapes(0)+'<div class="st-label" style="color:#D4956B;">Le l\u00E8ve-t\u00F4t</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u2600\uFE0F</div><div style="font-family:var(--font-display);font-size:20px;color:'+earlyColor+';font-weight:600;z-index:1;">'+earlyWinner+' \u{1F451}</div><div class="gn" style="font-size:42px;margin-top:8px;z-index:1;">'+earlyTime+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:8px;z-index:1;">premier message le plus t\u00F4t</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:10px;z-index:1;">'+n1+' : '+stats.earliest1+' \u00B7 '+n2+' : '+stats.earliest2+'</div>'},
+    // 17. Couche-tard
+    {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le couche-tard</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F989}</div><div style="font-family:var(--font-display);font-size:20px;color:#fff;font-weight:600;z-index:1;">'+lateWinner+' \u{1F451}</div><div style="font-family:var(--font-display);font-size:42px;font-weight:700;color:#fff;margin-top:8px;z-index:1;">'+lateTime+'</div><div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;z-index:1;">dernier message le plus tard</div><div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:10px;z-index:1;">'+n1+' : '+stats.latest1+' \u00B7 '+n2+' : '+stats.latest2+'</div>'},
+    // 18. Temps de r\u00E9ponse
+    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+'<div class="st-label" style="color:#5A8FA8;">Temps de r\u00E9ponse</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u26A1</div><div style="font-family:var(--font-display);font-size:20px;color:'+fastColor+';font-weight:600;z-index:1;">'+fastWinner+' \u{1F451}</div><div class="gn" style="font-size:42px;margin-top:8px;z-index:1;">'+(fastVal<999?fastVal+' min':'?')+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:8px;z-index:1;">r\u00E9ponse la plus rapide</div>'+(stats.avgResp?'<div style="margin-top:14px;padding:8px 18px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">Moyenne : '+stats.avgResp+' min</div>':'')},
+    // 19. Pav\u00E9s
+    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Vos pav\u00E9s</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F4DD}</div><div style="display:flex;gap:20px;z-index:1;margin-bottom:16px;"><div style="text-align:center;padding:10px 18px;background:rgba(0,0,0,0.03);border-radius:14px;"><div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:'+c1+';">'+stats.avgWords1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);margin-top:2px;">'+n1+(stats.avgWords1>stats.avgWords2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:10px 18px;background:rgba(0,0,0,0.03);border-radius:14px;"><div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:'+c2+';">'+stats.avgWords2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);margin-top:2px;">'+n2+(stats.avgWords2>stats.avgWords1?' \u{1F451}':'')+'</div></div></div><div style="font-size:12px;color:rgba(0,0,0,0.35);z-index:1;">mots en moyenne par message</div>'},
+    // 20. Mot pr\u00E9f\u00E9r\u00E9
+    {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:mkShapes(0)+'<div class="st-label" style="color:#5A8FA8;">Votre mot pr\u00E9f\u00E9r\u00E9</div><div class="gn" style="font-size:36px;z-index:1;">\u201C'+(stats.topWord?stats.topWord.word:'...')+'\u201D</div><div style="margin-top:16px;z-index:1;"><span id="st-tw-count" class="gn" style="font-size:48px;">0</span></div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:6px;z-index:1;">fois utilis\u00E9</div>'},
+    // 21. Nuits blanches
+    {bg:'linear-gradient(145deg,#2A3040,#1A2535)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Nuits blanches</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F303}</div><div id="st-nm-count" style="font-family:var(--font-display);font-size:52px;font-weight:700;color:#fff;z-index:1;">0</div><div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:6px;z-index:1;">messages apr\u00E8s minuit</div><div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:16px;font-style:italic;text-align:center;max-width:220px;line-height:1.6;z-index:1;">Les meilleures conversations<br/>commencent \u00E0 2h du mat</div>'},
+    // 22. Qui ferme la conv
+    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonne nuit en dernier ?</div>'+mkRing(clPct,'#5A8FA8',140,10,'<span id="st-cl-count" class="gn" style="font-size:40px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:20px;color:#5A8FA8;font-weight:600;margin-top:14px;z-index:1;">'+clWinner+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ferme la conversation</div>'},
+    // 23. Biblioth\u00E8que
+    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(2)+'<div class="st-label" style="color:#C27C5A;">Votre biblioth\u00E8que</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F4DA}</div><div id="st-tw-total" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:6px;z-index:1;">mots \u00E9chang\u00E9s</div><div style="margin-top:18px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:6px;z-index:1;"><span style="font-size:14px;">\u{1F4D6}</span><span style="font-size:11px;color:rgba(0,0,0,0.4);">L\u2019\u00E9quivalent de '+stats.bookPages+' pages de livre</span></div>'},
+  ];
+
+  // ═══ CTA SLIDE (link generation) ═══
+  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F48C}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:12px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">\u{1F517} G\u00E9n\u00E9rer le lien surprise</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
+
+  // ═══ STORE DATA FOR LINK GENERATION ═══
   window._topEmojiCount=topEmoji[1];
   window._topEmojis=topEmojis;
+  window._donutPcts=[donutData[0].p,donutData[1].p,donutData[2].p,donutData[3].p];
+  window._firstMsgsData=firstMsgs.slice(0,4).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,100),t:m.time};});
+  window._jtData=jta?{d:jta.date,t:jta.time,x:jta.text.substring(0,120),s:dn(jta.sender)}:null;
+  window._fnData=stats.firstNickname?{w:stats.firstNickname.word,s:dn(stats.firstNickname.sender)}:null;
 
+  // ═══ SET INITIAL SLIDES (FREE + TEASER) ═══
+  window._freeSlides = freeSlides;
+  window._paidSlides = paidSlides;
+  window._ctaSlide = ctaSlide;
+  window._paidUnlocked = false;
+  window._stSlides = freeSlides.concat([teaserSlide]);
   window._stCurrent = 0;
   stRenderR();
 
@@ -1715,10 +1747,95 @@ function stRenderR() {
   if(document.getElementById('st-record-count'))stAC('st-record-count',s.recordCount||0,1000);
   if(!s.firstJeTaime&&s.hearts>0&&document.getElementById('st-hearts-count'))stAC('st-hearts-count',s.hearts,1000);
   if(document.getElementById('st-bn-count'))stAC('st-bn-count',s.bonneNuit||0,1000);
+  if(document.getElementById('st-tw-count'))stAC('st-tw-count',s.topWord?s.topWord.count:0,800);
+  if(document.getElementById('st-nm-count')){var v=0,tgt=s.nightMsgs||0,st2=Math.ceil(tgt/50);var ti=setInterval(function(){v+=st2;if(v>=tgt){v=tgt;clearInterval(ti);}document.getElementById('st-nm-count').textContent=v;},16);}
+  if(document.getElementById('st-tw-total'))stAC('st-tw-total',s.totalWords||0,1200);
+  var clEl=document.getElementById('st-cl-count');if(clEl){stAC('st-cl-count',Math.round(Math.max(s.closes1,s.closes2)/Math.max(s.totalDays,1)*100),1000);setTimeout(function(){clEl.textContent=clEl.textContent+'%';},1100);}
 }
 function stNextR(){if(window._stCurrent<window._stSlides.length-1){window._stCurrent++;stRenderR();}}
 function stPrevR(){if(window._stCurrent>0){window._stCurrent--;stRenderR();}}
 function stGoR(j){window._stCurrent=j;stRenderR();}
+
+// ═══ UNLOCK STORY ═══
+function unlockStory() {
+  // TODO: integrate Stripe payment here
+  // For now, unlock directly for testing
+  window._paidUnlocked = true;
+  window._stSlides = window._freeSlides.concat(window._paidSlides).concat([window._ctaSlide]);
+  window._stCurrent = 7; // jump to first paid slide
+  stRenderR();
+  // Hide the PDF upsell section, show link section instead
+  var pdfSection = document.querySelector('#results [style*="background:var(--cream)"]');
+  if (pdfSection) pdfSection.style.display = 'none';
+}
+
+// ═══ GENERATE SHARE LINK ═══
+function generateShareLink() {
+  var msg = '';
+  var msgInput = document.getElementById('st-msg-input');
+  if (msgInput) msg = msgInput.value.trim();
+
+  var s = window._lastStats;
+  var data = {
+    n1: userName1, n2: userName2, ri: roseIdx, sn: userName1, msg: msg,
+    t: s.total, d: s.totalDays, p1: s.pct1, p2: s.pct2,
+    c1: s.count1, c2: s.count2,
+    h: s.hearts, h1: s.hearts1, h2: s.hearts2,
+    l1: s.laughs1, l2: s.laughs2,
+    q1: s.questions1, q2: s.questions2,
+    o1: s.opens1, o2: s.opens2,
+    cl1: s.closes1, cl2: s.closes2,
+    mc1: s.maxConsec1, mc2: s.maxConsec2,
+    bn: s.bonneNuit, ph: s.peakHour, pp: s.peakHourPct,
+    rd: s.recordDay, rc: s.recordCount, sk: s.streak,
+    e1: s.earliest1, e2: s.earliest2,
+    lt1: s.latest1, lt2: s.latest2,
+    f1: s.fast1, f2: s.fast2, ar: s.avgResp,
+    aw1: s.avgWords1, aw2: s.avgWords2,
+    tw: s.totalWords, bp: s.bookPages, nm: s.nightMsgs,
+    wp: s.topWord, td: window._donutPcts,
+    te: window._topEmojis, jt: window._jtData, fn: window._fnData,
+    fm: window._firstMsgsData
+  };
+
+  var json = JSON.stringify(data);
+  var encoded = btoa(unescape(encodeURIComponent(json)));
+  var url = window.location.origin + window.location.pathname.replace('creer.html','story.html') + '#' + encoded;
+
+  // Show result
+  var resultEl = document.getElementById('st-link-result');
+  if (resultEl) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="background:rgba(90,186,122,0.1);border:1px solid rgba(90,186,122,0.2);border-radius:14px;padding:14px;text-align:center;">' +
+      '<div style="font-size:13px;color:#3A8F5A;font-weight:600;margin-bottom:8px;">\u2705 Lien g\u00E9n\u00E9r\u00E9 !</div>' +
+      '<div onclick="copyLink()" id="st-copy-btn" style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--ink-soft);cursor:pointer;word-break:break-all;line-height:1.4;margin-bottom:8px;">' + url.substring(0,60) + '\u2026<br/><strong style="color:var(--rose);">Tap pour copier</strong></div>' +
+      '<div onclick="copyMessage()" style="background:var(--rose);color:white;border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;cursor:pointer;margin-top:4px;">\u{1F4CB} Copier le message + lien</div>' +
+      '</div>';
+    window._shareUrl = url;
+  }
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window._shareUrl).then(function() {
+    document.getElementById('st-copy-btn').innerHTML = '<strong style="color:#3A8F5A;">\u2705 Lien copi\u00E9 !</strong>';
+  });
+}
+
+function copyMessage() {
+  var text = "J\u2019ai quelque chose pour toi \u{1F48C}\nOuvre ce lien et swipe \u{1F449}\n\n" + window._shareUrl;
+  navigator.clipboard.writeText(text).then(function() {
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;';
+    overlay.innerHTML = '<div style="background:white;border-radius:20px;padding:32px 24px;max-width:320px;text-align:center;">' +
+      '<div style="font-size:36px;margin-bottom:12px;">\u{1F48C}</div>' +
+      '<div style="font-family:var(--font-display);font-size:18px;margin-bottom:8px;">Message copi\u00E9 !</div>' +
+      '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;">Collez-le dans WhatsApp, iMessage ou o\u00F9 vous voulez pour envoyer la surprise \u00E0 votre moiti\u00E9.</div>' +
+      '<button onclick="this.closest(\'div[style]\').remove()" style="background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 32px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);">Compris !</button>' +
+      '</div>';
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+    document.body.appendChild(overlay);
+  });
+}
 
 // ═══ SHARE ═══
 function shareStory() {
