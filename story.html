@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Une surprise pour toi 💕 — Nos premiers mots</title>
+<meta name="description" content="Quelqu'un t'a préparé une story spéciale. Ouvre pour la découvrir.">
+<meta property="og:title" content="Quelqu'un t'a préparé une surprise 💕">
+<meta property="og:description" content="Ouvre ce lien et swipe pour découvrir votre story de couple.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1A18;
+    --ink-soft: #4A4640;
+    --ink-muted: #8A857D;
+    --rose: #C27C5A;
+    --rose-light: #F0D5C8;
+    --rose-bg: #FDF0EA;
+    --cream: #FAF7F3;
+    --warm-white: #FDFCFA;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: var(--font-body); color: var(--ink); background: #111; -webkit-font-smoothing: antialiased; }
+
+  /* ═══ DA v5 ═══ */
+  .gn {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #C27C5A, #D4956B, #5A8FA8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .st-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+    z-index: 1;
+  }
+  .st-shape {
+    position: absolute;
+    border-radius: 50%;
+    animation: stShapeFloat 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes stShapeFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ═══ SPLASH ═══ */
+  #splash {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #FFF8F0, #FFF0E2);
+    text-align: center;
+    padding: 40px 32px;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  #splash.hidden {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+  .splash-hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .splash-heart {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    animation: floatHeart 4s ease-in infinite;
+  }
+  @keyframes floatHeart {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    15% { opacity: 0.15; }
+    100% { transform: translateY(-100vh) rotate(20deg) scale(1); opacity: 0; }
+  }
+  .splash-envelope {
+    font-size: 56px;
+    margin-bottom: 32px;
+    animation: envelopePulse 2s ease-in-out infinite;
+  }
+  @keyframes envelopePulse {
+    0%,100% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.08) rotate(-3deg); }
+    75% { transform: scale(1.05) rotate(2deg); }
+  }
+  .splash-recipient {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .splash-from {
+    font-size: 16px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 280px;
+    margin-bottom: 40px;
+  }
+  .splash-from strong {
+    color: var(--rose);
+    font-weight: 500;
+  }
+  .splash-btn {
+    background: linear-gradient(135deg, #D4956B, #C27C5A);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 16px 48px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(194,124,90,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .splash-btn:hover { transform: scale(1.04); box-shadow: 0 6px 32px rgba(194,124,90,0.45); }
+  .splash-watermark {
+    position: absolute;
+    bottom: 24px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.12);
+  }
+
+  /* ═══ VIEWER ═══ */
+  #viewer {
+    display: none;
+    width: 100%;
+    height: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  #viewer.active { display: block; }
+  @media (min-width: 500px) {
+    body { display: flex; align-items: center; justify-content: center; }
+    #viewer {
+      height: 92vh;
+      max-height: 820px;
+      border-radius: 28px;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+    }
+  }
+  #progress {
+    display: flex;
+    gap: 3px;
+    padding: 12px 14px 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+  }
+  #progress .bar {
+    flex: 1;
+    height: 2.5px;
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  #slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    transition: background 0.5s ease;
+    font-family: var(--font-body);
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+  }
+  #watermark {
+    position: absolute;
+    bottom: 14px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.12);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* ═══ ERROR ═══ */
+  #error {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(145deg, #FFF8F0, #FFF0E2);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 32px;
+  }
+  #error.show { display: flex; }
+  .error-emoji { font-size: 48px; margin-bottom: 16px; }
+  .error-title { font-family: var(--font-display); font-size: 22px; margin-bottom: 8px; }
+  .error-text { font-size: 14px; color: var(--ink-soft); margin-bottom: 32px; line-height: 1.6; max-width: 300px; }
+  .error-btn {
+    display: inline-block;
+    background: var(--rose);
+    color: white;
+    border-radius: 100px;
+    padding: 14px 36px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--font-body);
+  }
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-hearts" id="splash-hearts"></div>
+  <div class="splash-envelope">💌</div>
+  <div class="splash-recipient" id="splash-name">...</div>
+  <div class="splash-from" id="splash-from">...</div>
+  <button class="splash-btn" onclick="startStory()">Découvrir →</button>
+  <div class="splash-watermark">nospremiersmots.fr</div>
+</div>
+
+<!-- STORY VIEWER -->
+<div id="viewer">
+  <div id="progress"></div>
+  <div id="slide"></div>
+  <div id="watermark">nospremiersmots.fr</div>
+</div>
+
+<!-- ERROR (no hash / bad data) -->
+<div id="error">
+  <div class="error-emoji">💕</div>
+  <div class="error-title">Créez votre story</div>
+  <div class="error-text">Cette page est réservée aux stories partagées. Importez votre conversation WhatsApp pour créer la vôtre !</div>
+  <a href="https://azorzki.github.io/ien-site/creer.html" class="error-btn">Créer ma story →</a>
+</div>
+
+<script>
+// ═══ DECODE ═══
+let D = null;
+try {
+  const hash = window.location.hash.substring(1);
+  if (!hash) throw 'no hash';
+  D = JSON.parse(decodeURIComponent(escape(atob(hash))));
+  if (!D.n1 || !D.n2 || !D.t) throw 'bad data';
+} catch(e) {
+  document.getElementById('error').classList.add('show');
+  document.getElementById('splash').style.display = 'none';
+}
+
+if (D) {
+  // Names & colors
+  const n1 = D.n1, n2 = D.n2;
+  const roseName = D.ri === 1 ? n1 : n2;
+  const c1 = (n1 === roseName) ? '#C27C5A' : '#5A8FA8';
+  const c2 = (n1 === roseName) ? '#5A8FA8' : '#C27C5A';
+  const sender = D.sn || n1;
+  const recipient = (sender === n1) ? n2 : n1;
+
+  // ═══ SPLASH ═══
+  document.getElementById('splash-name').textContent = recipient + ',';
+  document.getElementById('splash-from').innerHTML = '<strong>' + sender + '</strong> t\'a préparé quelque chose de spécial.';
+
+  // Floating hearts
+  const heartsEl = document.getElementById('splash-hearts');
+  for (let i = 0; i < 12; i++) {
+    const h = document.createElement('span');
+    h.className = 'splash-heart';
+    h.textContent = ['💕','💗','❤️','💖'][i % 4];
+    h.style.left = (Math.random() * 90 + 5) + '%';
+    h.style.bottom = '-20px';
+    h.style.animationDelay = (Math.random() * 4) + 's';
+    h.style.animationDuration = (3 + Math.random() * 3) + 's';
+    h.style.fontSize = (14 + Math.random() * 14) + 'px';
+    heartsEl.appendChild(h);
+  }
+
+  // ═══ HELPERS ═══
+  function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*ci;return '<div style="position:relative;width:'+sz+'px;height:'+sz+'px;z-index:1;"><svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="'+th+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+th+'" stroke-dasharray="0 '+ci+'" stroke-linecap="round" transform="rotate(-90 '+sz/2+' '+sz/2+')" data-ring="'+da+' '+ci+'" style="transition:stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1);"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+inner+'</div></div>';}
+
+  function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
+
+  // ═══ BUILD SLIDES ═══
+  const s = D; // alias
+  const ppd = Math.round(s.t / Math.max(s.d, 1));
+
+  // Winners
+  const dtWinner = s.mc1 > s.mc2 ? n1 : n2;
+  const dtColor = s.mc1 > s.mc2 ? c1 : c2;
+  const dtVal = Math.max(s.mc1 || 0, s.mc2 || 0);
+  const bjWinner = s.o1 > s.o2 ? n1 : n2;
+  const bjPct = Math.round(Math.max(s.o1, s.o2) / Math.max(s.d, 1) * 100);
+  const qWinner = s.q1 > s.q2 ? n1 : n2;
+  const qMax = Math.max(s.q1, s.q2);
+  const qTotal = (s.q1 || 0) + (s.q2 || 0);
+
+  // Donut
+  const td = s.td || [25, 25, 30, 20];
+  const donutData = [
+    {l:'Matin',p:td[0],c:'#F0B888',e:'☀️'},
+    {l:'Après-midi',p:td[1],c:'#E8956A',e:'🌤️'},
+    {l:'Soirée',p:td[2],c:'#7BBAD0',e:'🌙'},
+    {l:'Nuit',p:td[3],c:'#A0D0E0',e:'🌌'}
+  ];
+  var donutSvg = '<svg width="150" height="150" viewBox="0 0 180 180" style="z-index:1;margin-bottom:20px;">';
+  var dCum = 0;
+  donutData.forEach(function(d){ donutSvg += '<circle cx="90" cy="90" r="70" fill="none" stroke="'+d.c+'" stroke-width="18" stroke-dasharray="'+(d.p/100*439.8)+' 439.8" stroke-dashoffset="'+(-dCum/100*439.8)+'" transform="rotate(-90 90 90)"/>'; dCum += d.p; });
+  donutSvg += '</svg>';
+
+  // Je t'aime / fallback
+  const jt = s.jt;
+  var lovHtml;
+  if (jt) {
+    const jtColor = c1; // simplified
+    lovHtml = '<div class="st-label" style="color:#C27C5A;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-bottom:14px;z-index:1;">' + jt.d + ' · ' + jt.t + '</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:18px 18px 18px 4px;padding:14px 18px;max-width:240px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 16px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:14px;color:#2A2320;line-height:1.55;">' + jt.x.substring(0,120) + '</div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:' + jtColor + ';font-weight:600;">' + jt.s + '</span></div></div>';
+  } else if (s.fn) {
+    lovHtml = '<div class="st-label" style="color:#C27C5A;">Le premier surnom</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">💕</div><div style="font-family:var(--font-display);font-size:22px;color:#2A2320;text-align:center;z-index:1;">\u201C' + s.fn.w + '\u201D</div><div style="font-size:12px;color:rgba(0,0,0,0.4);margin-top:8px;z-index:1;">par ' + s.fn.s + '</div>';
+  } else {
+    lovHtml = '<div class="st-label" style="color:#C27C5A;">Vos cœurs</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">❤️</div><div id="st-hearts-fb" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:4px;z-index:1;">cœurs échangés</div>';
+  }
+
+  // First messages
+  var fmHtml = '<div class="st-label" style="color:#5A8FA8;">Vos tout premiers mots</div>';
+  if (s.fm && s.fm.length) {
+    s.fm.forEach(function(m, i) {
+      var isR = (m.s === roseName);
+      var col = isR ? '#C27C5A' : '#5A8FA8';
+      fmHtml += '<div data-delay="' + (0.2+i*0.15) + '" style="max-width:85%;padding:10px 14px;margin-bottom:5px;font-size:13px;line-height:1.45;background:rgba(' + (isR?'194,124,90':'90,143,168') + ',0.1);border-radius:' + (isR?'16px 16px 4px 16px':'16px 16px 16px 4px') + ';margin-' + (isR?'left':'right') + ':auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);opacity:0;transform:translateY(10px);transition:all 0.5s ease;z-index:1;"><div style="font-size:8px;font-weight:600;color:' + col + ';margin-bottom:2px;">' + m.s + '</div>' + m.x + '<div style="font-size:7px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">' + m.t + '</div></div>';
+    });
+  }
+
+  // Top emojis
+  const te = s.te || [['❤️',1]];
+
+  // Peak hour
+  const peakLabel = (s.ph || 20) + 'h';
+  const peakSub = (s.pp || 0) + '% de vos messages';
+
+  // ═══ SLIDES ARRAY ═══
+  const slides = [
+    // 1. Intro
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+n1+'<br/>&amp;<br/>'+n2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+s.d+' jours de conversation</div>'},
+
+    // 2. Total
+    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez échangé</div><div id="st-counter" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">≈ '+ppd+' par jour</div>'},
+
+    // 3. Bavard — two rings
+    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:20px;align-items:center;z-index:1;">'+mkRing(s.p1,'rgba(255,255,255,0.85)',120,10,'<span style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;">'+s.p1+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">'+n1+'</span>')+mkRing(s.p2,'rgba(255,255,255,0.4)',100,8,'<span style="font-family:var(--font-display);font-size:24px;font-weight:700;color:rgba(255,255,255,0.8);">'+s.p2+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">'+n2+'</span>')+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:20px;z-index:1;">'+(s.c1||0).toLocaleString('fr-FR')+' vs '+(s.c2||0).toLocaleString('fr-FR')+' messages</div>'},
+
+    // 4. Double-texteur
+    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affilée sans réponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' 👑</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">d\u2019affilée</span></div></div>'},
+
+    // 5. Hearts — liquid fill
+    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Cœurs envoyés</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+(s.h1||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(s.h1>s.h2?' 👑':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+(s.h2||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(s.h2>s.h1?' 👑':'')+'</div></div></div>'},
+
+    // 6. Laughs
+    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:'<div style="position:absolute;inset:0;pointer-events:none;"><span style="position:absolute;font-size:28px;top:15%;left:10%;opacity:0.07;">😂</span><span style="position:absolute;font-size:22px;top:10%;left:75%;opacity:0.06;">😂</span><span style="position:absolute;font-size:18px;top:50%;left:85%;opacity:0.07;">😂</span><span style="position:absolute;font-size:24px;top:70%;left:15%;opacity:0.05;">😂</span></div><div class="st-label" style="color:#C27C5A;">Fous rires partagés</div><div id="st-l-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:8px;z-index:1;">éclats de rire</div><div style="display:flex;gap:16px;margin-top:24px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+(s.l1||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(s.l1>s.l2?' 👑':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+(s.l2||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(s.l2>s.l1?' 👑':'')+'</div></div></div>'},
+
+    // 7. Questions — ring
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="st-label" style="color:#5A8FA8;">Le plus curieux ?</div>'+mkRing(Math.round(qMax/(qTotal||1)*100),'#5A8FA8',140,10,'<span id="st-q-count" class="gn" style="font-size:40px;">0</span>')+'<div style="font-family:var(--font-display);font-size:22px;color:#5A8FA8;font-weight:600;margin-top:14px;z-index:1;">'+qWinner+' 👑</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">questions posées</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:12px;z-index:1;">'+n1+' : '+(s.q1||0)+' · '+n2+' : '+(s.q2||0)+'</div>'},
+
+    // 8. Bonjour — ring
+    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(bjPct,'#C27C5A',160,12,'<span id="st-bj-count" class="gn" style="font-size:48px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:20px;color:#C27C5A;font-weight:600;margin-top:16px;z-index:1;">'+bjWinner+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
+
+    // 9. Premiers mots
+    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+fmHtml},
+
+    // 10. Emoji podium
+    {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis préférés</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:8px;z-index:1;margin-bottom:16px;"></div><div style="display:flex;gap:8px;font-size:10px;color:rgba(0,0,0,0.3);z-index:1;">🥈 2e <span style="font-weight:700;color:#C27C5A;">🥇 1er</span> 🥉 3e</div>'},
+
+    // 11. Je t'aime
+    {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
+
+    // 12. Donut — dark
+    {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.6);">Quand discutez-vous ?</div>'+donutSvg+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;z-index:1;">'+donutData.map(function(d){return '<div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:'+d.c+';"></div><span style="font-size:11px;color:rgba(255,255,255,0.8);">'+d.e+' '+d.l+' <strong style="color:#fff;font-size:13px;">'+d.p+'%</strong></span></div>';}).join('')+'</div>'},
+
+    // 13. Heure — clock
+    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div><div style="position:relative;width:140px;height:140px;margin-bottom:20px;z-index:1;"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="8" stroke-dasharray="62.8 377" stroke-dashoffset="-329.9" stroke-linecap="round" transform="rotate(-90 70 70)" style="filter:drop-shadow(0 0 6px rgba(255,255,255,0.3));"/></svg></div><div style="font-family:var(--font-display);font-size:20px;color:#fff;text-align:center;z-index:1;">Votre heure préférée</div><div style="font-family:var(--font-display);font-size:48px;font-weight:700;color:#fff;z-index:1;">'+peakLabel+'</div><div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:8px;z-index:1;">'+peakSub+'</div>'},
+
+    // 14. Bonne nuit
+    {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos rituels du soir</div><div style="font-size:40px;margin-bottom:12px;z-index:1;">🌙</div><div id="st-bn-count" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:6px;z-index:1;">bonne nuit échangés</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-top:16px;text-align:center;line-height:1.6;max-width:220px;z-index:1;font-style:italic;">Chaque soir, un petit mot<br/>avant de dormir</div>'},
+
+    // 15. Record — bar chart
+    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Votre jour record</div><div id="st-bars" style="display:flex;align-items:flex-end;gap:4px;height:120px;margin-bottom:16px;z-index:1;"></div><div id="st-record-count" class="gn" style="font-size:52px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">messages le '+(s.rd||'?')+'</div>'+(s.sk>3?'<div style="margin-top:16px;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:6px;z-index:1;"><span style="font-size:14px;">🔥</span><span style="font-size:11px;color:rgba(0,0,0,0.4);">'+s.sk+' jours sans interruption</span></div>':'')},
+
+    // 16. Message perso + CTA
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+(s.msg ? '<div class="st-label" style="color:#C27C5A;">Un message de '+sender+'</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:20px;padding:20px 24px;max-width:260px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 20px rgba(0,0,0,0.04);z-index:1;margin-bottom:24px;"><div style="font-family:var(--font-display);font-size:15px;font-style:italic;color:#2A2320;line-height:1.65;text-align:center;">'+s.msg+'</div></div>' : '<div class="gn" style="font-size:28px;text-align:center;line-height:1.3;margin-bottom:20px;z-index:1;">Votre story<br/>est prête 💕</div>')+'<a href="https://azorzki.github.io/ien-site/creer.html" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;text-decoration:none;display:block;max-width:240px;">Créer votre propre story →</a><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-top:12px;z-index:1;">Gratuit · 30 secondes</div><div style="font-size:9px;color:rgba(0,0,0,0.15);margin-top:20px;letter-spacing:2px;text-transform:uppercase;z-index:1;">nospremiersmots.fr</div>'},
+  ];
+
+  // Store for animations
+  window._slides = slides;
+  window._te = te;
+  window._D = D;
+
+  // ═══ RENDER ═══
+  let current = 0;
+
+  function stAC(id,tgt,dur){var el=document.getElementById(id);if(!el)return;var v=0,st=Math.ceil(tgt/(dur/16));var t=setInterval(function(){v+=st;if(v>=tgt){v=tgt;clearInterval(t);}el.textContent=v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');},16);}
+
+  function render() {
+    const slide = slides[current];
+    const el = document.getElementById('slide');
+    el.style.background = slide.bg;
+    el.innerHTML = slide.html;
+
+    const dark = slide.bg.indexOf('#2A3A4A') > -1 || slide.bg.indexOf('#D4956B 50%') > -1;
+    document.getElementById('watermark').style.color = dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+
+    // Progress bars
+    document.getElementById('progress').innerHTML = slides.map(function(_, i) {
+      return '<div class="bar" style="background:' + (i <= current ? (dark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.3)') : (dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)')) + ';"></div>';
+    }).join('');
+
+    // ═══ ANIMATIONS ═══
+    if (document.getElementById('st-counter')) stAC('st-counter', s.t, 1400);
+    // Rings
+    document.querySelectorAll('#slide [data-ring]').forEach(function(r) {
+      var d = r.dataset.ring.split(' ');
+      setTimeout(function() { r.setAttribute('stroke-dasharray', d[0] + ' ' + d[1]); }, 100);
+    });
+    // Heart fill
+    var hf = document.getElementById('st-heart-fill');
+    if (hf) setTimeout(function() { hf.setAttribute('y', '0'); }, 100);
+    if (document.getElementById('st-h-count')) stAC('st-h-count', s.h || 0, 1000);
+    if (document.getElementById('st-l-count')) stAC('st-l-count', (s.l1||0) + (s.l2||0), 1000);
+    if (document.getElementById('st-q-count')) stAC('st-q-count', qMax, 800);
+    var bjEl = document.getElementById('st-bj-count');
+    if (bjEl) { stAC('st-bj-count', bjPct, 1000); setTimeout(function() { bjEl.textContent = bjEl.textContent + '%'; }, 1100); }
+    // Cascade
+    document.querySelectorAll('#slide [data-delay]').forEach(function(el) {
+      var d = parseFloat(el.dataset.delay);
+      setTimeout(function() { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, d * 1000);
+    });
+    // Podium
+    var podEl = document.getElementById('st-podium');
+    if (podEl && te.length) {
+      var order = [1, 0, 2];
+      var mx = te[0] ? te[0][1] : 1;
+      var heights = te.map(function(e) { return Math.round(e[1] / mx * 160); });
+      var delays = [0.15, 0.3, 0.45];
+      podEl.innerHTML = order.map(function(idx) {
+        var e = te[idx]; if (!e) return '';
+        var isF = idx === 0;
+        return '<div style="display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:all 0.6s ease ' + delays[idx] + 's;" data-pod><div style="font-size:' + (isF ? 48 : 36) + 'px;margin-bottom:8px;">' + e[0] + '</div><div style="width:' + (isF ? 72 : 56) + 'px;height:0;background:' + (isF ? 'linear-gradient(to top,#C27C5A,#D4956B)' : 'linear-gradient(to top,rgba(0,0,0,0.06),rgba(0,0,0,0.03))') + ';border-radius:12px 12px 0 0;transition:height 0.8s cubic-bezier(0.34,1.56,0.64,1) ' + delays[idx] + 's;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;" data-podh="' + heights[idx] + '"><span style="font-family:var(--font-display);font-size:' + (isF ? 16 : 13) + 'px;font-weight:700;color:' + (isF ? '#fff' : 'rgba(0,0,0,0.5)') + ';">' + e[1] + '</span></div></div>';
+      }).join('');
+      setTimeout(function() {
+        document.querySelectorAll('[data-pod]').forEach(function(p) { p.style.opacity = '1'; p.style.transform = 'translateY(0)'; });
+        document.querySelectorAll('[data-podh]').forEach(function(b) { b.style.height = b.dataset.podh + 'px'; });
+      }, 100);
+    }
+    // Double-texteur bubbles
+    var dtBub = document.getElementById('st-dt-bubbles');
+    if (dtBub) {
+      var dtMsgs = ["T'es où ?", "Allooo", "???", "Ok boude pas 😤", "Bon je vais dormir", "... 😢"];
+      dtBub.innerHTML = dtMsgs.map(function(t, i) { return '<div style="max-width:75%;padding:7px 12px;margin-bottom:3px;font-size:12px;line-height:1.4;background:rgba(194,124,90,' + (0.08 + i * 0.02) + ');border-radius:12px 12px 4px 12px;margin-left:auto;opacity:0;transform:translateX(20px);transition:all 0.4s ease ' + (0.15 + i * 0.12) + 's;">' + t + '</div>'; }).join('');
+      setTimeout(function() { dtBub.querySelectorAll('div').forEach(function(d) { d.style.opacity = '1'; d.style.transform = 'translateX(0)'; }); }, 100);
+    }
+    // Record bars
+    var barsEl = document.getElementById('st-bars');
+    if (barsEl) {
+      var rc = s.rc || 100;
+      var vals = [Math.round(rc*0.14), Math.round(rc*0.24), Math.round(rc*0.4), rc, Math.round(rc*0.3), Math.round(rc*0.21), Math.round(rc*0.11)];
+      var mx2 = Math.max.apply(null, vals);
+      barsEl.innerHTML = vals.map(function(v, i) { return '<div style="width:' + (i === 3 ? 40 : 16) + 'px;border-radius:6px;height:0;background:' + (i === 3 ? 'linear-gradient(to top,#C27C5A,#5A8FA8)' : 'rgba(0,0,0,0.05)') + ';transition:height 1s cubic-bezier(0.23,1,0.32,1) ' + (i * 0.08) + 's;" data-barh="' + (v / mx2 * 100) + '%"></div>'; }).join('');
+      setTimeout(function() { barsEl.querySelectorAll('[data-barh]').forEach(function(b) { b.style.height = b.dataset.barh; }); }, 100);
+    }
+    if (document.getElementById('st-record-count')) stAC('st-record-count', s.rc || 0, 1000);
+    if (document.getElementById('st-bn-count')) stAC('st-bn-count', s.bn || 0, 1000);
+    if (document.getElementById('st-hearts-fb')) stAC('st-hearts-fb', s.h || 0, 1000);
+  }
+
+  // ═══ NAVIGATION ═══
+  function next() { if (current < slides.length - 1) { current++; render(); } }
+  function prev() { if (current > 0) { current--; render(); } }
+
+  document.getElementById('slide').addEventListener('click', function(e) {
+    var rect = this.getBoundingClientRect();
+    if (e.clientX - rect.left > rect.width / 2) next(); else prev();
+  });
+
+  var tsx = null;
+  document.getElementById('slide').addEventListener('touchstart', function(e) { tsx = e.touches[0].clientX; });
+  document.getElementById('slide').addEventListener('touchend', function(e) {
+    if (tsx === null) return;
+    var d = tsx - e.changedTouches[0].clientX;
+    if (d > 40) next(); else if (d < -40) prev();
+    tsx = null;
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // ═══ START ═══
+  window.startStory = function() {
+    document.getElementById('splash').classList.add('hidden');
+    setTimeout(function() {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('viewer').classList.add('active');
+      render();
+    }, 600);
+  };
+}
+</script>
+</body>
+</html>
