@@ -735,59 +735,47 @@
   <!-- STEP 1: Upload -->
   <div class="upload-section" id="step-upload" style="display:none;">
     <div style="text-align: center; margin-bottom: 16px; padding: 10px 16px; background: var(--rose-bg); border-radius: 100px; display: inline-block; font-size: 13px; color: var(--rose); font-weight: 500;" id="names-badge"></div>
-    <div class="upload-tabs">
-      <button class="upload-tab active" onclick="switchTab('paste')">Coller le texte</button>
-      <button class="upload-tab" onclick="switchTab('file')">Fichier WhatsApp</button>
+
+    <textarea id="paste-input" style="display:none;"></textarea>
+
+    <div class="file-drop" id="file-drop" onclick="document.getElementById('file-input').click()">
+      <span class="file-drop-icon">💬</span>
+      <div class="file-drop-text">Importez votre conversation WhatsApp</div>
+      <div class="file-drop-sub">Glissez votre fichier .txt ou .zip ici, ou cliquez pour parcourir</div>
+      <input type="file" id="file-input" accept=".txt,.zip">
+    </div>
+    <div id="zip-warning" style="display:none; margin-top:12px; padding:12px 16px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:10px; font-size:13px; color:#8A6D2B;">
+      ⚠️ Fichier .zip détecté ! Décompressez-le d'abord (clic droit → Extraire), puis importez le fichier <strong>.txt</strong> qu'il contient.
     </div>
 
-    <div class="tab-content active" id="tab-paste">
-      <textarea class="paste-area" id="paste-input" placeholder="Collez votre conversation ici...
-
-Exemple de format attendu :
-14/01/2024, 19:32 - Léa: Salut 😊
-14/01/2024, 19:35 - Hugo: Heyy !"></textarea>
-    </div>
-
-    <div class="tab-content" id="tab-file">
-      <div class="file-drop" id="file-drop" onclick="document.getElementById('file-input').click()">
-        <span class="file-drop-icon">📄</span>
-        <div class="file-drop-text">Glissez votre fichier .txt ici</div>
-        <div class="file-drop-sub">ou cliquez pour parcourir</div>
-        <input type="file" id="file-input" accept=".txt,.zip">
-      </div>
-      <div id="zip-warning" style="display:none; margin-top:12px; padding:12px 16px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:10px; font-size:13px; color:#8A6D2B;">
-        ⚠️ Fichier .zip détecté ! Décompressez-le d'abord (clic droit → Extraire), puis importez le fichier <strong>.txt</strong> qu'il contient.
-      </div>
-
-      <!-- Tuto WhatsApp -->
-      <details style="margin-top:16px; font-size:13px; color:var(--ink-soft);">
-        <summary style="cursor:pointer; font-weight:500; color:var(--rose); padding:8px 0;">Comment exporter ma conversation WhatsApp ?</summary>
-        <div style="padding:12px 16px; background:var(--cream); border-radius:10px; margin-top:8px; line-height:1.7;">
-          <div style="padding:8px 12px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:8px; margin-bottom:12px; font-size:12px; color:#8A6D2B;">
-            ⚠️ <strong>Important :</strong> choisissez toujours "Sans médias" lors de l'export. Les photos et vidéos ne sont pas nécessaires.
-          </div>
-          <div style="margin-bottom:10px;">
-            <strong>Sur Android :</strong>
-            <div style="color:var(--ink-muted); margin-top:4px;">
-              1. Ouvrez la conversation<br>
-              2. Appuyez sur ⋮ (les 3 points) → Plus → Exporter la discussion<br>
-              3. Choisissez <strong>"Sans médias"</strong><br>
-              4. Importez le fichier ici ✨
-            </div>
-          </div>
-          <div>
-            <strong>Sur iPhone :</strong>
-            <div style="color:var(--ink-muted); margin-top:4px;">
-              1. Ouvrez la conversation<br>
-              2. Appuyez sur le nom du contact en haut<br>
-              3. Scrollez → "Exporter la discussion"<br>
-              4. Choisissez <strong>"Sans médias"</strong><br>
-              5. Importez le fichier ici ✨
-            </div>
+    <!-- Tuto WhatsApp -->
+    <details style="margin-top:16px; font-size:13px; color:var(--ink-soft);">
+      <summary style="cursor:pointer; font-weight:500; color:var(--rose); padding:8px 0;">Comment exporter ma conversation WhatsApp ?</summary>
+      <div style="padding:12px 16px; background:var(--cream); border-radius:10px; margin-top:8px; line-height:1.7;">
+        <div style="padding:8px 12px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:8px; margin-bottom:12px; font-size:12px; color:#8A6D2B;">
+          ⚠️ <strong>Important :</strong> choisissez toujours "Sans médias" lors de l'export. Les photos et vidéos ne sont pas nécessaires.
+        </div>
+        <div style="margin-bottom:10px;">
+          <strong>Sur Android :</strong>
+          <div style="color:var(--ink-muted); margin-top:4px;">
+            1. Ouvrez la conversation<br>
+            2. Appuyez sur ⋮ (les 3 points) → Plus → Exporter la discussion<br>
+            3. Choisissez <strong>"Sans médias"</strong><br>
+            4. Importez le fichier ici ✨
           </div>
         </div>
-      </details>
-    </div>
+        <div>
+          <strong>Sur iPhone :</strong>
+          <div style="color:var(--ink-muted); margin-top:4px;">
+            1. Ouvrez la conversation<br>
+            2. Appuyez sur le nom du contact en haut<br>
+            3. Scrollez → "Exporter la discussion"<br>
+            4. Choisissez <strong>"Sans médias"</strong><br>
+            5. Importez le fichier ici ✨
+          </div>
+        </div>
+      </div>
+    </details>
 
     <div class="period-selector" id="period-selector">
       <div class="period-label">Quelle période souhaitez-vous revivre ?</div>
@@ -896,18 +884,25 @@ Exemple de format attendu :
           <div style="font-family:var(--font-display); font-size:22px; margin-bottom:6px;">Story complète <span style="color:var(--rose);">débloquée</span> !</div>
           <div style="font-size:14px; color:var(--ink-soft); line-height:1.6;">Swipez les 19 nouvelles slides dans la story ci-dessus.<br/>À la dernière slide, écrivez un message perso et générez votre lien surprise 💌</div>
         </div>
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
-          <div style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:white; border-radius:100px; font-size:12px; color:var(--ink-soft);">
-            <span>👆</span> Swipez la story
+        <div style="display:flex; align-items:flex-start; justify-content:center; gap:4px; margin-top:20px; flex-wrap:nowrap; max-width:400px; margin-left:auto; margin-right:auto;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; text-align:center;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--rose); color:white; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center;">1</div>
+            <div style="font-size:10px; color:var(--ink-muted); line-height:1.3;">Swipez<br/>la story</div>
           </div>
-          <div style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:white; border-radius:100px; font-size:12px; color:var(--ink-soft);">
-            <span>✍️</span> Écrivez un message
+          <div style="flex:0 0 20px; height:1px; background:var(--rose-light); margin-top:14px;"></div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; text-align:center;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--rose); color:white; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center;">2</div>
+            <div style="font-size:10px; color:var(--ink-muted); line-height:1.3;">Écrivez<br/>un message</div>
           </div>
-          <div style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:white; border-radius:100px; font-size:12px; color:var(--ink-soft);">
-            <span>🔗</span> Générez le lien
+          <div style="flex:0 0 20px; height:1px; background:var(--rose-light); margin-top:14px;"></div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; text-align:center;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--rose); color:white; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center;">3</div>
+            <div style="font-size:10px; color:var(--ink-muted); line-height:1.3;">Générez<br/>le lien</div>
           </div>
-          <div style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:white; border-radius:100px; font-size:12px; color:var(--ink-soft);">
-            <span>💌</span> Envoyez la surprise
+          <div style="flex:0 0 20px; height:1px; background:var(--rose-light); margin-top:14px;"></div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; text-align:center;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--rose); color:white; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center;">4</div>
+            <div style="font-size:10px; color:var(--ink-muted); line-height:1.3;">Envoyez<br/>la surprise</div>
           </div>
         </div>
       </div>
@@ -1504,7 +1499,7 @@ function confirmMapping(choice) {
   }
   nameMapConfirmed = true;
   document.getElementById('name-mapping').style.display = 'none';
-  showFullscreenLoader('Création de votre lovestory\u2026 💕');
+  showFullscreenLoader('Création de votre Love Story\u2026 💕');
   setTimeout(() => {
     const lt = document.querySelector('.loader-text');
     if (lt) lt.textContent = 'On y est presque !';
@@ -1597,7 +1592,23 @@ function generatePreview() {
   var fmHtml='<div class="st-label" style="color:#5A8FA8;">Votre tout premier message</div>';
   fmHtml+='<div style="font-size:10px;color:rgba(0,0,0,0.25);margin-bottom:12px;z-index:1;">'+firstMsg.date+' \u00B7 '+firstMsg.time+'</div>';
   fmHtml+='<div style="max-width:90%;padding:12px 16px;font-size:13px;line-height:1.5;background:rgba('+(fmIsR?'194,124,90':'90,143,168')+',0.1);border-radius:18px 18px '+(fmIsR?'4px 18px':'18px 4px')+';margin-'+(fmIsR?'left':'right')+':auto;box-shadow:0 2px 8px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:8px;font-weight:600;color:'+fmCol+';margin-bottom:4px;">'+dn(firstMsg.sender)+'</div>'+fmTxt+'</div>';
-  fmHtml+='<div style="margin-top:20px;padding:10px 18px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.35);z-index:1;text-align:center;">\u{1F513} 10 premiers messages dans la version compl\u00E8te</div>';
+  fmHtml+='<div style="margin-top:20px;font-size:10px;color:rgba(0,0,0,0.2);z-index:1;text-align:center;font-style:italic;">Le tout d\u00E9but de votre histoire</div>';
+
+  // Paid conversation slides (messages 2-5 and 6-10)
+  function buildMsgSlide(msgs, startIdx, label) {
+    var h = '<div class="st-label" style="color:#5A8FA8;">'+label+'</div>';
+    msgs.forEach(function(m, i) {
+      var isR = (dn(m.sender) === roseName);
+      var col = isR ? '#C27C5A' : '#5A8FA8';
+      var txt = m.text.length > 60 ? m.text.substring(0, 60) + '\u2026' : m.text;
+      h += '<div data-delay="' + (0.15 + i * 0.12) + '" style="max-width:85%;padding:7px 11px;margin-bottom:3px;font-size:11px;line-height:1.4;background:rgba(' + (isR ? '194,124,90' : '90,143,168') + ',0.1);border-radius:' + (isR ? '12px 12px 4px 12px' : '12px 12px 12px 4px') + ';margin-' + (isR ? 'left' : 'right') + ':auto;box-shadow:0 1px 3px rgba(0,0,0,0.03);opacity:0;transform:translateY(8px);transition:all 0.4s ease;z-index:1;"><div style="font-size:7px;font-weight:600;color:' + col + ';margin-bottom:1px;">' + dn(m.sender) + '</div>' + txt + '<div style="font-size:6px;color:rgba(0,0,0,0.15);text-align:right;margin-top:1px;">' + m.time + '</div></div>';
+    });
+    return h;
+  }
+  var convSlice1 = convMsgs.slice(1, 6);
+  var convSlice2 = convMsgs.slice(6, 11);
+  var convSlide1Html = convSlice1.length > 0 ? buildMsgSlide(convSlice1, 1, 'La conversation continue\u2026') : null;
+  var convSlide2Html = convSlice2.length > 0 ? buildMsgSlide(convSlice2, 6, 'Et ensuite\u2026') : null;
 
   // Winners
   var dtWinner=stats.maxConsec1>stats.maxConsec2?n1:n2;
@@ -1626,19 +1637,19 @@ function generatePreview() {
   // Shapes helper
   function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
-  // ═══ FREE SLIDES (7) ═══
+  // ═══ FREE SLIDES (6) ═══
   var freeSlides = [
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
-    // 2. Total
-    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
-    // 3. Bavard — two rings
-    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:20px;align-items:center;z-index:1;">'+mkRing(stats.pct1,'rgba(255,255,255,0.85)',120,10,'<span style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;">'+stats.pct1+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">'+n1+'</span>')+mkRing(stats.pct2,'rgba(255,255,255,0.4)',100,8,'<span style="font-family:var(--font-display);font-size:24px;font-weight:700;color:rgba(255,255,255,0.8);">'+stats.pct2+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">'+n2+'</span>')+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:20px;z-index:1;">'+stats.count1.toLocaleString("fr-FR")+' vs '+stats.count2.toLocaleString("fr-FR")+' messages</div>'},
-    // 4. Premiers mots
+    // 2. Premiers mots
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+fmHtml},
+    // 3. Total
+    {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
+    // 4. Bavard — two rings
+    {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:20px;align-items:center;z-index:1;">'+mkRing(stats.pct1,'rgba(255,255,255,0.85)',120,10,'<span style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;">'+stats.pct1+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">'+n1+'</span>')+mkRing(stats.pct2,'rgba(255,255,255,0.4)',100,8,'<span style="font-family:var(--font-display);font-size:24px;font-weight:700;color:rgba(255,255,255,0.8);">'+stats.pct2+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">'+n2+'</span>')+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:20px;z-index:1;">'+stats.count1.toLocaleString("fr-FR")+' vs '+stats.count2.toLocaleString("fr-FR")+' messages</div>'},
     // 5. Emoji podium
     {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis pr\u00E9f\u00E9r\u00E9s</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:8px;z-index:1;margin-bottom:16px;"></div><div style="display:flex;gap:8px;font-size:10px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
-    // 7. Record
+    // 6. Record
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Votre jour record</div><div id="st-bars" style="display:flex;align-items:flex-end;gap:4px;height:120px;margin-bottom:16px;z-index:1;"></div><div id="st-record-count" class="gn" style="font-size:52px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">messages le '+stats.recordDay+'</div>'+(stats.streak>3?'<div style="margin-top:16px;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:6px;z-index:1;"><span style="font-size:14px;">\u{1F525}</span><span style="font-size:11px;color:rgba(0,0,0,0.4);">'+stats.streak+' jours sans interruption</span></div>':'')},
   ];
 
@@ -1651,13 +1662,15 @@ function generatePreview() {
     {icon:'\u{1F4DD}',q:'Qui \u00E9crit les plus gros pav\u00E9s ?'},
   ];
   var teaserList = teaserItems.map(function(item){return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.04);z-index:1;"><span style="font-size:16px;width:24px;text-align:center;">'+item.icon+'</span><span style="font-size:11px;color:rgba(0,0,0,0.45);flex:1;">'+item.q+'</span><span style="font-size:9px;color:var(--rose);font-weight:600;">\u{1F512}</span></div>';}).join('');
-  var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:20px;text-align:center;line-height:1.3;margin-bottom:4px;z-index:1;">Vous voulez<br/>la suite ?</div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">19 slides vous attendent</div><div style="width:100%;max-width:250px;z-index:1;">'+teaserList+'</div><div style="font-size:10px;color:rgba(0,0,0,0.3);text-align:center;margin:14px 0 16px;z-index:1;line-height:1.5;">+ lien interactif \u00E0 envoyer<br/>\u00E0 votre moiti\u00E9 avec message perso \u{1F48C}</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 3,99\u20AC</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:8px;z-index:1;">Le prix d\u2019une rose \u{1F339}</div>'};
+  var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:20px;text-align:center;line-height:1.3;margin-bottom:4px;z-index:1;">Vous voulez<br/>la suite ?</div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">20+ slides vous attendent</div><div style="width:100%;max-width:250px;z-index:1;">'+teaserList+'</div><div style="font-size:10px;color:rgba(0,0,0,0.3);text-align:center;margin:14px 0 16px;z-index:1;line-height:1.5;">+ lien interactif \u00E0 envoyer<br/>\u00E0 votre moiti\u00E9 avec message perso \u{1F48C}</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 3,99\u20AC</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:8px;z-index:1;">Le prix d\u2019une rose \u{1F339}</div>'};
 
   // ═══ PAID SLIDES (18) ═══
   var paidSlides = [
     // 8. Je t'aime (moved from free)
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
-    // 9. Double-texteur
+    // 9-10. Premiers messages (paid — conversation continues)
+  ].concat(convSlide1Html ? [{bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide1Html}] : []).concat(convSlide2Html ? [{bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(0)+convSlide2Html}] : []).concat([
+    // 11. Double-texteur
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affil\u00E9e sans r\u00E9ponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">messages d\u2019affil\u00E9e</span></div></div>'},
     // 9. Hearts — liquid fill
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">C\u0153urs envoy\u00E9s</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.hearts1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.hearts1>stats.hearts2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.hearts2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.hearts2>stats.hearts1?' \u{1F451}':'')+'</div></div></div>'},
@@ -1690,7 +1703,7 @@ function generatePreview() {
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonne nuit en dernier ?</div>'+mkRing(clPct,'#5A8FA8',140,10,'<span id="st-cl-count" class="gn" style="font-size:40px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:20px;color:#5A8FA8;font-weight:600;margin-top:14px;z-index:1;">'+clWinner+'</div><div style="font-size:12px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ferme la conversation</div>'},
     // 23. Biblioth\u00E8que
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(2)+'<div class="st-label" style="color:#C27C5A;">Votre biblioth\u00E8que</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F4DA}</div><div id="st-tw-total" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:13px;color:rgba(0,0,0,0.35);margin-top:6px;z-index:1;">mots \u00E9chang\u00E9s</div><div style="margin-top:18px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:6px;z-index:1;"><span style="font-size:14px;">\u{1F4D6}</span><span style="font-size:11px;color:rgba(0,0,0,0.4);">L\u2019\u00E9quivalent de '+stats.bookPages+' pages de livre</span></div>'},
-  ];
+  ]);
 
   // ═══ CTA SLIDE (link generation) ═══
   var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F48C}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:12px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">\u{1F517} G\u00E9n\u00E9rer le lien surprise</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
@@ -1714,6 +1727,7 @@ function generatePreview() {
 
   // Click nav
   document.getElementById('story-phone').onclick = function(e) {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('textarea,input,button,a')) return;
     var rect = this.getBoundingClientRect();
     if (e.clientX - rect.left > rect.width/2) stNextR(); else stPrevR();
   };
@@ -1789,20 +1803,29 @@ function stGoR(j){window._stCurrent=j;stRenderR();}
 // ═══ UNLOCK STORY ═══
 function unlockStory() {
   // TODO: integrate Stripe payment here
-  // For now, unlock directly for testing
   window._paidUnlocked = true;
   window._stSlides = window._freeSlides.concat(window._paidSlides).concat([window._ctaSlide]);
-  window._stCurrent = 6; // jump to first paid slide (after 6 free slides, index 6 = slide 7 = je t'aime)
-  stRenderR();
+  window._stCurrent = 6; // first paid slide
 
-  // Switch upsell section to paid state
+  // Switch upsell section
   var freeEl = document.getElementById('upsell-free');
   var paidEl = document.getElementById('upsell-paid');
   if (freeEl) freeEl.style.display = 'none';
   if (paidEl) paidEl.style.display = 'block';
 
-  // Scroll to story phone
-  document.getElementById('story-phone').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Show unlock overlay
+  var overlay = document.createElement('div');
+  overlay.id = 'unlock-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:loaderFadeIn 0.3s ease;';
+  overlay.innerHTML = '<div style="background:white;border-radius:24px;padding:40px 32px;max-width:320px;text-align:center;animation:loaderFadeIn 0.3s ease;">' +
+    '<div style="font-size:48px;margin-bottom:16px;">🎉</div>' +
+    '<div style="font-family:var(--font-display);font-size:22px;margin-bottom:8px;">Story d\u00E9bloqu\u00E9e !</div>' +
+    '<div style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:24px;">20+ nouvelles slides vous attendent.<br/>Swipez jusqu\u2019au bout pour envoyer<br/>la surprise \u00E0 votre moiti\u00E9 \u{1F48C}</div>' +
+    '<button onclick="document.getElementById(\'unlock-overlay\').remove();document.getElementById(\'story-phone\').scrollIntoView({behavior:\'smooth\',block:\'center\'});" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:white;border:none;border-radius:100px;padding:14px 40px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-body);box-shadow:0 4px 16px rgba(194,124,90,0.3);">Voir ma story \u2192</button>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  stRenderR();
 }
 
 // ═══ GENERATE SHARE LINK ═══
