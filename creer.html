@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Créer mon livre — Nos premiers mots</title>
+<title>Créer ma story — Nos premiers mots</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -789,7 +789,7 @@ Exemple de format attendu :
     </div>
 
     <button class="btn-generate" id="btn-generate" disabled onclick="showNameMapping()">
-      Découvrir mon livre
+      Découvrir ma story
     </button>
 
     <!-- NAME MAPPING (appears after clicking generate) -->
@@ -808,47 +808,43 @@ Exemple de format attendu :
     </div>
   </div>
 
-  <!-- STEP 2: Results -->
+  <!-- STEP 2: Story Results -->
   <div class="results" id="results">
-
-    <div class="result-header reveal">
-      <h2>L'histoire de <em id="names-display">...</em></h2>
-      <div class="result-meta" id="meta-display">...</div>
-      <div style="font-size:12px; color:var(--rose); margin-top:6px; font-style:italic;">Le début de votre histoire</div>
+    <div style="text-align:center; padding:16px 0 8px;">
+      <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--rose); margin-bottom:8px;">Votre story est prête</div>
+      <h2 style="font-family:var(--font-display); font-size:22px; font-weight:400;">L'histoire de <em id="names-display" style="color:var(--rose); font-style:italic;">...</em></h2>
+      <div id="meta-display" style="font-size:12px; color:var(--ink-muted); margin-top:4px;">...</div>
     </div>
 
-    <!-- Teaser intro -->
-    <div class="reveal" id="teaser-intro" style="text-align:center; padding:20px; margin-bottom:24px; background:var(--rose-bg); border-radius:16px; border:1px solid var(--rose-light);">
-      <div style="font-size:24px; margin-bottom:8px;">✨</div>
-      <div id="teaser-text" style="font-size:14px; color:var(--ink-soft); line-height:1.6;"></div>
+    <!-- Story Phone -->
+    <div style="display:flex; justify-content:center; padding:20px 0;">
+      <div id="story-phone" style="width:100%; max-width:360px; aspect-ratio:9/17.5; border-radius:32px; background:#1A1A1A; border:5px solid #222; overflow:hidden; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2); cursor:pointer; user-select:none;">
+        <div id="st-progress" style="display:flex; gap:3px; padding:10px 14px 0; position:absolute; top:0; left:0; right:0; z-index:10;"></div>
+        <div id="st-slide" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; transition:background 0.5s ease; font-family:var(--font-body);"></div>
+        <div style="position:absolute; bottom:14px; left:0; right:0; text-align:center; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.2); z-index:10; pointer-events:none;">nospremiersmots.fr</div>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:center; align-items:center; gap:16px; padding:8px 0 24px;">
+      <button onclick="stPrevR()" id="st-prev-r" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:white; cursor:pointer; font-size:14px; color:var(--ink-soft);">←</button>
+      <div id="st-dots-r" style="display:flex; gap:6px;"></div>
+      <button onclick="stNextR()" id="st-next-r" style="width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:white; cursor:pointer; font-size:14px; color:var(--ink-soft);">→</button>
     </div>
 
-    <div class="stats-grid" id="stats-grid"></div>
-
-    <div class="key-moments reveal" id="key-moments">
-      <div class="km-title">Votre histoire en moments clés</div>
-      <div id="km-list"></div>
+    <!-- Send to partner CTA -->
+    <div style="text-align:center; padding:20px 0; border-top:1px solid var(--border);">
+      <div style="font-size:13px; color:var(--ink-muted); margin-bottom:12px;">Envoyez cette story à votre moitié 💕</div>
+      <div style="font-size:11px; color:var(--ink-muted); margin-bottom:20px;">Screenshotez vos slides préférés et envoyez-les</div>
     </div>
 
-    <div class="preview-section reveal">
-      <div class="preview-box" id="preview-conv" style="position:relative;"></div>
-    </div>
-
-    <!-- WHAT'S INSIDE -->
-    <div class="reveal" id="whats-inside" style="margin:32px 0; padding:28px 24px; background:white; border:2px solid var(--rose); border-radius:20px; text-align:center;">
-      <div style="font-size:28px; margin-bottom:8px;">📖</div>
-      <div style="font-family:var(--font-display); font-size:20px; margin-bottom:4px;">Votre livre contient</div>
-      <div style="font-size:13px; color:var(--ink-muted); margin-bottom:20px;">Tout ce que vous voyez ici, et bien plus encore</div>
-      <div id="whats-inside-list" style="text-align:left; max-width:360px; margin:0 auto 24px;"></div>
-    </div>
-
-    <div class="cta-section reveal">
-      <p style="font-family:var(--font-display); font-size:18px; margin-bottom:4px;">Le début de votre histoire, prêt à être offert</p>
-      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Vos premiers mots, vos stats, vos moments clés</p>
-      <button class="btn-buy" id="btn-download" onclick="generatePDF()" style="font-size:16px; padding:16px 48px;">
-        🎁 Obtenir notre livre — 4,99 €
+    <!-- PDF Upsell -->
+    <div style="text-align:center; padding:24px; margin:0 -24px; background:var(--cream); border-radius:16px;">
+      <div style="font-size:13px; color:var(--ink-muted); margin-bottom:6px;">Envie du livre complet ?</div>
+      <div style="font-family:var(--font-display); font-size:20px; margin-bottom:4px;">40 pages de souvenirs</div>
+      <div style="font-size:12px; color:var(--ink-muted); margin-bottom:16px;">Vos 250 premiers messages + toutes les statistiques détaillées</div>
+      <button class="btn-buy" id="btn-download" onclick="generatePDF()" style="font-size:15px; padding:14px 40px;">
+        Obtenir le PDF — 3,99 €
       </button>
-      <p style="font-size:12px; color:var(--ink-muted); margin-top:10px;">PDF immédiat · Satisfait ou remboursé</p>
+      <div style="font-size:11px; color:var(--ink-muted); margin-top:8px;">PDF immédiat · Le prix d'une rose 🌹</div>
     </div>
   </div>
 </div>
@@ -1415,285 +1411,141 @@ function confirmMapping(choice) {
   showFullscreenLoader('Analyse de vos messages...');
   setTimeout(() => {
     const lt = document.querySelector('.loader-text');
-    if (lt) lt.textContent = 'Création de votre livre...';
+    if (lt) lt.textContent = 'Création de votre story...';
   }, 2000);
   setTimeout(() => {
     generatePreview();
     removeFullscreenLoader();
-  }, 4000);
+  }, 3500);
 }
 
-// ═══ GENERATE ═══
+// ═══ GENERATE (STORY) ═══
 function generatePreview() {
-  // Stats on ALL period messages, conversation on first 250
   const allMsgs = window._allPeriodMessages;
-  const convMsgs = window._filteredMessages; // first 250
-  
+  const convMsgs = window._filteredMessages;
   if (!allMsgs || allMsgs.length < 2) {
     alert("Impossible de lire la conversation. Vérifiez le format (export WhatsApp .txt).");
     return;
   }
 
-  const stats = getStats(allMsgs);        // stats on ALL messages
-  const keyMoments = getKeyMoments(allMsgs); // moments from ALL messages
-  
-  // Use the confirmed name mapping
+  const stats = getStats(allMsgs);
   const nameMap = window._nameMapOrder || { [stats.s1]: userName1, [stats.s2]: userName2 };
-  function displayName(sender) { return nameMap[sender] || sender; }
-  
-  // Figure out which userName corresponds to which stats sender
-  const n1forS1 = nameMap[stats.s1];
-  const n1forS2 = nameMap[stats.s2];
+  function dn(sender) { return nameMap[sender] || sender; }
 
-  // Store for PDF generation
+  const n1 = nameMap[stats.s1];
+  const n2 = nameMap[stats.s2];
+  const roseName = roseIdx === 1 ? userName1 : userName2;
+  const c1 = (n1 === roseName) ? '#C27C5A' : '#5A8FA8';
+  const c2 = (n1 === roseName) ? '#5A8FA8' : '#C27C5A';
+
   window._lastStats = stats;
   window._nameMap = nameMap;
 
-  // Update steps
   document.getElementById('dot-3').classList.add('active');
   document.getElementById('step-upload').style.display = 'none';
   document.getElementById('results').classList.add('show');
-
-  // Header
   document.getElementById('names-display').textContent = userName1 + ' & ' + userName2;
-  document.getElementById('meta-display').textContent = 
-    allMsgs[0].date + ' → ' + allMsgs[allMsgs.length-1].date + ' · ' + stats.total + ' messages analysés';
+  document.getElementById('meta-display').textContent =
+    allMsgs[0].date + ' → ' + allMsgs[allMsgs.length-1].date + ' · ' + stats.total + ' messages';
 
-  // Teaser intro
-  const teaserParts = [];
-  if (stats.hearts > 0) teaserParts.push(stats.hearts + ' cœurs');
-  if (stats.bonneNuit > 0) teaserParts.push(stats.bonneNuit + ' bonne nuit');
-  if (stats.laughs > 0) teaserParts.push(stats.laughs + ' fous rires');
-  if (stats.jeTaime > 0) teaserParts.push(stats.jeTaime + ' "je t\'aime"');
-  document.getElementById('teaser-text').innerHTML = 
-    'Nous avons analysé <strong>' + stats.total + ' messages</strong> entre ' + userName1 + ' et ' + userName2 + '.<br>' +
-    'On y a trouvé ' + teaserParts.join(', ') + '... et bien plus encore.<br>' +
-    '<span style="font-size:12px;color:var(--ink-muted);margin-top:4px;display:inline-block;">📖 Votre livre contiendra vos ' + convMsgs.length + ' premiers messages + toutes les statistiques.</span>';
+  const dateRange = allMsgs[0].date + ' — ' + allMsgs[allMsgs.length-1].date;
 
-  // Stats - Rich version with animations
-  // Use mapped names for s1 and s2
-  const n1 = nameMap[stats.s1];
-  const n2 = nameMap[stats.s2];
-  const grid = document.getElementById('stats-grid');
-
-  // Dynamic colors based on rose choice
-  const roseName = roseIdx === 1 ? userName1 : userName2;
-  const c1 = (n1 === roseName) ? '#C27C5A' : '#5A8FA8';  // color for s1
-  const c2 = (n1 === roseName) ? '#5A8FA8' : '#C27C5A';  // color for s2
-  const bg1 = (n1 === roseName) ? '#F4E4DA' : '#DEECF1';
-  const bg2 = (n1 === roseName) ? '#DEECF1' : '#F4E4DA';
-
-  // Donut values
-  const circumference = 2 * Math.PI * 45; // ~282.74
-  const dash1 = stats.pct1 / 100 * circumference;
-  const gap1 = circumference - dash1;
-  const dash2 = stats.pct2 / 100 * circumference;
-  const gap2 = circumference - dash2;
-  const offset2 = 70.69 - dash1;
-
-  grid.innerHTML = `
-    <!-- Donut — visible but numbers blurred -->
-    <div class="reveal-scale" style="display:flex; align-items:center; justify-content:center; gap:20px; padding:20px; background:white; border:1px solid var(--border); border-radius:16px; margin-bottom:16px; grid-column:1/-1; position:relative;">
-      <svg width="140" height="140" viewBox="0 0 120 120" id="donut-svg">
-        <circle cx="60" cy="60" r="45" fill="none" stroke="#F0EDE8" stroke-width="14"/>
-        <circle id="donut-ring-1" cx="60" cy="60" r="45" fill="none" stroke="${c1}" stroke-width="14"
-          stroke-dasharray="0 ${circumference}" stroke-dashoffset="70.69" transform="rotate(-90 60 60)"
-          data-target-dash="${dash1}" data-target-gap="${gap1}"/>
-        <circle id="donut-ring-2" cx="60" cy="60" r="45" fill="none" stroke="${c2}" stroke-width="14"
-          stroke-dasharray="0 ${circumference}" stroke-dashoffset="${offset2}" transform="rotate(-90 60 60)"
-          data-target-dash="${dash2}" data-target-gap="${gap2}"/>
-        <text x="60" y="57" text-anchor="middle" font-family="'Playfair Display',serif" font-size="22" font-weight="500" fill="#1A1A18" id="donut-count">0</text>
-        <text x="60" y="72" text-anchor="middle" font-size="8" fill="#8A857D">messages</text>
-      </svg>
-      <div style="display:flex; flex-direction:column; gap:6px;">
-        <div style="display:flex; align-items:center; gap:6px; font-size:13px;"><div style="width:10px;height:10px;border-radius:50%;background:${c1};"></div>${n1} — <span style="filter:blur(3px);user-select:none;">${stats.pct1}%</span></div>
-        <div style="display:flex; align-items:center; gap:6px; font-size:13px;"><div style="width:10px;height:10px;border-radius:50%;background:${c2};"></div>${n2} — <span style="filter:blur(3px);user-select:none;">${stats.pct2}%</span></div>
-      </div>
-      <div class="locked-badge">🔒 Détails dans votre livre</div>
-    </div>
-
-    <!-- Big stats — visible -->
-    <div class="stat-card reveal delay-1"><span class="num counter" style="color:${c1};" data-target="${stats.hearts}">0</span><span class="label">❤️ coeurs</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.hearts1} · ${n2}: ${stats.hearts2}</span></div>
-    <div class="stat-card reveal delay-2"><span class="num counter" style="color:${c2};" data-target="${stats.bonneNuit}">0</span><span class="label">🌙 bonne nuit</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.bn1} · ${n2}: ${stats.bn2}</span></div>
-    <div class="stat-card reveal delay-3"><span class="num counter" style="color:#C49A3B;" data-target="${stats.laughs}">0</span><span class="label">😂 fous rires</span><span class="label" style="font-size:10px;color:#C0B8AE;">${n1}: ${stats.laughs1} · ${n2}: ${stats.laughs2}</span></div>
-    <div class="stat-card reveal delay-4"><span class="num counter" style="color:#5BA87A;" data-target="${stats.jeTaime}">0</span><span class="label">💕 je t'aime</span><span class="label" style="font-size:10px;color:#C0B8AE;">${stats.jeTaime > 0 ? 'Qui l\'a dit en premier ?' : 'Pas encore... patience 🥰'}</span></div>
-
-    <!-- Face à face — mix visible/locked -->
-    <div class="reveal" style="grid-column:1/-1; background:white; border:1px solid var(--border); border-radius:16px; padding:20px; margin-top:8px; position:relative;" id="h2h-section">
-      <div style="font-family:'Playfair Display',serif; font-size:16px; text-align:center; margin-bottom:4px;">Face à face</div>
-      <div style="font-size:11px; color:var(--ink-muted); text-align:center; margin-bottom:14px;">${n1} vs ${n2} — qui gagne ?</div>
-      <div class="h2h-row-anim" style="transition-delay:0.1s">${buildH2hRow('❤️', 'Cœurs', stats.hearts1, stats.hearts2, n1, n2, false, false, c1, c2)}</div>
-      <div class="h2h-row-anim" style="transition-delay:0.2s">${buildH2hRow('😂', 'Fous rires', stats.laughs1, stats.laughs2, n1, n2, false, false, c1, c2)}</div>
-      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.3s">${buildH2hRow('💬', 'Le + bavard', stats.count1, stats.count2, n1, n2, false, false, c1, c2)}</div>
-      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.4s">${buildH2hRow('📏', 'Écrit des pavés', stats.avgWords1+'mots', stats.avgWords2+'mots', n1, n2, false, false, c1, c2)}</div>
-      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.5s">${buildH2hRow('❓', 'Le + curieux', stats.questions1, stats.questions2, n1, n2, false, false, c1, c2)}</div>
-      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.6s">${buildH2hRow('☀️', 'Ouvre la conv.', stats.opens1+'j', stats.opens2+'j', n1, n2, false, false, c1, c2)}</div>
-      ${stats.fast1 && stats.fast2 ? `<div class="h2h-row-anim h2h-locked" style="transition-delay:0.7s">${buildH2hRow('⚡', 'Réponse rapide', stats.fast1+'min', stats.fast2+'min', n1, n2, true, false, c1, c2)}</div>` : ''}
-      <div class="h2h-row-anim h2h-locked" style="transition-delay:0.8s">${buildH2hRow('🌙', 'Dit bonne nuit', stats.bn1, stats.bn2, n1, n2, false, false, c1, c2)}</div>
-      <div class="locked-badge">🔒 Qui gagne ? Découvrez dans votre livre</div>
-    </div>
-
-    <!-- Fun facts — mix of visible and teased -->
-    <div class="reveal" style="grid-column:1/-1; background:white; border:1px solid var(--border); border-radius:16px; padding:20px; margin-top:8px;">
-      <div style="font-family:'Playfair Display',serif; font-size:16px; text-align:center; margin-bottom:4px;">Notre histoire</div>
-      <div style="font-size:11px; color:var(--ink-muted); text-align:center; margin-bottom:14px;">Les chiffres de votre couple</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-
-        <!-- VISIBLE: classics -->
-        <div class="reveal-scale delay-1" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
-          <div style="font-size:20px;">📖</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Mot préféré</div>
-          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">"${stats.topWord ? stats.topWord.word : '...'}"</div>
-          <div style="font-size:10px; color:#C0B8AE;">${stats.topWord ? stats.topWord.count + ' fois' : ''}</div>
-        </div>
-        <div class="reveal-scale delay-2" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
-          <div style="font-size:20px;">🏆</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Jour record</div>
-          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.recordCount}</div>
-          <div style="font-size:10px; color:#C0B8AE;">messages le ${stats.recordDay}</div>
-        </div>
-        <div class="reveal-scale delay-3" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
-          <div style="font-size:20px;">🔥</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Jours d'affilée</div>
-          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.streak} jours</div>
-          <div style="font-size:10px; color:#C0B8AE;">de conversation sans interruption</div>
-        </div>
-        <div class="reveal-scale delay-4" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center;">
-          <div style="font-size:20px;">📚</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Si c'était un livre</div>
-          <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--rose);">${stats.bookPages} pages</div>
-          <div style="font-size:10px; color:#C0B8AE;">${stats.totalWords.toLocaleString('fr-FR')} mots échangés</div>
-        </div>
-
-        <!-- TEASED: new fun ones — label visible, value blurred -->
-        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
-          <div style="font-size:20px;">📏</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Qui écrit des pavés ?</div>
-          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.avgWords1 > stats.avgWords2 ? n1 : n2}</div>
-          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.avgWords1, stats.avgWords2)} mots/msg en moy.</div>
-        </div>
-        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
-          <div style="font-size:20px;">💌</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Le double-texteur</div>
-          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.maxConsec1 > stats.maxConsec2 ? n1 : n2}</div>
-          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.maxConsec1, stats.maxConsec2)} msgs d'affilée</div>
-        </div>
-        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
-          <div style="font-size:20px;">❓</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Le + curieux</div>
-          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.questions1 > stats.questions2 ? n1 : n2}</div>
-          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">${Math.max(stats.questions1, stats.questions2)} questions posées</div>
-        </div>
-        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; position:relative;">
-          <div style="font-size:20px;">😴</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Nuits blanches</div>
-          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">${stats.nightMsgs}</div>
-          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">messages après minuit</div>
-        </div>
-        ${stats.firstNickname ? `
-        <div class="reveal-scale delay-5" style="background:var(--cream); border-radius:10px; padding:12px; text-align:center; grid-column:1/-1; position:relative;">
-          <div style="font-size:20px;">💕</div>
-          <div style="font-size:10px; color:var(--ink-muted); text-transform:uppercase;">Premier surnom</div>
-          <div style="font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); filter:blur(3px); user-select:none;">"${stats.firstNickname.word}" — ${displayName(stats.firstNickname.sender)}</div>
-          <div style="font-size:10px; color:#C0B8AE; filter:blur(3px); user-select:none;">le ${stats.firstNickname.date}</div>
-        </div>` : ''}
-      </div>
-      <div style="text-align:center; margin-top:12px;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 + double-texteur, nuits blanches, premier surnom... dans votre livre</span></div>
-    </div>
-  `;
-
-  // H2H helper is defined below
-
-  // Key moments — Timeline verticale
-  const kmList = document.getElementById('km-list');
-
-  // Detect moment type for icon/color/tag
-  function getMomentMeta(m, idx) {
-    const t = m.text.toLowerCase();
-    if (idx === 0 && m === msgs[0]) return { icon: '💬', color: 'rose', tag: 'Premier message' };
-    if (/je t'aime|je t aime|jtm|jtaime/i.test(m.text)) return { icon: '💕', color: 'rose', tag: 'Premier je t\'aime' };
-    if (/bonne nuit/i.test(t)) return { icon: '🌙', color: 'blue', tag: null };
-    if (/rendez.vous|on se voit|on se retrouve/i.test(t)) return { icon: '☕', color: 'amber', tag: 'Rendez-vous' };
-    if (/tu me manques|je pense à toi/i.test(t)) return { icon: '🥺', color: 'blue', tag: null };
-    if (/❤️|💕|💗|💖|🥰|😍/.test(m.text)) return { icon: '😍', color: 'rose', tag: null };
-    if (/😂|🤣|haha|hihi|mdr/i.test(m.text)) return { icon: '😂', color: 'amber', tag: null };
-    if (/voyage|vacances/i.test(t)) return { icon: '✈️', color: 'green', tag: null };
-    if (/chanson|musique|écoute|spotify/i.test(t)) return { icon: '🎵', color: 'green', tag: null };
-    if (/mon (cœur|coeur|amour|bébé|chéri)/i.test(t)) return { icon: '💕', color: 'rose', tag: null };
-    return { icon: '✨', color: 'rose', tag: null };
-  }
-
-  kmList.innerHTML = '<div class="tl-vertical">' + keyMoments.map((m, i) => {
-    const meta = getMomentMeta(m, i);
-    const isS2 = m.sender === stats.s2;
-    const truncText = m.text.length > 80 ? m.text.substring(0, 80) + '...' : m.text;
-    const isLocked = i >= 2;
-    return `<div class="tl-v-item reveal" style="transition-delay:${i * 0.1}s;${isLocked ? 'filter:blur(3px);user-select:none;pointer-events:none;' : ''}">
-      <div class="tl-v-dot tl-v-dot-${meta.color}">${meta.icon}</div>
-      <div class="tl-v-card">
-        <div class="tl-v-date">${m.date} · ${m.time}${meta.tag ? ` <span class="tl-v-tag">${meta.tag}</span>` : ''}</div>
-        <div class="tl-v-msg">"${truncText}"</div>
-        <div class="tl-v-sender${isS2 ? ' s2' : ''}">${displayName(m.sender)}</div>
-      </div>
-    </div>`;
-  }).join('') + '</div>' +
-  (keyMoments.length > 2 ? '<div style="text-align:center;margin-top:-10px;position:relative;z-index:3;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 ' + (keyMoments.length - 2) + ' autres moments dans votre livre</span></div>' : '');
-
-  // Conversation preview — first messages (the beginning)
-  const convBox = document.getElementById('preview-conv');
-  let convHtml = '<div style="font-family:var(--font-display); font-size:14px; text-align:center; color:var(--ink-muted); margin-bottom:12px;">Vos premiers mots</div>';
-  let lastDate = '';
-  const previewMsgs = convMsgs.slice(0, 4);
-  
-  for (const m of previewMsgs) {
-    if (m.date !== lastDate) {
-      convHtml += `<div class="chat-date"><span>${m.date}</span></div>`;
-      lastDate = m.date;
-    }
-    const isRight = m.sender === stats.s2;
-    const isRose = (displayName(m.sender) === roseName);
-    const senderStyle = isRose ? 'color:#C27C5A;' : 'color:#5A8FA8;';
-    const bubbleBg = isRose ? 'background:#F4E4DA;' : 'background:#DEECF1;';
-    const bubbleClass = isRight ? 'bubble-r' : 'bubble-l';
-    convHtml += `
-      <div class="chat-bubble ${bubbleClass}" style="${bubbleBg}">
-        <div class="bubble-sender" style="${senderStyle}">${displayName(m.sender)}</div>
-        ${m.text}
-        <div class="bubble-time">${m.time}</div>
-      </div>
-    `;
-  }
-  convHtml += '<div style="clear:both"></div>';
-  convHtml += `<div style="position:relative;height:80px;">
-    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom, transparent, var(--warm-white));"></div>
-    <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:3;"><span class="locked-badge" style="position:relative;bottom:auto;left:auto;transform:none;display:inline-block;">🔒 ${convMsgs.length} premiers messages dans votre livre</span></div>
-  </div>`;
-  convBox.innerHTML = convHtml;
-
-  // "What's inside" checklist
-  const insideList = document.getElementById('whats-inside-list');
-  const insideItems = [
-    'Vos ' + convMsgs.length + ' premiers messages — le tout début',
-    'Statistiques complètes sur ' + stats.total + ' messages',
-    keyMoments.length + ' moments clés en timeline',
-    'Face-à-face : ' + n1 + ' vs ' + n2 + ' en 8 catégories',
-    'Fun facts sur votre couple',
-    stats.firstNickname ? 'Premier surnom, premier je t\'aime...' : 'Records, jours d\'affilée...',
-    'Page de couverture personnalisée',
+  // H2H
+  const h2h = [
+    { label: 'Messages envoyés', v1: stats.pct1+'%', v2: stats.pct2+'%', p1: stats.pct1, p2: stats.pct2 },
+    { label: 'Cœurs envoyés', v1: stats.hearts1, v2: stats.hearts2, p1: stats.hearts1, p2: stats.hearts2 },
+    { label: 'Fous rires', v1: stats.laughs1, v2: stats.laughs2, p1: stats.laughs1, p2: stats.laughs2 },
+    { label: 'Questions posées', v1: stats.questions1, v2: stats.questions2, p1: stats.questions1, p2: stats.questions2 },
+    { label: '1er msg du jour', v1: Math.round(stats.opens1/Math.max(stats.totalDays,1)*100)+'%', v2: Math.round(stats.opens2/Math.max(stats.totalDays,1)*100)+'%', p1: stats.opens1, p2: stats.opens2 },
   ];
-  insideList.innerHTML = insideItems.map(item => `
-    <div class="whats-inside-item">
-      <span class="whats-inside-check">✓</span>
-      <span>${item}</span>
-    </div>
-  `).join('');
+  let sc1=0, sc2=0;
+  h2h.forEach(r => { if(r.p1>r.p2) sc1++; else if(r.p2>r.p1) sc2++; });
 
-  // Scroll to results
-  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+  // Fun fact
+  let funEmoji='🦉', funTitle='', funSub='';
+  if (stats.nightMsgs > 10) { funTitle='Votre heure préférée : après minuit'; funSub=stats.nightMsgs+' messages envoyés entre 0h et 5h'; }
+  else if (stats.streak > 7) { funEmoji='🔥'; funTitle=stats.streak+' jours sans interruption'; funSub='Votre plus longue série de conversation'; }
+  else if (stats.topWord) { funEmoji='📖'; funTitle='Votre mot préféré : "'+stats.topWord.word+'"'; funSub='Utilisé '+stats.topWord.count+' fois'; }
+  else { funTitle=stats.total+' messages en '+stats.totalDays+' jours'; funSub=Math.round(stats.total/Math.max(stats.totalDays,1))+' messages par jour en moyenne'; }
 
-  // Trigger animations after a short delay
-  setTimeout(() => animateResults(stats), 400);
+  const jta = stats.firstJeTaime;
+  const jtaSender = jta ? dn(jta.sender) : null;
+  const jtaColor = jta ? ((dn(jta.sender)===roseName)?'#C27C5A':'#5A8FA8') : '#C27C5A';
+
+  // Build slides
+  window._stSlides = [
+    { bg:'#FDF0EA', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:20px;font-weight:500;">Nos premiers mots</div><div style="font-family:var(--font-display);font-size:34px;color:#1A1A1A;text-align:center;line-height:1.15;">'+userName1+'<br><span style="font-size:16px;color:rgba(0,0,0,0.2);">&</span><br>'+userName2+'</div><div style="width:32px;height:1px;background:#C27C5A;margin:24px 0;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.6;max-width:220px;">'+stats.totalDays+' jours de conversation<br>'+dateRange+'</div>' },
+
+    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Au total, vous avez échangé</div><div id="st-counter-r" style="font-family:var(--font-display);font-size:56px;font-weight:700;color:#1A1A1A;line-height:1;">0</div><div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-style:italic;margin-top:6px;">messages</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin-top:20px;line-height:1.7;">C\u2019est l\u2019équivalent de '+stats.bookPages+' pages 📚</div>' },
+
+    { bg:'#1A1A1A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;">Qui parle le plus ?</div><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:24px;"><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c1+';margin-bottom:6px;">'+stats.pct1+'%</div><div id="st-bar-1" style="width:64px;height:0;background:linear-gradient(to top,'+c1+','+c1+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n1+'</div></div><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c2+';margin-bottom:6px;">'+stats.pct2+'%</div><div id="st-bar-2" style="width:64px;height:0;background:linear-gradient(to top,'+c2+','+c2+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n2+'</div></div></div><div style="font-size:11px;color:rgba(255,255,255,0.35);text-align:center;font-style:italic;">'+n1+' : '+stats.count1.toLocaleString('fr-FR')+' · '+n2+' : '+stats.count2.toLocaleString('fr-FR')+'</div>' },
+
+    { bg:'#FFF9F5', html:(function(){
+      var out = '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:8px;">Côte à côte</div>';
+      out += '<div style="display:flex;justify-content:space-between;width:100%;padding:0 2px;margin-bottom:10px;"><span style="font-size:11px;font-weight:600;color:'+c1+';">'+n1+'</span><span style="font-size:11px;font-weight:600;color:'+c2+';">'+n2+'</span></div>';
+      out += '<div style="width:100%;display:flex;flex-direction:column;gap:8px;">';
+      h2h.forEach(function(r) {
+        var t=r.p1+r.p2||1; var pct1=Math.round(r.p1/t*100); var pct2=100-pct1;
+        var w=r.p1>r.p2?1:(r.p2>r.p1?2:0);
+        out += '<div><div style="font-size:8px;color:rgba(0,0,0,0.4);text-align:center;margin-bottom:3px;font-weight:500;">'+(w===1?'👑 ':'')+r.label+(w===2?' 👑':'')+'</div>';
+        out += '<div style="display:flex;height:18px;border-radius:9px;overflow:hidden;background:rgba(0,0,0,0.03);">';
+        out += '<div style="width:'+pct1+'%;background:'+(w===1?'linear-gradient(90deg,'+c1+'44,'+c1+')':c1+'33')+';display:flex;align-items:center;padding-left:6px;"><span style="font-size:8px;font-weight:700;color:rgba(0,0,0,0.35);">'+r.v1+'</span></div>';
+        out += '<div style="width:'+pct2+'%;background:'+(w===2?'linear-gradient(90deg,'+c2+','+c2+'44)':c2+'33')+';display:flex;align-items:center;justify-content:flex-end;padding-right:6px;"><span style="font-size:8px;font-weight:700;color:rgba(0,0,0,0.35);">'+r.v2+'</span></div>';
+        out += '</div></div>';
+      });
+      out += '</div>';
+      out += '<div style="margin-top:12px;text-align:center;"><span style="font-family:var(--font-display);font-size:16px;color:'+c1+';font-weight:700;">'+sc1+'</span><span style="font-size:11px;color:rgba(0,0,0,0.2);margin:0 6px;">—</span><span style="font-family:var(--font-display);font-size:16px;color:'+c2+';font-weight:700;">'+sc2+'</span></div>';
+      return out;
+    })() },
+
+    { bg: jta ? '#FDF0EA' : '#C27C5A', html: jta ?
+      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:24px;font-weight:500;">Le premier « je t\u2019aime »</div><div style="font-size:10px;color:rgba(0,0,0,0.3);margin-bottom:12px;font-weight:500;">'+jta.date+' · '+jta.time+'</div><div style="background:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);"><div style="font-size:13px;color:#1A1A1A;line-height:1.5;">'+jta.text.substring(0,120)+'</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:'+jtaColor+';">'+jtaSender+'</span> · '+jta.time+'</div></div>' :
+      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">💕</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+stats.hearts+' cœurs échangés</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;">'+n1+' : '+stats.hearts1+' · '+n2+' : '+stats.hearts2+'</div>'
+    },
+
+    { bg:'#C27C5A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">'+funEmoji+'</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+funTitle+'</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;max-width:240px;line-height:1.6;">'+funSub+'</div>' },
+
+    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:12px;">Envie d\u2019aller plus loin ?</div><div style="font-family:var(--font-display);font-size:20px;color:#1A1A1A;text-align:center;line-height:1.3;margin-bottom:16px;">Recevez votre livre<br>de <span style="color:#C27C5A;">40 pages</span></div><div style="width:100%;display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">📊</span><span style="font-size:11px;color:#1A1A1A;">Toutes vos statistiques</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">💬</span><span style="font-size:11px;color:#1A1A1A;">Vos '+convMsgs.length+' premiers messages</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">🏆</span><span style="font-size:11px;color:#1A1A1A;">Le côte à côte complet</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">📅</span><span style="font-size:11px;color:#1A1A1A;">Timeline mois par mois</span></div></div><div style="background:#C27C5A;color:#fff;border-radius:24px;padding:11px 28px;font-size:13px;font-weight:600;text-align:center;box-shadow:0 3px 12px rgba(194,124,90,0.3);width:100%;max-width:220px;">Obtenir le PDF — 3,99€</div><div style="border:1.5px solid rgba(0,0,0,0.12);border-radius:24px;padding:9px 24px;font-size:12px;font-weight:500;text-align:center;margin-top:8px;width:100%;max-width:220px;color:#1A1A1A;">Envoyer à ma moitié 💕</div>' },
+  ];
+
+  window._stCurrent = 0;
+  stRenderR();
+
+  // Click nav
+  document.getElementById('story-phone').onclick = function(e) {
+    var rect = this.getBoundingClientRect();
+    if (e.clientX - rect.left > rect.width/2) stNextR(); else stPrevR();
+  };
+  // Touch swipe
+  var tsx = null;
+  document.getElementById('story-phone').addEventListener('touchstart', function(e){ tsx=e.touches[0].clientX; });
+  document.getElementById('story-phone').addEventListener('touchend', function(e){ if(tsx===null)return; var d=tsx-e.changedTouches[0].clientX; if(d>40)stNextR();else if(d<-40)stPrevR(); tsx=null; });
+
+  document.getElementById('results').scrollIntoView({ behavior:'smooth' });
 }
+
+function stRenderR() {
+  var slides=window._stSlides, i=window._stCurrent, slide=slides[i];
+  var el=document.getElementById('st-slide');
+  el.style.background=slide.bg;
+  el.innerHTML=slide.html;
+  var dark=slide.bg==='#1A1A1A'||slide.bg==='#C27C5A';
+  var wm=document.querySelector('#story-phone > div:last-child');
+  if(wm) wm.style.color=dark?'rgba(255,255,255,0.2)':'rgba(0,0,0,0.12)';
+  document.getElementById('st-progress').innerHTML=slides.map(function(_,j){
+    return '<div style="flex:1;height:2.5px;border-radius:2px;background:'+(j<=i?(dark?'rgba(255,255,255,0.8)':'rgba(0,0,0,0.3)'):(dark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.08)'))+';transition:background 0.3s;"></div>';
+  }).join('');
+  document.getElementById('st-dots-r').innerHTML=slides.map(function(_,j){
+    return '<button style="width:7px;height:7px;border-radius:50%;background:'+(j===i?'var(--rose)':'var(--border)')+';border:none;cursor:pointer;padding:0;" onclick="stGoR('+j+')"></button>';
+  }).join('');
+  document.getElementById('st-prev-r').disabled=i===0;
+  document.getElementById('st-next-r').disabled=i===slides.length-1;
+  if(i===1){var target=window._lastStats.total;var cel=document.getElementById('st-counter-r');if(cel){var v=0;var step=Math.ceil(target/80);var id=setInterval(function(){v+=step;if(v>=target){v=target;clearInterval(id);}cel.textContent=v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');},16);}}
+  if(i===2){setTimeout(function(){var b1=document.getElementById('st-bar-1');var b2=document.getElementById('st-bar-2');var s=window._lastStats;if(b1)b1.style.height=(s.pct1*2)+'px';if(b2)b2.style.height=(s.pct2*2)+'px';},50);}
+}
+function stNextR(){if(window._stCurrent<window._stSlides.length-1){window._stCurrent++;stRenderR();}}
+function stPrevR(){if(window._stCurrent>0){window._stCurrent--;stRenderR();}}
+function stGoR(j){window._stCurrent=j;stRenderR();}
 
 // ═══ PDF GENERATION ═══
 async function generatePDF() {
