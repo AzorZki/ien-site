@@ -7,8 +7,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nos premiers mots — Vos messages en livre</title>
-<meta name="description" content="Offrez le début de votre histoire. Vos premiers messages WhatsApp transformés en un livre magnifique avec statistiques et moments clés. Le cadeau le plus personnel qui existe.">
+<title>Nos premiers mots — Votre couple en story</title>
+<meta name="description" content="Offrez-lui le début de votre histoire. Importez votre conversation WhatsApp et découvrez votre story de couple : statistiques, côte à côte, premier je t'aime. Gratuit, instantané, intime.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -580,7 +580,7 @@
   .bk-rec-l { font-size: 7px; font-weight: 600; color: var(--rose); min-width: 48px; }
   .bk-rec-v { font-size: 7px; color: var(--ink-soft); }
 
-  /* Book — Face à face */
+  /* Book — Côte à côte */
   .bk-h2h-row { display:flex; align-items:center; padding:3px 0; }
   .bk-h2h-side { flex:1; text-align:center; }
   .bk-h2h-mid { width:42px; text-align:center; flex-shrink:0; }
@@ -1012,6 +1012,109 @@
   }
   footer a { color: var(--rose); text-decoration: none; }
 
+  /* ═══ STORY PHONE PREVIEW ═══ */
+  .story-phone {
+    width: 280px;
+    height: 540px;
+    border-radius: 32px;
+    background: #1A1A1A;
+    border: 5px solid #222;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.1);
+    cursor: pointer;
+    user-select: none;
+  }
+  .story-progress {
+    display: flex;
+    gap: 3px;
+    padding: 10px 14px 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+  }
+  .story-progress .st-bar {
+    flex: 1;
+    height: 2.5px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.3s;
+  }
+  .story-progress .st-bar.done {
+    background: rgba(255,255,255,0.8);
+  }
+  .story-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    transition: background 0.5s ease;
+    font-family: var(--font-body);
+  }
+  .story-watermark {
+    position: absolute;
+    bottom: 14px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    z-index: 10;
+    pointer-events: none;
+  }
+  .st-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .st-big {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .st-sub {
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 220px;
+  }
+  .st-h2h-row { margin-bottom: 2px; }
+  .st-h2h-label {
+    font-size: 8px;
+    color: rgba(0,0,0,0.4);
+    text-align: center;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  .st-h2h-bars {
+    display: flex;
+    height: 18px;
+    border-radius: 9px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.03);
+  }
+  .st-h2h-l, .st-h2h-r {
+    display: flex;
+    align-items: center;
+    transition: width 1s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .st-h2h-l { justify-content: flex-start; padding-left: 6px; }
+  .st-h2h-r { justify-content: flex-end; padding-right: 6px; }
+  .st-h2h-l span, .st-h2h-r span {
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(0,0,0,0.35);
+  }
+  @media (max-width: 600px) {
+    .story-phone { width: 260px; height: 500px; }
+  }
+
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 600px) {
     nav { padding: 12px 16px; }
@@ -1083,26 +1186,19 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">Nos premiers <em>mots</em></a>
-  <div style="display:flex; gap:8px; align-items:center;">
-    <a href="creer.html" class="nav-cta" style="background:transparent; color:var(--rose); border:1px solid var(--rose);">Essayer gratuitement</a>
-    <a href="#signup" class="nav-cta">Être prévenu</a>
-  </div>
+  <a href="creer.html" class="nav-cta">Créer ma story</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Bientôt disponible</div>
-    <h1>Vos premiers messages<br>méritent un <em>livre</em></h1>
+    <div class="hero-eyebrow">Gratuit · En 30 secondes</div>
+    <h1>Offrez-lui le début<br>de votre <em>histoire</em></h1>
     <p class="hero-sub">
-      Transformez le début de votre histoire en un livre magnifique. Les premiers mots, les premières hésitations, le premier "je t'aime". Le cadeau le plus personnel qui existe.
+      Importez votre conversation WhatsApp et revivez ensemble vos premiers mots : stats de votre couple, côte à côte, premier "je t'aime"… Le cadeau le plus personnel qui existe.
     </p>
-    <form class="hero-form" id="signup" onsubmit="handleSignup(event, this)">
-      <input type="email" placeholder="votre@email.com" required>
-      <button type="submit">Me prévenir</button>
-    </form>
-    <p class="hero-note">Gratuit · Pas de spam · On vous prévient au lancement</p>
-    <a href="creer.html" style="display:inline-block; margin-top:12px; font-size:13px; color:var(--rose); font-weight:500; text-decoration:none; border-bottom:1px solid var(--rose-light);">ou essayez gratuitement dès maintenant →</a>
+    <a href="creer.html" class="nav-cta" style="display:inline-block; padding:16px 40px; font-size:15px; text-decoration:none; box-shadow:0 4px 16px rgba(194,124,90,0.3);">Créer la surprise →</a>
+    <p class="hero-note" style="margin-top:16px;">100% gratuit · Aucun compte requis · Vos données restent privées</p>
     <div class="platforms">
       <span class="platform-label">Compatible avec</span>
       <div class="platform-logos">
@@ -1110,6 +1206,44 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Export WhatsApp (.txt)
         </span>
+      </div>
+    </div>
+    <!-- Trust bar -->
+    <div style="display:flex; gap:20px; justify-content:center; margin-top:28px; flex-wrap:wrap;">
+      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
+        <span style="font-size:14px;">🔒</span> Vos messages restent sur votre appareil
+      </span>
+      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
+        <span style="font-size:14px;">🗑️</span> Aucune donnée stockée
+      </span>
+      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
+        <span style="font-size:14px;">🚫</span> Jamais revendu
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="section-alt">
+  <div class="container">
+    <div class="section-eyebrow reveal">Simple</div>
+    <h2 class="section-title reveal">Comment ça marche</h2>
+    <p class="section-sub">En trois étapes, vos messages deviennent une story.</p>
+    <div class="steps">
+      <div class="step reveal delay-1">
+        <span class="step-icon">📱</span>
+        <h3>Importez votre conversation</h3>
+        <p>Exportez votre conversation WhatsApp en .txt et importez-la. On s'occupe du reste.</p>
+      </div>
+      <div class="step reveal delay-2">
+        <span class="step-icon">✨</span>
+        <h3>Découvrez votre story</h3>
+        <p>En quelques secondes, on génère votre story de couple : stats, côte à côte, premier je t'aime… C'est gratuit.</p>
+      </div>
+      <div class="step reveal delay-3">
+        <span class="step-icon">💕</span>
+        <h3>Envoyez-lui la surprise</h3>
+        <p>Envoyez la story à votre moitié et revivez ensemble vos débuts. Envie du livre complet ? Le PDF de 40 pages est à vous.</p>
       </div>
     </div>
   </div>
@@ -1122,11 +1256,11 @@
       <div class="phone-screen">
         <div class="phone-notch"></div>
         <div class="phone-header">
-          <div class="contact-name">Marie ❤️</div>
+          <div class="contact-name">Marine ❤️</div>
           <div class="contact-sub">WhatsApp</div>
         </div>
         <div class="msg msg-l">Salut 😊</div>
-        <div class="msg msg-l">C'est Marie, de Tinder haha</div>
+        <div class="msg msg-l">C'est Marine, de Tinder haha</div>
         <div style="clear:both"></div>
         <div class="msg msg-r">Heyy ! Ah cool tu m'as ajouté 😄</div>
         <div style="clear:both"></div>
@@ -1144,83 +1278,20 @@
     <div class="msg-arrow">↓</div>
 
     <div class="section-eyebrow" style="margin-top: 16px;">Le résultat</div>
-    <h2 class="section-title" style="margin-bottom: 8px;">Vos messages deviennent un <em>livre</em></h2>
-    <p class="section-sub">Feuilletez un aperçu de ce que vous recevrez</p>
+    <h2 class="section-title" style="margin-bottom: 8px;">Votre conversation devient une <em>story</em></h2>
+    <p class="section-sub">Swipez un aperçu de ce que vous recevrez</p>
 
-    <div class="book-scene reveal-scale">
-      <div class="book" id="book">
-        <div class="book-spine"></div>
-        <div class="bk-page bk-page-left" id="bk-left" onclick="bkPrev()" style="cursor:pointer;"></div>
-        <div class="bk-page bk-page-right" id="bk-right" onclick="bkNext()" style="cursor:pointer;"></div>
-        <div class="bk-flip-overlay" id="bk-flip-overlay">
-          <div class="bk-flip-page" id="bk-flip-page">
-            <div class="bk-flip-front" id="bk-flip-front"></div>
-            <div class="bk-flip-back" id="bk-flip-back"></div>
-          </div>
-        </div>
+    <div class="reveal-scale" style="display:flex; justify-content:center; margin-bottom:20px;">
+      <div class="story-phone" id="story-phone">
+        <div class="story-progress" id="story-progress"></div>
+        <div class="story-slide" id="story-slide"></div>
+        <div class="story-watermark">nospremiersmots.fr</div>
       </div>
     </div>
     <div class="book-nav">
-      <button class="bk-nav-btn" id="bk-prev" onclick="bkPrev()">←</button>
-      <div class="bk-dots" id="bk-dots"></div>
-      <button class="bk-nav-btn" id="bk-next" onclick="bkNext()">→</button>
-    </div>
-  </div>
-</section>
-
-<!-- COMMENT ÇA MARCHE -->
-<section class="section-alt">
-  <div class="container">
-    <div class="section-eyebrow reveal">Simple</div>
-    <h2 class="section-title reveal">Comment ça marche</h2>
-    <p class="section-sub">En trois étapes, vos messages deviennent un livre.</p>
-    <div class="steps">
-      <div class="step reveal delay-1">
-        <span class="step-icon">📱</span>
-        <h3>Importez votre conversation</h3>
-        <p>Exportez votre conversation WhatsApp en .txt et importez-la. On se concentre sur vos 1 à 2 premiers mois.</p>
-      </div>
-      <div class="step reveal delay-2">
-        <span class="step-icon">✨</span>
-        <h3>Découvrez vos stats</h3>
-        <p>On analyse tous vos messages : cœurs, fous rires, face-à-face, records... Votre couple en chiffres.</p>
-      </div>
-      <div class="step reveal delay-3">
-        <span class="step-icon">📖</span>
-        <h3>Recevez votre livre</h3>
-        <p>En PDF à télécharger ou en livre imprimé livré chez vous. Le début de votre histoire, pour toujours.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TROIS CHAPITRES -->
-<section>
-  <div class="container">
-    <div class="section-eyebrow reveal">Un livre, deux chapitres</div>
-    <h2 class="section-title">Le début de votre histoire, en <em>livre</em></h2>
-    <p class="section-sub">Vos premiers messages tels quels + toutes vos statistiques sur la période.</p>
-    <div class="formats-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-      <div class="format-card">
-        <span class="format-badge badge-conv">💬 Chapitre 1</span>
-        <h3>Vos premiers mots</h3>
-        <p>Vos 250 premiers messages reproduits tels quels : bulles, emojis, dates, fautes. Le tout début, brut et authentique.</p>
-        <div class="format-preview conv-preview">
-          <div style="clear:both"><span class="mini-bubble mini-l">Tu fais quoi ce soir ? 😊</span></div>
-          <div style="clear:both; text-align:right"><span class="mini-bubble mini-r">Netflix et toi ?</span></div>
-          <div style="clear:both"><span class="mini-bubble mini-l">Pareil haha</span></div>
-          <div style="clear:both"></div>
-        </div>
-      </div>
-      <div class="format-card">
-        <span class="format-badge" style="background:#FFF8EC; color:#C49A3B;">📊 Chapitre 2</span>
-        <h3>Votre couple en chiffres</h3>
-        <p>Statistiques calculées sur tous vos messages : face-à-face, fun facts, records, moments clés, et bien plus.</p>
-        <div class="format-preview" style="font-size: 12px; text-align: center; padding: 12px;">
-          <span style="display:block; font-size: 20px; margin-bottom: 4px;">❤️ 342 · 🌙 187 · 😂 893</span>
-          <span style="color: var(--ink-muted); font-size: 10px;">Qui est le couche-tard ? Le champion des cœurs ?</span>
-        </div>
-      </div>
+      <button class="bk-nav-btn" id="st-prev" onclick="stPrev()">←</button>
+      <div class="bk-dots" id="st-dots"></div>
+      <button class="bk-nav-btn" id="st-next" onclick="stNext()">→</button>
     </div>
   </div>
 </section>
@@ -1228,9 +1299,9 @@
 <!-- STATS CHAPTER -->
 <section class="section-alt">
   <div class="container">
-    <div class="section-eyebrow reveal">Le chapitre préféré des couples</div>
+    <div class="section-eyebrow reveal">Ce que vous allez découvrir</div>
     <h2 class="section-title">Vos premiers mois en chiffres</h2>
-    <p class="section-sub">Combien de « bonne nuit » ? Qui a envoyé le premier message ? Le tout dans un chapitre dédié.</p>
+    <p class="section-sub">Combien de « bonne nuit » ? Qui a envoyé le premier message ? Tout est dans votre story et votre PDF.</p>
 
     <!-- Donut -->
     <div class="lp-donut-section reveal-scale" id="lp-donut">
@@ -1246,47 +1317,47 @@
         </svg>
       </div>
       <div class="lp-donut-legend">
-        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#C27C5A;"></div><span>Marie — 52%</span></div>
-        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#5A8FA8;"></div><span>Alexis — 48%</span></div>
+        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#C27C5A;"></div><span>Marine — 52%</span></div>
+        <div class="lp-legend-item"><div class="lp-legend-dot" style="background:#5A8FA8;"></div><span>Baptiste — 48%</span></div>
       </div>
     </div>
 
-    <!-- Face à face -->
+    <!-- Côte à côte -->
     <div class="lp-h2h reveal" id="lp-h2h">
-      <div class="lp-h2h-title">Face à face</div>
-      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin:-10px 0 16px;">Marie vs Alexis — qui gagne ?</div>
+      <div class="lp-h2h-title">Côte à côte</div>
+      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin:-10px 0 16px;">Marine & Baptiste — chacun son style</div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.1s;">
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="342">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="342">0</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">❤️</span><span class="lp-h2h-cat">Cœurs</span></div>
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="187">0</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="187">0</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.2s;">
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="612">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="612">0</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">😂</span><span class="lp-h2h-cat">Fous rires</span></div>
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="281">0</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="281">0</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.3s;">
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">18 mots</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">18 mots</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">📏</span><span class="lp-h2h-cat">Écrit des pavés</span></div>
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">6 mots</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">6 mots</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.4s;">
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="142">0</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose lp-counter" data-target="142">0</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">❓</span><span class="lp-h2h-cat">Le + curieux</span></div>
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="312">0</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue lp-counter" data-target="312">0</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.5s;">
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose">4 min</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-rose">4 min</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">⚡</span><span class="lp-h2h-cat">Réponse rapide</span></div>
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue">1 min</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-blue">1 min</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div class="lp-h2h-row" style="opacity:0;transform:translateX(-20px);transition:opacity 0.5s ease, transform 0.5s ease;transition-delay:0.6s;">
-        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">68%</span><span class="lp-h2h-name">Marie</span></div>
+        <div class="lp-h2h-side lp-winner"><span class="lp-h2h-val lp-val-rose">68%</span><span class="lp-h2h-name">Marine</span></div>
         <div class="lp-h2h-mid"><span class="lp-h2h-emoji">☀️</span><span class="lp-h2h-cat">Ouvre la conv.</span></div>
-        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">32%</span><span class="lp-h2h-name">Alexis</span></div>
+        <div class="lp-h2h-side"><span class="lp-h2h-val lp-val-blue">32%</span><span class="lp-h2h-name">Baptiste</span></div>
       </div>
       <div style="text-align:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-muted); font-style:italic;">
-        + double-texteur, bonne nuit, couche-tard... et bien plus dans votre livre
+        + double-texteur, bonne nuit, couche-tard... et bien plus dans votre story
       </div>
     </div>
 
@@ -1301,7 +1372,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">14</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">19:32</span></div></div>
             <span class="lp-tl-tag">Premier message</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Salut 😊"</div><div class="lp-tl-sender-1">Marie</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Salut 😊"</div><div class="lp-tl-sender-1">Marine</div></div>
           </div>
         </div>
 
@@ -1310,7 +1381,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">14</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">23:47</span></div></div>
             <span class="lp-tl-tag">Première bonne nuit</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Bonne nuit 😴💕 je suis content de t'avoir parlé"</div><div class="lp-tl-sender-2">Alexis</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Bonne nuit 😴💕 je suis content de t'avoir parlé"</div><div class="lp-tl-sender-2">Baptiste</div></div>
           </div>
         </div>
 
@@ -1319,7 +1390,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">20</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">14:02</span></div></div>
             <span class="lp-tl-tag">Premier rendez-vous</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Bon et sinon, ça te dirait qu'on se voit un de ces jours ?"</div><div class="lp-tl-sender-2">Alexis</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Bon et sinon, ça te dirait qu'on se voit un de ces jours ?"</div><div class="lp-tl-sender-2">Baptiste</div></div>
           </div>
         </div>
 
@@ -1328,7 +1399,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">25</span><div class="lp-tl-month-time"><span class="lp-tl-month">janv. 2024</span><span class="lp-tl-time">20:30</span></div></div>
             <span class="lp-tl-tag">Notre chanson</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Écoute cette chanson, elle me fait penser à toi"</div><div class="lp-tl-sender-2">Alexis</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Écoute cette chanson, elle me fait penser à toi"</div><div class="lp-tl-sender-2">Baptiste</div></div>
           </div>
         </div>
 
@@ -1337,7 +1408,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">15</span><div class="lp-tl-month-time"><span class="lp-tl-month">fév. 2024</span><span class="lp-tl-time">00:01</span></div></div>
             <span class="lp-tl-tag">Premier je t'aime</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Je t'aime"</div><div class="lp-tl-sender-2">Alexis</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Je t'aime"</div><div class="lp-tl-sender-2">Baptiste</div></div>
           </div>
         </div>
 
@@ -1346,7 +1417,7 @@
           <div class="lp-tl-content">
             <div class="lp-tl-date-row"><span class="lp-tl-day">5</span><div class="lp-tl-month-time"><span class="lp-tl-month">avril 2024</span></div></div>
             <span class="lp-tl-tag">Premier voyage</span>
-            <div class="lp-tl-card"><div class="lp-tl-msg">"Lyon ce week-end, juste nous deux ?"</div><div class="lp-tl-sender-1">Marie</div></div>
+            <div class="lp-tl-card"><div class="lp-tl-msg">"Lyon ce week-end, juste nous deux ?"</div><div class="lp-tl-sender-1">Marine</div></div>
           </div>
         </div>
 
@@ -1355,8 +1426,8 @@
 
     <!-- Notre histoire — grid -->
     <div class="reveal" style="background:white; border:1px solid var(--border); border-radius:16px; padding:24px 20px; margin-bottom:24px;">
-      <div style="font-family:var(--font-display); font-size:18px; text-align:center; margin-bottom:4px;">Notre histoire</div>
-      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin-bottom:18px;">Les chiffres de votre couple</div>
+      <div style="font-family:var(--font-display); font-size:18px; text-align:center; margin-bottom:4px;">Le saviez-vous ?</div>
+      <div style="font-size:12px; color:var(--ink-muted); text-align:center; margin-bottom:18px;">Les petits détails de votre couple</div>
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
         <div class="reveal-scale delay-1" style="background:var(--cream); border-radius:12px; padding:16px 10px; text-align:center;">
           <div style="font-size:22px; margin-bottom:4px;">📖</div>
@@ -1390,7 +1461,7 @@
         </div>
       </div>
       <div style="text-align:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-muted); font-style:italic;">
-        + réponse rapide, couche-tard, le + matinal... dans votre livre
+        + réponse rapide, couche-tard, le + matinal... dans votre story
       </div>
     </div>
   </div>
@@ -1400,22 +1471,33 @@
 <section>
   <div class="container">
     <div class="section-eyebrow reveal">Tarifs</div>
-    <h2 class="section-title">Le début de votre histoire, pour toujours</h2>
-    <p class="section-sub">Le prix d'un bouquet de fleurs. Mais celui-ci ne fanera jamais.</p>
-    <div class="pricing-card" style="max-width:400px; margin:0 auto;">
-      <div class="price">4,99 €</div>
-      <div class="price-sub">PDF téléchargeable</div>
-      <ul class="pricing-features">
-        <li>250 premiers messages en bulles</li>
-        <li>Statistiques complètes</li>
-        <li>Face à face, fun facts, timeline</li>
-        <li>Couverture personnalisée</li>
-        <li>Téléchargement immédiat</li>
-      </ul>
-      <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">🎁 Offrir nos premiers mots</a>
+    <h2 class="section-title">La story est <em>gratuite</em></h2>
+    <p class="section-sub">Découvrez votre story sans rien payer. Envie du livre complet ? C'est le prix d'une rose — mais celle-ci ne fanera jamais.</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 560px; margin: 0 auto;">
+      <div class="pricing-card" style="border-color: var(--border);">
+        <div class="price" style="color:var(--ink);">Gratuit</div>
+        <div class="price-sub">Story interactive</div>
+        <ul class="pricing-features">
+          <li>8 écrans animés à swiper</li>
+          <li>Côte à côte, fun facts</li>
+          <li>Premier « je t'aime »</li>
+          <li>À envoyer à votre moitié</li>
+        </ul>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center; background:var(--ink);">Créer ma story</a>
+      </div>
+      <div class="pricing-card">
+        <div class="price">3,99 €</div>
+        <div class="price-sub">PDF complet — 40 pages</div>
+        <ul class="pricing-features">
+          <li>Tout ce que la story contient</li>
+          <li>250 premiers messages en bulles</li>
+          <li>Statistiques détaillées</li>
+          <li>Timeline mois par mois</li>
+        </ul>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">Obtenir le PDF</a>
+      </div>
     </div>
-    <p style="text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 16px;">Aperçu gratuit avant achat · Satisfait ou remboursé</p>
-    <p style="text-align: center; font-size: 12px; color: var(--rose); margin-top: 8px; font-style: italic;">📖 Version livre imprimé — bientôt disponible</p>
+    <p style="text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 16px;">Aucun compte requis · Vos données restent privées</p>
   </div>
 </section>
 
@@ -1438,8 +1520,8 @@
       </div>
       <div class="trust-item reveal delay-3">
         <span class="icon">🔒</span>
-        <h4>Transmission sécurisée</h4>
-        <p>Vos messages sont analysés directement dans votre navigateur. Rien n'est envoyé sur nos serveurs.</p>
+        <h4>Connexion sécurisée</h4>
+        <p>Toutes les communications passent par HTTPS. Votre fichier WhatsApp est chiffré pendant le transfert.</p>
       </div>
       <div class="trust-item reveal delay-4">
         <span class="icon">🚫</span>
@@ -1453,12 +1535,9 @@
 <!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Votre histoire a commencé<br>par un <em>message</em></h2>
-  <p>Transformez-le en livre. Inscrivez-vous pour être prévenu du lancement.</p>
-  <form class="final-form" onsubmit="handleSignup(event, this)">
-    <input type="email" placeholder="votre@email.com" required>
-    <button type="submit">Me prévenir</button>
-  </form>
-  <p class="final-note">Rejoignez la liste d'attente — on lance bientôt.</p>
+  <p>Redécouvrez-le ensemble. C'est gratuit, c'est instantané, c'est à vous deux.</p>
+  <a href="creer.html" class="nav-cta" style="display:inline-block; padding:16px 40px; font-size:15px; text-decoration:none; box-shadow:0 4px 16px rgba(194,124,90,0.3);">Créer ma story →</a>
+  <p class="final-note" style="margin-top:16px;">30 secondes · Aucun compte · 100% privé</p>
 </section>
 
 <!-- FOOTER -->
@@ -1486,7 +1565,7 @@ async function handleSignup(e, form) {
     const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, _subject: 'Nouvelle inscription IEN !' })
+      body: JSON.stringify({ email: email, _subject: 'Nouvelle inscription Nos Premiers Mots !' })
     });
     
     if (res.ok) {
@@ -1522,11 +1601,135 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ═══ BOOK PREVIEW ═══
-const bkPages = [
-  // ── SPREAD 0: Couverture + Sommaire avec numéros de pages ──
+// ═══ STORY PREVIEW ═══
+const stSlides = [
   {
-    left: `<div class="bk-cover"><div class="bk-cover-deco">~ ~ ~</div><div class="bk-cover-title">Nos premiers <em>mots</em></div><div class="bk-cover-names">Marie & Alexis</div><div class="bk-cover-line"></div><div class="bk-cover-meta">14 janvier — 14 mars 2024</div><div class="bk-cover-meta" style="margin-top:3px;">4 821 messages · 60 jours</div></div>`,
+    bg: '#FDF0EA',
+    html: `<div class="st-eyebrow" style="color:#C27C5A;">Nos premiers mots</div>
+      <div style="font-family:var(--font-display);font-size:34px;color:#1A1A1A;text-align:center;line-height:1.15;">Marine<br><span style="font-size:16px;color:rgba(0,0,0,0.2);">&</span><br>Baptiste</div>
+      <div style="width:32px;height:1px;background:#C27C5A;margin:24px 0;"></div>
+      <div class="st-sub" style="color:rgba(0,0,0,0.35);">3 ans de conversation<br>condensés en quelques instants</div>`
+  },
+  {
+    bg: '#FFF9F5',
+    html: `<div class="st-eyebrow" style="color:#5A8FA8;">Au total, vous avez échangé</div>
+      <div class="st-big" style="font-size:56px;color:#1A1A1A;" id="st-counter">0</div>
+      <div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-style:italic;margin-top:6px;">messages</div>
+      <div class="st-sub" style="color:rgba(0,0,0,0.35);margin-top:20px;">C'est l'équivalent de 4 romans<br>de 300 pages chacun 📚</div>`
+  },
+  {
+    bg: '#1A1A1A',
+    html: `<div class="st-eyebrow" style="color:rgba(255,255,255,0.4);">Qui parle le plus ?</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:24px;">
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:#C27C5A;margin-bottom:6px;">58%</div><div id="st-bar-m" style="width:64px;height:0;background:linear-gradient(to top,#C27C5A,#F0D5C8);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">Marine</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:#5A8FA8;margin-bottom:6px;">42%</div><div id="st-bar-a" style="width:64px;height:0;background:linear-gradient(to top,#5A8FA8,#DEECF1);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">Baptiste</div></div>
+      </div>
+      <div class="st-sub" style="color:rgba(255,255,255,0.35);font-style:italic;">Marine : 27 692 · Baptiste : 20 140</div>`
+  },
+  {
+    bg: '#FFF9F5',
+    html: `<div class="st-eyebrow" style="color:#5A8FA8;">Côte à côte</div>
+      <div style="display:flex;justify-content:space-between;width:100%;padding:0 2px;margin-bottom:10px;"><span style="font-size:11px;font-weight:600;color:#C27C5A;">Marine</span><span style="font-size:11px;font-weight:600;color:#5A8FA8;">Baptiste</span></div>
+      <div style="width:100%;display:flex;flex-direction:column;gap:8px;" id="st-h2h">
+        <div class="st-h2h-row"><div class="st-h2h-label">👑 Messages envoyés</div><div class="st-h2h-bars"><div class="st-h2h-l" style="width:58%;background:linear-gradient(90deg,#F0D5C8,#C27C5A);"><span>58%</span></div><div class="st-h2h-r" style="width:42%;background:#DEECF1;"><span>42%</span></div></div></div>
+        <div class="st-h2h-row"><div class="st-h2h-label">Emojis utilisés 👑</div><div class="st-h2h-bars"><div class="st-h2h-l" style="width:37%;background:#F0D5C8;"><span>37%</span></div><div class="st-h2h-r" style="width:63%;background:linear-gradient(90deg,#5A8FA8,#DEECF1);"><span>63%</span></div></div></div>
+        <div class="st-h2h-row"><div class="st-h2h-label">👑 Photos envoyées</div><div class="st-h2h-bars"><div class="st-h2h-l" style="width:71%;background:linear-gradient(90deg,#F0D5C8,#C27C5A);"><span>71%</span></div><div class="st-h2h-r" style="width:29%;background:#DEECF1;"><span>29%</span></div></div></div>
+        <div class="st-h2h-row"><div class="st-h2h-label">Vocaux envoyés 👑</div><div class="st-h2h-bars"><div class="st-h2h-l" style="width:22%;background:#F0D5C8;"><span>22%</span></div><div class="st-h2h-r" style="width:78%;background:linear-gradient(90deg,#5A8FA8,#DEECF1);"><span>78%</span></div></div></div>
+        <div class="st-h2h-row"><div class="st-h2h-label">👑 1er msg du jour</div><div class="st-h2h-bars"><div class="st-h2h-l" style="width:66%;background:linear-gradient(90deg,#F0D5C8,#C27C5A);"><span>66%</span></div><div class="st-h2h-r" style="width:34%;background:#DEECF1;"><span>34%</span></div></div></div>
+      </div>
+      <div style="margin-top:12px;text-align:center;"><span style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-weight:700;">3</span><span style="font-size:11px;color:rgba(0,0,0,0.2);margin:0 6px;">—</span><span style="font-family:var(--font-display);font-size:16px;color:#5A8FA8;font-weight:700;">2</span><div style="font-size:9px;color:rgba(0,0,0,0.3);font-style:italic;margin-top:2px;">Marine mène la danse 💃</div></div>`
+  },
+  {
+    bg: '#1A1A1A',
+    html: `<div class="st-eyebrow" style="color:rgba(255,255,255,0.4);">De quoi parlez-vous ?</div>
+      <svg width="150" height="150" viewBox="0 0 180 180" style="margin-bottom:18px;"><circle cx="90" cy="90" r="70" fill="none" stroke="#C27C5A" stroke-width="20" stroke-dasharray="${0.34*439.8} ${439.8}" stroke-dashoffset="0" transform="rotate(-90 90 90)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#D4956B" stroke-width="20" stroke-dasharray="${0.22*439.8} ${439.8}" stroke-dashoffset="${-0.34*439.8}" transform="rotate(-90 90 90)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#5A8FA8" stroke-width="20" stroke-dasharray="${0.16*439.8} ${439.8}" stroke-dashoffset="${-0.56*439.8}" transform="rotate(-90 90 90)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#7BB3C7" stroke-width="20" stroke-dasharray="${0.14*439.8} ${439.8}" stroke-dashoffset="${-0.72*439.8}" transform="rotate(-90 90 90)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#F0D5C8" stroke-width="20" stroke-dasharray="${0.08*439.8} ${439.8}" stroke-dashoffset="${-0.86*439.8}" transform="rotate(-90 90 90)"/><circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="20" stroke-dasharray="${0.06*439.8} ${439.8}" stroke-dashoffset="${-0.94*439.8}" transform="rotate(-90 90 90)"/></svg>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;">${[['Quotidien','34','#C27C5A'],['Tendresse','22','#D4956B'],['Projets','16','#5A8FA8'],['Humour','14','#7BB3C7'],['Débats','8','#F0D5C8'],['Autres','6','rgba(255,255,255,0.3)']].map(c=>'<div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:'+c[2]+';flex-shrink:0;"></div><span style="font-size:10px;color:rgba(255,255,255,0.6);">'+c[0]+' <span style="color:#fff;font-weight:600;">'+c[1]+'%</span></span></div>').join('')}</div>`
+  },
+  {
+    bg: '#FDF0EA',
+    html: `<div class="st-eyebrow" style="color:#C27C5A;">Le premier « je t'aime »</div>
+      <div style="font-size:10px;color:rgba(0,0,0,0.3);margin-bottom:12px;font-weight:500;">14 février 2022 · 23:42</div>
+      <div style="background:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:8px;">
+        <div style="font-size:13px;color:#1A1A1A;line-height:1.5;">Bon je crois que je dois te dire un truc… je t'aime. Voilà c'est dit 🙈</div>
+        <div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:#C27C5A;">Marine</span> · 23:42</div>
+      </div>
+      <div style="background:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-left:30px;">
+        <div style="font-size:13px;color:#1A1A1A;line-height:1.5;">… je t'aime aussi ❤️</div>
+        <div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:#5A8FA8;">Baptiste</span> · 23:43</div>
+      </div>`
+  },
+  {
+    bg: '#C27C5A',
+    html: `<div class="st-eyebrow" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div>
+      <div style="font-size:40px;margin-bottom:16px;">🦉</div>
+      <div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">Votre heure préférée pour discuter : <strong>23h</strong></div>
+      <div class="st-sub" style="color:rgba(255,255,255,0.5);margin-top:12px;">38% de vos messages sont envoyés après 22h</div>`
+  },
+  {
+    bg: '#FFF9F5',
+    html: `<div class="st-eyebrow" style="color:#5A8FA8;">Envie d'aller plus loin ?</div>
+      <div style="font-family:var(--font-display);font-size:22px;color:#1A1A1A;text-align:center;line-height:1.3;margin-bottom:16px;">Recevez votre livre<br>de <span style="color:#C27C5A;">40 pages</span></div>
+      <div style="width:100%;display:flex;flex-direction:column;gap:6px;margin-bottom:18px;">
+        ${[['📊','Toutes vos statistiques'],['💬','Vos messages marquants'],['🏆','Le côte à côte complet'],['📅','Votre timeline mois par mois']].map(p=>'<div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">'+p[0]+'</span><span style="font-size:11px;color:#1A1A1A;">'+p[1]+'</span></div>').join('')}
+      </div>
+      <div style="background:#C27C5A;color:#fff;border-radius:24px;padding:11px 28px;font-size:13px;font-weight:600;text-align:center;box-shadow:0 3px 12px rgba(194,124,90,0.3);width:100%;max-width:220px;">Obtenir le PDF — 3,99€</div>
+      <div style="border:1.5px solid rgba(0,0,0,0.12);border-radius:24px;padding:9px 24px;font-size:12px;font-weight:500;text-align:center;margin-top:8px;width:100%;max-width:220px;color:#1A1A1A;">Envoyer à ma moitié 💕</div>`
+  }
+];
+
+let stCurrent = 0;
+
+function stRender() {
+  const slide = stSlides[stCurrent];
+  const el = document.getElementById('story-slide');
+  el.style.background = slide.bg;
+  el.innerHTML = slide.html;
+  // Update watermark color
+  const wm = document.querySelector('.story-watermark');
+  if (wm) wm.style.color = (slide.bg === '#1A1A1A' || slide.bg === '#C27C5A') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+  // Progress bars
+  const prog = document.getElementById('story-progress');
+  prog.innerHTML = stSlides.map((_,i) => {
+    const dark = slide.bg === '#1A1A1A' || slide.bg === '#C27C5A';
+    return `<div class="st-bar ${i<=stCurrent?'done':''}" style="background:${i<=stCurrent ? (dark?'rgba(255,255,255,0.8)':'rgba(0,0,0,0.3)') : (dark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.08)')}"></div>`;
+  }).join('');
+  // Dots
+  const dots = document.getElementById('st-dots');
+  dots.innerHTML = stSlides.map((_, i) => `<button class="bk-dot ${i === stCurrent ? 'active' : ''}" onclick="stGo(${i})"></button>`).join('');
+  // Update nav
+  document.getElementById('st-prev').disabled = stCurrent === 0;
+  document.getElementById('st-next').disabled = stCurrent === stSlides.length - 1;
+  // Animations
+  if (stCurrent === 1) stAnimateCounter();
+  if (stCurrent === 2) { setTimeout(()=>{ const bm=document.getElementById('st-bar-m'); const ba=document.getElementById('st-bar-a'); if(bm)bm.style.height='110px'; if(ba)ba.style.height='80px'; },50); }
+}
+
+function stAnimateCounter() {
+  const el = document.getElementById('st-counter');
+  if (!el) return;
+  let v = 0;
+  const target = 47832;
+  const step = Math.ceil(target / 80);
+  const id = setInterval(() => { v += step; if (v >= target) { v = target; clearInterval(id); } el.textContent = v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }, 16);
+}
+
+function stNext() { if (stCurrent < stSlides.length-1) { stCurrent++; stRender(); } }
+function stPrev() { if (stCurrent > 0) { stCurrent--; stRender(); } }
+function stGo(i) { stCurrent = i; stRender(); }
+
+// Click left/right on phone
+document.getElementById('story-phone').addEventListener('click', function(e) {
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  if (x > rect.width / 2) stNext(); else stPrev();
+});
+
+stRender();
+
+// ═══ (LEGACY BOOK PREVIEW — kept for reference) ═══
+const bkPages_legacy = [
+  {
+    left: `<div class="bk-cover"><div class="bk-cover-deco">~ ~ ~</div><div class="bk-cover-title">Nos premiers <em>mots</em></div><div class="bk-cover-names">Marine & Baptiste</div><div class="bk-cover-line"></div><div class="bk-cover-meta">14 janvier — 14 mars 2024</div><div class="bk-cover-meta" style="margin-top:3px;">4 821 messages · 60 jours</div></div>`,
     right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 6px;">
       <div style="font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-muted);text-align:center;margin-bottom:18px;">Sommaire</div>
       <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;"><span style="font-family:var(--font-display);font-size:10px;color:var(--rose);min-width:16px;">01</span><span style="font-size:9px;font-weight:500;">Nos premiers mots</span><span style="flex:1;border-bottom:0.5px dotted #D0C8BE;margin:0 3px;min-width:8px;align-self:baseline;"></span><span style="font-size:8px;color:var(--ink-muted);">3</span></div>
@@ -1534,7 +1737,7 @@ const bkPages = [
       <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;"><span style="font-family:var(--font-display);font-size:10px;color:var(--rose);min-width:16px;">02</span><span style="font-size:9px;font-weight:500;">Votre couple en chiffres</span><span style="flex:1;border-bottom:0.5px dotted #D0C8BE;margin:0 3px;min-width:8px;"></span><span style="font-size:8px;color:var(--ink-muted);">18</span></div>
       <div style="margin-left:20px;margin-top:4px;">
         <div style="display:flex;align-items:baseline;gap:2px;margin-bottom:2px;"><span style="font-size:7.5px;color:var(--ink-soft);">Vue d\u2019ensemble</span><span style="flex:1;border-bottom:0.5px dotted #E0D8CE;margin:0 2px;min-width:6px;"></span><span style="font-size:7px;color:var(--ink-muted);">19</span></div>
-        <div style="display:flex;align-items:baseline;gap:2px;margin-bottom:2px;"><span style="font-size:7.5px;color:var(--ink-soft);">Face à face</span><span style="flex:1;border-bottom:0.5px dotted #E0D8CE;margin:0 2px;min-width:6px;"></span><span style="font-size:7px;color:var(--ink-muted);">22</span></div>
+        <div style="display:flex;align-items:baseline;gap:2px;margin-bottom:2px;"><span style="font-size:7.5px;color:var(--ink-soft);">Côte à côte</span><span style="flex:1;border-bottom:0.5px dotted #E0D8CE;margin:0 2px;min-width:6px;"></span><span style="font-size:7px;color:var(--ink-muted);">22</span></div>
         <div style="display:flex;align-items:baseline;gap:2px;margin-bottom:2px;"><span style="font-size:7.5px;color:var(--ink-soft);">Le saviez-vous ?</span><span style="flex:1;border-bottom:0.5px dotted #E0D8CE;margin:0 2px;min-width:6px;"></span><span style="font-size:7px;color:var(--ink-muted);">25</span></div>
         <div style="display:flex;align-items:baseline;gap:2px;"><span style="font-size:7.5px;color:var(--ink-soft);">Moments clés</span><span style="flex:1;border-bottom:0.5px dotted #E0D8CE;margin:0 2px;min-width:6px;"></span><span style="font-size:7px;color:var(--ink-muted);">28</span></div>
       </div>
@@ -1543,8 +1746,8 @@ const bkPages = [
   },
   // ── SPREAD 1: Conversation ──
   {
-    left: `<div class="bk-ch"><div class="bk-ch-num">Chapitre un</div><div class="bk-ch-title">Nos premiers mots</div><div class="bk-ch-sub">250 messages, tels qu\u2019ils ont été écrits</div><div class="bk-ch-div"></div></div><div class="bk-date"><span>14 janvier 2024</span></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Salut \u{1F60A}<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>C\u2019est Marie, de Tinder haha<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div class="bk-tm">19:35</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Grave, Tinder ça bug tout le temps<div class="bk-tm">19:36</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Tu fais quoi de beau ce soir ?<div class="bk-tm">19:38</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Netflix et toi ? \u{1F60F}<div class="bk-tm">19:40</div></div><div class="bk-clr"></div>`,
-    right: `<div style="padding-top:24px;"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Pareil haha on est des gens passionnants<div class="bk-tm">19:40</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>\u{1F602}\u{1F602}\u{1F602}<div class="bk-tm">19:41</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Non mais sérieux tu regardes quoi ?<div class="bk-tm">19:42</div></div><div class="bk-clr"></div><div style="text-align:center;margin:6px 0;font-size:8px;color:#C0B8AE;">· · ·</div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Alexis</div>Bon et sinon, ça te dirait qu\u2019on se voit ?<div class="bk-tm">22:14</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marie</div>Oui ça me dit trop bien !<div class="bk-tm">22:16</div></div><div class="bk-clr"></div><div style="text-align:center;margin-top:10px;"><div style="display:inline-block;padding:5px 14px;background:var(--rose-bg);border:1px solid var(--rose-light);border-radius:100px;font-size:8px;color:var(--rose);font-weight:500;">+ 243 messages dans votre livre \u2192</div></div>`
+    left: `<div class="bk-ch"><div class="bk-ch-num">Chapitre un</div><div class="bk-ch-title">Nos premiers mots</div><div class="bk-ch-sub">250 messages, tels qu\u2019ils ont été écrits</div><div class="bk-ch-div"></div></div><div class="bk-date"><span>14 janvier 2024</span></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>Salut \u{1F60A}<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>C\u2019est Marine, de Tinder haha<div class="bk-tm">19:32</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div class="bk-tm">19:35</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>Grave, Tinder ça bug tout le temps<div class="bk-tm">19:36</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Baptiste</div>Tu fais quoi de beau ce soir ?<div class="bk-tm">19:38</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>Netflix et toi ? \u{1F60F}<div class="bk-tm">19:40</div></div><div class="bk-clr"></div>`,
+    right: `<div style="padding-top:24px;"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Baptiste</div>Pareil haha on est des gens passionnants<div class="bk-tm">19:40</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>\u{1F602}\u{1F602}\u{1F602}<div class="bk-tm">19:41</div></div><div class="bk-clr"></div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Baptiste</div>Non mais sérieux tu regardes quoi ?<div class="bk-tm">19:42</div></div><div class="bk-clr"></div><div style="text-align:center;margin:6px 0;font-size:8px;color:#C0B8AE;">· · ·</div><div class="bk-b bk-br"><div class="bk-sn bk-s2">Baptiste</div>Bon et sinon, ça te dirait qu\u2019on se voit ?<div class="bk-tm">22:14</div></div><div class="bk-clr"></div><div class="bk-b bk-bl"><div class="bk-sn bk-s1">Marine</div>Oui ça me dit trop bien !<div class="bk-tm">22:16</div></div><div class="bk-clr"></div><div style="text-align:center;margin-top:10px;"><div style="display:inline-block;padding:5px 14px;background:var(--rose-bg);border:1px solid var(--rose-light);border-radius:100px;font-size:8px;color:var(--rose);font-weight:500;">+ 243 messages dans votre livre \u2192</div></div>`
   },
   // ── SPREAD 2: Donut intégré + Stats cards ──
   {
@@ -1552,7 +1755,7 @@ const bkPages = [
       <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;">Chapitre deux</div>
       <div style="font-family:var(--font-display);font-size:14px;text-align:center;margin-bottom:10px;">Votre couple en chiffres</div>
       <svg width="120" height="120" viewBox="0 0 100 100"><circle cx="50" cy="50" r="36" fill="none" stroke="#F0EDE8" stroke-width="10"/><circle cx="50" cy="50" r="36" fill="none" stroke="#C27C5A" stroke-width="10" stroke-dasharray="117.5 108.9" stroke-dashoffset="56.5" transform="rotate(180 50 50)"/><circle cx="50" cy="50" r="36" fill="none" stroke="#5A8FA8" stroke-width="10" stroke-dasharray="108.9 117.5" stroke-dashoffset="165.4" transform="rotate(180 50 50)"/><text x="50" y="47" text-anchor="middle" style="font-family:'Playfair Display',serif;font-size:15px;font-weight:500;fill:#1A1A18;">4 821</text><text x="50" y="59" text-anchor="middle" style="font-family:Inter,sans-serif;font-size:7px;fill:#8A857D;">messages</text></svg>
-      <div style="display:flex;justify-content:center;gap:14px;font-size:7px;color:var(--ink-soft);margin-top:6px;"><div style="display:flex;align-items:center;gap:3px;"><div style="width:7px;height:7px;border-radius:50%;background:#C27C5A;"></div><strong>Marie</strong> 52%</div><div style="display:flex;align-items:center;gap:3px;"><div style="width:7px;height:7px;border-radius:50%;background:#5A8FA8;"></div><strong>Alexis</strong> 48%</div></div>
+      <div style="display:flex;justify-content:center;gap:14px;font-size:7px;color:var(--ink-soft);margin-top:6px;"><div style="display:flex;align-items:center;gap:3px;"><div style="width:7px;height:7px;border-radius:50%;background:#C27C5A;"></div><strong>Marine</strong> 52%</div><div style="display:flex;align-items:center;gap:3px;"><div style="width:7px;height:7px;border-radius:50%;background:#5A8FA8;"></div><strong>Baptiste</strong> 48%</div></div>
       <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px;width:100%;">
         <div style="background:#FDF8F4;border-radius:5px;padding:4px;text-align:center;"><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);">529</span><span style="font-size:6px;color:var(--ink-muted);display:block;">\u2764\uFE0F c\u0153urs</span></div>
         <div style="background:#FDF8F4;border-radius:5px;padding:4px;text-align:center;"><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);">893</span><span style="font-size:6px;color:var(--ink-muted);display:block;">\u{1F602} fous rires</span></div>
@@ -1561,119 +1764,28 @@ const bkPages = [
     right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;">
       <div style="font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:8px;">Vue d\u2019ensemble</div>
       <div class="bk-stat-grid">
-        <div class="bk-stat"><span class="bk-stat-emoji">\u2764\uFE0F</span><span class="bk-stat-num">529</span><span class="bk-stat-lbl">c\u0153urs</span><span class="bk-stat-dtl">Marie: 342 · Alexis: 187</span></div>
-        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F319}</span><span class="bk-stat-num">94</span><span class="bk-stat-lbl">bonne nuit</span><span class="bk-stat-dtl">Marie: 52 · Alexis: 42</span></div>
-        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F602}</span><span class="bk-stat-num">893</span><span class="bk-stat-lbl">fous rires</span><span class="bk-stat-dtl">Marie: 612 · Alexis: 281</span></div>
-        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F495}</span><span class="bk-stat-num">67</span><span class="bk-stat-lbl">je t\u2019aime</span><span class="bk-stat-dtl">Marie: 38 · Alexis: 29</span></div>
+        <div class="bk-stat"><span class="bk-stat-emoji">\u2764\uFE0F</span><span class="bk-stat-num">529</span><span class="bk-stat-lbl">c\u0153urs</span><span class="bk-stat-dtl">Marine: 342 · Baptiste: 187</span></div>
+        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F319}</span><span class="bk-stat-num">94</span><span class="bk-stat-lbl">bonne nuit</span><span class="bk-stat-dtl">Marine: 52 · Baptiste: 42</span></div>
+        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F602}</span><span class="bk-stat-num">893</span><span class="bk-stat-lbl">fous rires</span><span class="bk-stat-dtl">Marine: 612 · Baptiste: 281</span></div>
+        <div class="bk-stat"><span class="bk-stat-emoji">\u{1F495}</span><span class="bk-stat-num">67</span><span class="bk-stat-lbl">je t\u2019aime</span><span class="bk-stat-dtl">Marine: 38 · Baptiste: 29</span></div>
         <div class="bk-stat"><span class="bk-stat-emoji">\u{1F4C5}</span><span class="bk-stat-num">58 j</span><span class="bk-stat-lbl">de conversation</span><span class="bk-stat-dtl">47 j d\u2019affil\u00E9e max</span></div>
-        <div class="bk-stat"><span class="bk-stat-emoji">\u26A1</span><span class="bk-stat-num">3 min</span><span class="bk-stat-lbl">réponse moy.</span><span class="bk-stat-dtl">Record: Alexis 1 min</span></div>
+        <div class="bk-stat"><span class="bk-stat-emoji">\u26A1</span><span class="bk-stat-num">3 min</span><span class="bk-stat-lbl">réponse moy.</span><span class="bk-stat-dtl">Record: Baptiste 1 min</span></div>
       </div>
     </div>`
   },
-  // ── SPREAD 3: Face à face ──
+  // ── SPREAD 3: Côte à côte ──
   {
-    left: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:13px;text-align:center;margin-bottom:2px;">Face à face</div><div style="font-size:7px;color:var(--ink-muted);text-align:center;margin-bottom:8px;">Marie vs Alexis — qui gagne ?</div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">342</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2764\uFE0F</span><span class="bk-h2h-cat">C\u0153urs</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">187</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:65%;"></div><div class="bk-bar-2" style="width:35%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">612</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F602}</span><span class="bk-h2h-cat">Fous rires</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">281</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:69%;"></div><div class="bk-bar-2" style="width:31%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">2 510</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F4AC}</span><span class="bk-h2h-cat">Le + bavard</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">2 311</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:52%;"></div><div class="bk-bar-2" style="width:48%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">18 mots</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F4CF}</span><span class="bk-h2h-cat">Pavés</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">6 mots</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:75%;"></div><div class="bk-bar-2" style="width:25%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">142</span><span class="bk-h2h-name">Marie</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2753</span><span class="bk-h2h-cat">Le + curieux</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">312</span><span class="bk-h2h-name">Alexis \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:31%;"></div><div class="bk-bar-2" style="width:69%;"></div></div></div>`,
-    right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">4 min</span><span class="bk-h2h-name">Marie</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u26A1</span><span class="bk-h2h-cat">Réponse rapide</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">1 min</span><span class="bk-h2h-name">Alexis \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:20%;"></div><div class="bk-bar-2" style="width:80%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">68%</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2600\uFE0F</span><span class="bk-h2h-cat">Ouvre la conv.</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">32%</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:68%;"></div><div class="bk-bar-2" style="width:32%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">52</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F319}</span><span class="bk-h2h-cat">Bonne nuit</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">42</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:55%;"></div><div class="bk-bar-2" style="width:45%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">12</span><span class="bk-h2h-name">Marie \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F48C}</span><span class="bk-h2h-cat">Double-texteur</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">8</span><span class="bk-h2h-name">Alexis</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:60%;"></div><div class="bk-bar-2" style="width:40%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">32%</span><span class="bk-h2h-name">Marie</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F303}</span><span class="bk-h2h-cat">Ferme la conv.</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">68%</span><span class="bk-h2h-name">Alexis \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:32%;"></div><div class="bk-bar-2" style="width:68%;"></div></div><div style="text-align:center;margin-top:6px;font-size:6.5px;color:var(--ink-muted);font-style:italic;">10 catégories au total dans votre livre</div></div>`
+    left: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:13px;text-align:center;margin-bottom:2px;">Côte à côte</div><div style="font-size:7px;color:var(--ink-muted);text-align:center;margin-bottom:8px;">Marine & Baptiste — chacun son style</div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">342</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2764\uFE0F</span><span class="bk-h2h-cat">C\u0153urs</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">187</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:65%;"></div><div class="bk-bar-2" style="width:35%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">612</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F602}</span><span class="bk-h2h-cat">Fous rires</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">281</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:69%;"></div><div class="bk-bar-2" style="width:31%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">2 510</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F4AC}</span><span class="bk-h2h-cat">Le + bavard</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">2 311</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:52%;"></div><div class="bk-bar-2" style="width:48%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">18 mots</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F4CF}</span><span class="bk-h2h-cat">Pavés</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">6 mots</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:75%;"></div><div class="bk-bar-2" style="width:25%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">142</span><span class="bk-h2h-name">Marine</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2753</span><span class="bk-h2h-cat">Le + curieux</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">312</span><span class="bk-h2h-name">Baptiste \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:31%;"></div><div class="bk-bar-2" style="width:69%;"></div></div></div>`,
+    right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">4 min</span><span class="bk-h2h-name">Marine</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u26A1</span><span class="bk-h2h-cat">Réponse rapide</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">1 min</span><span class="bk-h2h-name">Baptiste \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:20%;"></div><div class="bk-bar-2" style="width:80%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">68%</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u2600\uFE0F</span><span class="bk-h2h-cat">Ouvre la conv.</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">32%</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:68%;"></div><div class="bk-bar-2" style="width:32%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">52</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F319}</span><span class="bk-h2h-cat">Bonne nuit</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">42</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:55%;"></div><div class="bk-bar-2" style="width:45%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">12</span><span class="bk-h2h-name">Marine \u{1F451}</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F48C}</span><span class="bk-h2h-cat">Double-texteur</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">8</span><span class="bk-h2h-name">Baptiste</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:60%;"></div><div class="bk-bar-2" style="width:40%;"></div></div><div class="bk-h2h-row"><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#C27C5A;">32%</span><span class="bk-h2h-name">Marine</span></div><div class="bk-h2h-mid"><span class="bk-h2h-emoji">\u{1F303}</span><span class="bk-h2h-cat">Ferme la conv.</span></div><div class="bk-h2h-side"><span class="bk-h2h-val" style="color:#5A8FA8;">68%</span><span class="bk-h2h-name">Baptiste \u{1F451}</span></div></div><div class="bk-bar"><div class="bk-bar-1" style="width:32%;"></div><div class="bk-bar-2" style="width:68%;"></div></div><div style="text-align:center;margin-top:6px;font-size:6.5px;color:var(--ink-muted);font-style:italic;">10 catégories au total dans votre livre</div></div>`
   },
   // ── SPREAD 4: Le saviez-vous + Timeline ──
   {
-    left: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:2px;">Le saviez-vous ?</div><div style="font-size:6.5px;color:var(--ink-muted);text-align:center;margin-bottom:6px;">Les petits détails de votre couple</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F4D6}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">"bébé"</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Mot préféré · 2 341\u00D7</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F3C6}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">847 msgs</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Jour record · 14 fév.</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F525}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">47 jours</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Sans interruption</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F4DA}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">63 pages</span><span style="font-size:6px;color:var(--ink-muted);display:block;">15 782 mots échangés</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F495}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">"mon c\u0153ur"</span><span style="font-size:6px;color:var(--ink-muted);display:block;">1er surnom · 28 jan.</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F989}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">38 msgs</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Apr\u00E8s minuit</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F48C}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">Marie</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Double-texteur · 12 msgs</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u2600\uFE0F</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">Alexis</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Lève-tôt · 06:42</span></div></div><div style="text-align:center;margin-top:5px;font-size:6px;color:var(--ink-muted);font-style:italic;">+ couche-tard, premier je t\u2019aime...</div></div>`,
-    right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:10px;">Moments clés</div><div class="bk-tl"><div class="bk-tl-item"><div class="bk-tl-dot" style="background:var(--rose-bg);">\u{1F4AC}</div><div class="bk-tl-date">14 jan. · 19:32</div><div class="bk-tl-msg">"Salut \u{1F60A}"</div><div class="bk-tl-sender" style="color:#C27C5A;">Marie · Premier message</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#EEF2FF;">\u{1F319}</div><div class="bk-tl-date">14 jan. · 23:47</div><div class="bk-tl-msg">"Bonne nuit \u{1F634}\u{1F495}"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Alexis · 1ère bonne nuit</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#FFF8EC;">\u2615</div><div class="bk-tl-date">20 jan. · 14:02</div><div class="bk-tl-msg">"Ça te dirait qu\u2019on se voit ?"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Alexis · 1er rendez-vous</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:var(--rose-bg);">\u{1F495}</div><div class="bk-tl-date">15 fév. · 00:01</div><div class="bk-tl-msg">"Je t\u2019aime"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Alexis · 1er je t\u2019aime</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#EEFBF3;">\u2708\uFE0F</div><div class="bk-tl-date">5 mars</div><div class="bk-tl-msg">"Lyon, juste nous deux ?"</div><div class="bk-tl-sender" style="color:#C27C5A;">Marie · 1er voyage</div></div></div><div style="margin-top:10px;text-align:center;"><div class="bk-cover-line" style="width:32px;"></div><div style="font-family:var(--font-display);font-style:italic;font-size:8px;color:#C0B8AE;margin-top:5px;">Ce livre a été créé avec amour</div><div style="font-size:7px;color:#C0B8AE;">par Nos premiers mots</div></div></div>`
+    left: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:2px;">Le saviez-vous ?</div><div style="font-size:6.5px;color:var(--ink-muted);text-align:center;margin-bottom:6px;">Les petits détails de votre couple</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F4D6}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">"bébé"</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Mot préféré · 2 341\u00D7</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F3C6}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">847 msgs</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Jour record · 14 fév.</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F525}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">47 jours</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Sans interruption</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F4DA}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">63 pages</span><span style="font-size:6px;color:var(--ink-muted);display:block;">15 782 mots échangés</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F495}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">"mon c\u0153ur"</span><span style="font-size:6px;color:var(--ink-muted);display:block;">1er surnom · 28 jan.</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F989}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">38 msgs</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Apr\u00E8s minuit</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u{1F48C}</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">Marine</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Double-texteur · 12 msgs</span></div><div style="background:#FDF8F4;border:0.5px solid #EDE3DA;border-radius:5px;padding:6px 4px;text-align:center;"><span style="font-size:12px;display:block;">\u2600\uFE0F</span><span style="font-family:var(--font-display);font-size:12px;color:var(--rose);display:block;">Baptiste</span><span style="font-size:6px;color:var(--ink-muted);display:block;">Lève-tôt · 06:42</span></div></div><div style="text-align:center;margin-top:5px;font-size:6px;color:var(--ink-muted);font-style:italic;">+ couche-tard, premier je t\u2019aime...</div></div>`,
+    right: `<div style="display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 2px;"><div style="font-family:var(--font-display);font-size:12px;text-align:center;margin-bottom:10px;">Moments clés</div><div class="bk-tl"><div class="bk-tl-item"><div class="bk-tl-dot" style="background:var(--rose-bg);">\u{1F4AC}</div><div class="bk-tl-date">14 jan. · 19:32</div><div class="bk-tl-msg">"Salut \u{1F60A}"</div><div class="bk-tl-sender" style="color:#C27C5A;">Marine · Premier message</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#EEF2FF;">\u{1F319}</div><div class="bk-tl-date">14 jan. · 23:47</div><div class="bk-tl-msg">"Bonne nuit \u{1F634}\u{1F495}"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Baptiste · 1ère bonne nuit</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#FFF8EC;">\u2615</div><div class="bk-tl-date">20 jan. · 14:02</div><div class="bk-tl-msg">"Ça te dirait qu\u2019on se voit ?"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Baptiste · 1er rendez-vous</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:var(--rose-bg);">\u{1F495}</div><div class="bk-tl-date">15 fév. · 00:01</div><div class="bk-tl-msg">"Je t\u2019aime"</div><div class="bk-tl-sender" style="color:#5A8FA8;">Baptiste · 1er je t\u2019aime</div></div><div class="bk-tl-item"><div class="bk-tl-dot" style="background:#EEFBF3;">\u2708\uFE0F</div><div class="bk-tl-date">5 mars</div><div class="bk-tl-msg">"Lyon, juste nous deux ?"</div><div class="bk-tl-sender" style="color:#C27C5A;">Marine · 1er voyage</div></div></div><div style="margin-top:10px;text-align:center;"><div class="bk-cover-line" style="width:32px;"></div><div style="font-family:var(--font-display);font-style:italic;font-size:8px;color:#C0B8AE;margin-top:5px;">Ce livre a été créé avec amour</div><div style="font-size:7px;color:#C0B8AE;">par Nos premiers mots</div></div></div>`
   }
 ];
 
-let bkCurrent = 0;
-let bkAnimating = false;
-const bkOverlay = document.getElementById('bk-flip-overlay');
-const bkFlipPage = document.getElementById('bk-flip-page');
-const bkFlipFront = document.getElementById('bk-flip-front');
-const bkFlipBack = document.getElementById('bk-flip-back');
-
-function bkRender() {
-  document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
-  document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
-  document.getElementById('bk-prev').disabled = bkCurrent === 0;
-  document.getElementById('bk-next').disabled = bkCurrent === bkPages.length - 1;
-  const dots = document.getElementById('bk-dots');
-  dots.innerHTML = bkPages.map((_, i) => `<button class="bk-dot ${i === bkCurrent ? 'active' : ''}" onclick="bkGo(${i})"></button>`).join('');
-}
-
-function bkNext() {
-  if (bkCurrent >= bkPages.length - 1 || bkAnimating) return;
-  bkAnimating = true;
-
-  // Front = current right page (what you see before flipping)
-  bkFlipFront.innerHTML = bkPages[bkCurrent].right;
-  // Back = next left page (revealed as the page turns over)
-  bkFlipBack.innerHTML = bkPages[bkCurrent + 1].left;
-
-  // Show the new right page underneath
-  bkCurrent++;
-  document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
-
-  // Setup overlay for forward flip
-  bkOverlay.classList.remove('flipping-prev');
-  bkOverlay.classList.add('active');
-  bkFlipPage.classList.remove('turned');
-
-  // Trigger flip animation
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      bkFlipPage.classList.add('turned');
-    });
-  });
-
-  // When done, update left page and hide overlay
-  bkFlipPage.addEventListener('transitionend', function handler() {
-    bkFlipPage.removeEventListener('transitionend', handler);
-    document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
-    bkOverlay.classList.remove('active');
-    bkFlipPage.classList.remove('turned');
-    bkAnimating = false;
-    bkRender();
-  });
-}
-
-function bkPrev() {
-  if (bkCurrent <= 0 || bkAnimating) return;
-  bkAnimating = true;
-
-  // Front = current left page
-  bkFlipFront.innerHTML = bkPages[bkCurrent].left;
-  // Back = previous right page
-  bkFlipBack.innerHTML = bkPages[bkCurrent - 1].right;
-
-  // Show the new left page underneath
-  bkCurrent--;
-  document.getElementById('bk-left').innerHTML = bkPages[bkCurrent].left;
-
-  // Setup overlay for backward flip
-  bkOverlay.classList.add('flipping-prev');
-  bkOverlay.classList.add('active');
-  bkFlipPage.classList.remove('turned');
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      bkFlipPage.classList.add('turned');
-    });
-  });
-
-  bkFlipPage.addEventListener('transitionend', function handler() {
-    bkFlipPage.removeEventListener('transitionend', handler);
-    document.getElementById('bk-right').innerHTML = bkPages[bkCurrent].right;
-    bkOverlay.classList.remove('active', 'flipping-prev');
-    bkFlipPage.classList.remove('turned');
-    bkAnimating = false;
-    bkRender();
-  });
-}
-
-function bkGo(i) {
-  if (bkAnimating) return;
-  bkCurrent = i;
-  bkRender();
-}
-bkRender();
+// (Book preview functions removed — replaced by story preview above)
 
 // ═══ SCROLL REVEAL ═══
 const revealObserver = new IntersectionObserver((entries) => {
