@@ -10,6 +10,7 @@
 <title>Créer ma story — Nos premiers mots</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
   :root {
     --ink: #1A1A18;
@@ -1071,26 +1072,44 @@ pasteInput.addEventListener('input', () => {
 
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
-  if (file) {
-    // Detect zip files
-    if (file.name.endsWith('.zip')) {
-      document.getElementById('zip-warning').style.display = 'block';
-      document.querySelector('.file-drop-text').textContent = file.name;
-      return;
-    }
-    document.getElementById('zip-warning').style.display = 'none';
-    
-    // Show loader
-    showFullscreenLoader('Lecture de vos messages...');
-    
+  if (!file) return;
+  
+  document.getElementById('zip-warning').style.display = 'none';
+  showFullscreenLoader('Lecture de vos messages...');
+
+  if (file.name.endsWith('.zip')) {
+    // Auto-extract .txt from zip
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const zip = await JSZip.loadAsync(ev.target.result);
+        const txtFile = Object.values(zip.files).find(f => f.name.endsWith('.txt') && !f.dir);
+        if (!txtFile) {
+          removeFullscreenLoader();
+          document.getElementById('zip-warning').innerHTML = '⚠️ Aucun fichier .txt trouvé dans le zip. Vérifiez votre export WhatsApp.';
+          document.getElementById('zip-warning').style.display = 'block';
+          return;
+        }
+        const txt = await txtFile.async('string');
+        pasteInput.value = txt;
+        showFileLoaded(file.name + ' → ' + txtFile.name);
+        document.getElementById('period-selector').classList.add('show');
+        setTimeout(() => removeFullscreenLoader(), 1500);
+      } catch (err) {
+        removeFullscreenLoader();
+        document.getElementById('zip-warning').innerHTML = '⚠️ Impossible de lire le fichier zip. Réessayez ou décompressez-le manuellement.';
+        document.getElementById('zip-warning').style.display = 'block';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    // Regular .txt file
     const reader = new FileReader();
     reader.onload = (ev) => {
       pasteInput.value = ev.target.result;
-      // Stay on file tab — show loaded state instead of switching
       showFileLoaded(file.name);
       document.getElementById('period-selector').classList.add('show');
-      // Remove loader after a beat
-      setTimeout(() => removeFullscreenLoader(), 3000);
+      setTimeout(() => removeFullscreenLoader(), 1500);
     };
     reader.readAsText(file);
   }
@@ -1472,43 +1491,56 @@ function generatePreview() {
   const jtaSender = jta ? dn(jta.sender) : null;
   const jtaColor = jta ? ((dn(jta.sender)===roseName)?'#C27C5A':'#5A8FA8') : '#C27C5A';
 
-  // Build slides
+  // Build slides — first messages
+  const firstMsgs = convMsgs.slice(0, 4);
+  let firstMsgsHtml = '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:16px;">Vos tout premiers mots</div>';
+  firstMsgs.forEach(function(m) {
+    const isRose = (dn(m.sender) === roseName);
+    const col = isRose ? '#C27C5A' : '#5A8FA8';
+    const bg = isRose ? '#F4E4DA' : '#DEECF1';
+    const align = isRose ? 'margin-left:auto;border-radius:14px 14px 4px 14px;' : 'margin-right:auto;border-radius:14px 14px 14px 4px;';
+    firstMsgsHtml += '<div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:12px;line-height:1.4;background:'+bg+';'+align+'"><div style="font-size:8px;font-weight:600;color:'+col+';margin-bottom:2px;">'+dn(m.sender)+'</div>'+m.text.substring(0,80)+'<div style="font-size:7px;color:rgba(0,0,0,0.25);text-align:right;margin-top:2px;">'+m.time+'</div></div>';
+  });
+  firstMsgsHtml += '<div style="font-size:9px;color:rgba(0,0,0,0.3);text-align:center;margin-top:10px;font-style:italic;">+ '+(convMsgs.length-4)+' messages dans votre PDF</div>';
+
   window._stSlides = [
     { bg:'#FDF0EA', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:20px;font-weight:500;">Nos premiers mots</div><div style="font-family:var(--font-display);font-size:34px;color:#1A1A1A;text-align:center;line-height:1.15;">'+userName1+'<br><span style="font-size:16px;color:rgba(0,0,0,0.2);">&</span><br>'+userName2+'</div><div style="width:32px;height:1px;background:#C27C5A;margin:24px 0;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.6;max-width:220px;">'+stats.totalDays+' jours de conversation<br>'+dateRange+'</div>' },
 
-    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Au total, vous avez échangé</div><div id="st-counter-r" style="font-family:var(--font-display);font-size:56px;font-weight:700;color:#1A1A1A;line-height:1;">0</div><div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-style:italic;margin-top:6px;">messages</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin-top:20px;line-height:1.7;">C\u2019est l\u2019équivalent de '+stats.bookPages+' pages 📚</div>' },
+    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:20px;">Au total, vous avez échangé</div><div id="st-counter-r" style="font-family:var(--font-display);font-size:56px;font-weight:700;color:#1A1A1A;line-height:1;">0</div><div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-style:italic;margin-top:6px;">messages</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin-top:20px;line-height:1.7;">Soit environ '+Math.round(stats.total/Math.max(stats.totalDays,1))+' messages par jour 💬</div>' },
 
-    { bg:'#1A1A1A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;">Qui parle le plus ?</div><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:24px;"><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c1+';margin-bottom:6px;">'+stats.pct1+'%</div><div id="st-bar-1" style="width:64px;height:0;background:linear-gradient(to top,'+c1+','+c1+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n1+'</div></div><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c2+';margin-bottom:6px;">'+stats.pct2+'%</div><div id="st-bar-2" style="width:64px;height:0;background:linear-gradient(to top,'+c2+','+c2+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n2+'</div></div></div><div style="font-size:11px;color:rgba(255,255,255,0.35);text-align:center;font-style:italic;">'+n1+' : '+stats.count1.toLocaleString('fr-FR')+' · '+n2+' : '+stats.count2.toLocaleString('fr-FR')+'</div>' },
+    { bg:'#1A1A1A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;">Bavard(e) ?</div><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:24px;"><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c1+';margin-bottom:6px;">'+stats.pct1+'%</div><div id="st-bar-1" style="width:64px;height:0;background:linear-gradient(to top,'+c1+','+c1+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n1+'</div></div><div style="text-align:center;"><div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:'+c2+';margin-bottom:6px;">'+stats.pct2+'%</div><div id="st-bar-2" style="width:64px;height:0;background:linear-gradient(to top,'+c2+','+c2+'44);border-radius:6px;transition:height 1.2s cubic-bezier(0.34,1.56,0.64,1);"></div><div style="margin-top:8px;font-size:12px;color:#fff;">'+n2+'</div></div></div><div style="font-size:11px;color:rgba(255,255,255,0.35);text-align:center;font-style:italic;">'+n1+' : '+stats.count1.toLocaleString('fr-FR')+' · '+n2+' : '+stats.count2.toLocaleString('fr-FR')+'</div>' },
 
     { bg:'#FFF9F5', html:(function(){
-      var out = '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:8px;">Côte à côte</div>';
+      var out = '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:8px;">Chacun son style</div>';
       out += '<div style="display:flex;justify-content:space-between;width:100%;padding:0 2px;margin-bottom:10px;"><span style="font-size:11px;font-weight:600;color:'+c1+';">'+n1+'</span><span style="font-size:11px;font-weight:600;color:'+c2+';">'+n2+'</span></div>';
       out += '<div style="width:100%;display:flex;flex-direction:column;gap:8px;">';
       h2h.forEach(function(r) {
         var t=r.p1+r.p2||1; var pct1=Math.round(r.p1/t*100); var pct2=100-pct1;
         var w=r.p1>r.p2?1:(r.p2>r.p1?2:0);
-        out += '<div><div style="font-size:8px;color:rgba(0,0,0,0.4);text-align:center;margin-bottom:3px;font-weight:500;">'+(w===1?'👑 ':'')+r.label+(w===2?' 👑':'')+'</div>';
+        out += '<div><div style="font-size:8px;color:rgba(0,0,0,0.4);text-align:center;margin-bottom:3px;font-weight:500;">'+(w===1?'\u{1F451} ':'')+r.label+(w===2?' \u{1F451}':'')+'</div>';
         out += '<div style="display:flex;height:18px;border-radius:9px;overflow:hidden;background:rgba(0,0,0,0.03);">';
         out += '<div style="width:'+pct1+'%;background:'+(w===1?'linear-gradient(90deg,'+c1+'44,'+c1+')':c1+'33')+';display:flex;align-items:center;padding-left:6px;"><span style="font-size:8px;font-weight:700;color:rgba(0,0,0,0.35);">'+r.v1+'</span></div>';
         out += '<div style="width:'+pct2+'%;background:'+(w===2?'linear-gradient(90deg,'+c2+','+c2+'44)':c2+'33')+';display:flex;align-items:center;justify-content:flex-end;padding-right:6px;"><span style="font-size:8px;font-weight:700;color:rgba(0,0,0,0.35);">'+r.v2+'</span></div>';
         out += '</div></div>';
       });
       out += '</div>';
-      out += '<div style="margin-top:12px;text-align:center;"><span style="font-family:var(--font-display);font-size:16px;color:'+c1+';font-weight:700;">'+sc1+'</span><span style="font-size:11px;color:rgba(0,0,0,0.2);margin:0 6px;">—</span><span style="font-family:var(--font-display);font-size:16px;color:'+c2+';font-weight:700;">'+sc2+'</span></div>';
+      out += '<div style="margin-top:12px;text-align:center;"><span style="font-family:var(--font-display);font-size:16px;color:'+c1+';font-weight:700;">'+sc1+'</span><span style="font-size:11px;color:rgba(0,0,0,0.2);margin:0 6px;">\u2014</span><span style="font-family:var(--font-display);font-size:16px;color:'+c2+';font-weight:700;">'+sc2+'</span></div>';
       return out;
     })() },
 
+    { bg:'#DEECF1', html: firstMsgsHtml },
+
     { bg: jta ? '#FDF0EA' : '#C27C5A', html: jta ?
-      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:24px;font-weight:500;">Le premier « je t\u2019aime »</div><div style="font-size:10px;color:rgba(0,0,0,0.3);margin-bottom:12px;font-weight:500;">'+jta.date+' · '+jta.time+'</div><div style="background:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);"><div style="font-size:13px;color:#1A1A1A;line-height:1.5;">'+jta.text.substring(0,120)+'</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:'+jtaColor+';">'+jtaSender+'</span> · '+jta.time+'</div></div>' :
-      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">💕</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+stats.hearts+' cœurs échangés</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;">'+n1+' : '+stats.hearts1+' · '+n2+' : '+stats.hearts2+'</div>'
+      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C27C5A;margin-bottom:24px;font-weight:500;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:10px;color:rgba(0,0,0,0.3);margin-bottom:12px;font-weight:500;">'+jta.date+' \u00B7 '+jta.time+'</div><div style="background:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:220px;box-shadow:0 2px 10px rgba(0,0,0,0.05);"><div style="font-size:13px;color:#1A1A1A;line-height:1.5;">'+jta.text.substring(0,120)+'</div><div style="font-size:8px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:'+jtaColor+';">'+jtaSender+'</span> \u00B7 '+jta.time+'</div></div>' :
+      '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">\u{1F495}</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+stats.hearts+' c\u0153urs \u00E9chang\u00E9s</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;">'+n1+' : '+stats.hearts1+' \u00B7 '+n2+' : '+stats.hearts2+'</div>'
     },
 
-    { bg:'#C27C5A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">'+funEmoji+'</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+funTitle+'</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;max-width:240px;line-height:1.6;">'+funSub+'</div>' },
+    { bg:'#1A1A1A', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;">Le saviez-vous ?</div><div style="font-size:40px;margin-bottom:16px;">'+funEmoji+'</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;line-height:1.5;max-width:240px;">'+funTitle+'</div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-top:12px;max-width:240px;line-height:1.6;">'+funSub+'</div>' },
 
-    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:12px;">Envie d\u2019aller plus loin ?</div><div style="font-family:var(--font-display);font-size:20px;color:#1A1A1A;text-align:center;line-height:1.3;margin-bottom:16px;">Recevez votre livre<br>de <span style="color:#C27C5A;">40 pages</span></div><div style="width:100%;display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">📊</span><span style="font-size:11px;color:#1A1A1A;">Toutes vos statistiques</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">💬</span><span style="font-size:11px;color:#1A1A1A;">Vos '+convMsgs.length+' premiers messages</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">🏆</span><span style="font-size:11px;color:#1A1A1A;">Le côte à côte complet</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">📅</span><span style="font-size:11px;color:#1A1A1A;">Timeline mois par mois</span></div></div><div style="background:#C27C5A;color:#fff;border-radius:24px;padding:11px 28px;font-size:13px;font-weight:600;text-align:center;box-shadow:0 3px 12px rgba(194,124,90,0.3);width:100%;max-width:220px;">Obtenir le PDF — 3,99€</div><div style="border:1.5px solid rgba(0,0,0,0.12);border-radius:24px;padding:9px 24px;font-size:12px;font-weight:500;text-align:center;margin-top:8px;width:100%;max-width:220px;color:#1A1A1A;">Envoyer à ma moitié 💕</div>' },
+    { bg:'#FFF9F5', html:'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5A8FA8;margin-bottom:12px;">Envie d\u2019aller plus loin ?</div><div style="font-family:var(--font-display);font-size:20px;color:#1A1A1A;text-align:center;line-height:1.3;margin-bottom:16px;">Recevez votre livre<br>de <span style="color:#C27C5A;">40 pages</span></div><div style="width:100%;display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">\u{1F4CA}</span><span style="font-size:11px;color:#1A1A1A;">Toutes vos statistiques</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">\u{1F4AC}</span><span style="font-size:11px;color:#1A1A1A;">Vos '+convMsgs.length+' premiers messages</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">\u{1F3C6}</span><span style="font-size:11px;color:#1A1A1A;">Chacun son style complet</span></div><div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.03);border-radius:10px;padding:8px 12px;"><span style="font-size:14px;">\u{1F4C5}</span><span style="font-size:11px;color:#1A1A1A;">Timeline mois par mois</span></div></div><div onclick="shareStory()" style="background:#C27C5A;color:#fff;border-radius:24px;padding:11px 28px;font-size:13px;font-weight:600;text-align:center;box-shadow:0 3px 12px rgba(194,124,90,0.3);width:100%;max-width:220px;cursor:pointer;">Envoyer à ma moiti\u00E9 \u{1F495}</div><div onclick="document.getElementById(\'btn-download\').scrollIntoView({behavior:\'smooth\'})" style="border:1.5px solid rgba(0,0,0,0.12);border-radius:24px;padding:9px 24px;font-size:12px;font-weight:500;text-align:center;margin-top:8px;width:100%;max-width:220px;color:#1A1A1A;cursor:pointer;">Obtenir le PDF — 3,99\u20AC</div>' },
   ];
 
-  window._stCurrent = 0;
+window._stCurrent = 0;
   stRenderR();
 
   // Click nav
@@ -1546,6 +1578,20 @@ function stRenderR() {
 function stNextR(){if(window._stCurrent<window._stSlides.length-1){window._stCurrent++;stRenderR();}}
 function stPrevR(){if(window._stCurrent>0){window._stCurrent--;stRenderR();}}
 function stGoR(j){window._stCurrent=j;stRenderR();}
+
+// ═══ SHARE ═══
+function shareStory() {
+  const msg = 'Regarde ce que j\u2019ai trouvé sur notre conversation \u{1F495} ' + userName1 + ' & ' + userName2;
+  if (navigator.share) {
+    navigator.share({ title: 'Nos premiers mots', text: msg, url: window.location.origin }).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(msg).then(function() {
+      alert('Message copié ! Envoie-le à ta moitié 💕');
+    }).catch(function() {
+      prompt('Copie ce message :', msg);
+    });
+  }
+}
 
 // ═══ PDF GENERATION ═══
 async function generatePDF() {
