@@ -731,6 +731,14 @@
     <button class="btn-generate" id="btn-names" disabled onclick="goToUpload()" style="max-width: 400px; margin: 0 auto;">
       Continuer
     </button>
+    <!-- Mode selector -->
+    <div id="mode-choice" style="display:none; text-align:center; margin: 20px auto 0; max-width: 400px; animation: fadeSlideUp 0.4s ease;">
+      <div style="font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-bottom: 10px;">C'est quoi votre histoire ?</div>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button onclick="selectMode('couple')" id="mode-couple" class="period-pill" style="padding:10px 24px; font-size:14px; border-color:var(--rose); color:white; background:linear-gradient(135deg,#D4956B,#C27C5A); box-shadow:0 4px 16px rgba(194,124,90,0.25);">💕 Un couple</button>
+        <button onclick="selectMode('amitie')" id="mode-amitie" class="period-pill" style="padding:10px 24px; font-size:14px;">🤝 Une amitié</button>
+      </div>
+    </div>
     <div id="color-choice" style="display:none; text-align:center; margin: 16px auto 0; max-width: 400px;">
       <div style="font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Vos couleurs</div>
       <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -996,16 +1004,37 @@ function checkNames() {
   const ok = n1.length >= 2 && n2.length >= 2;
   document.getElementById('btn-names').disabled = !ok;
   const colorDiv = document.getElementById('color-choice');
+  const modeDiv = document.getElementById('mode-choice');
   if (ok) {
     colorDiv.style.display = 'block';
+    modeDiv.style.display = 'block';
     updateColorPreviews();
   } else {
     colorDiv.style.display = 'none';
+    modeDiv.style.display = 'none';
   }
 }
 // Check for autofilled values on page load
 setTimeout(checkNames, 300);
 setTimeout(checkNames, 1000);
+
+// ═══ MODE (couple / amitié) ═══
+var storyMode = 'couple';
+function selectMode(mode) {
+  storyMode = mode;
+  var btnCouple = document.getElementById('mode-couple');
+  var btnAmitie = document.getElementById('mode-amitie');
+  if (mode === 'couple') {
+    btnCouple.style.cssText = 'padding:10px 24px;font-size:14px;border-color:var(--rose);color:white;background:linear-gradient(135deg,#D4956B,#C27C5A);box-shadow:0 4px 16px rgba(194,124,90,0.25);border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid transparent;';
+    btnAmitie.style.cssText = 'padding:10px 24px;font-size:14px;border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid var(--border);background:white;color:var(--ink-soft);';
+  } else {
+    btnAmitie.style.cssText = 'padding:10px 24px;font-size:14px;border-color:var(--rose);color:white;background:linear-gradient(135deg,#5A8FA8,#4A7A90);box-shadow:0 4px 16px rgba(90,143,168,0.25);border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid transparent;';
+    btnCouple.style.cssText = 'padding:10px 24px;font-size:14px;border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid var(--border);background:white;color:var(--ink-soft);';
+  }
+}
+
+// Mode-aware labels
+function ml(coupleText, amitieText) { return storyMode === 'couple' ? coupleText : amitieText; }
 
 // Enter key validates names
 document.getElementById('name-1').addEventListener('keydown', (e) => {
@@ -1021,7 +1050,7 @@ function goToUpload() {
   
   document.getElementById('step-names').style.display = 'none';
   document.getElementById('step-upload').style.display = 'block';
-  document.getElementById('names-badge').textContent = '💕 ' + userName1 + ' & ' + userName2;
+  document.getElementById('names-badge').textContent = ml('💕','🤝') + ' ' + userName1 + ' & ' + userName2;
   document.getElementById('dot-2').classList.add('active');
   document.getElementById('line-1').classList.add('active');
 }
@@ -1223,7 +1252,7 @@ fileInput.addEventListener('change', (e) => {
   if (!file) return;
   
   document.getElementById('zip-warning').style.display = 'none';
-  showFullscreenLoader('Création de votre Love Story\u2026 💕');
+  showFullscreenLoader(''+ml('Création de votre Love Story','Création de votre Story')+'\u2026 💕');
 
   if (file.name.endsWith('.zip')) {
     // Auto-extract .txt from zip
@@ -1725,7 +1754,7 @@ function launchStory() {
     showNameMapping();
     return;
   }
-  showFullscreenLoader('Création de votre Love Story\u2026 💕');
+  showFullscreenLoader(''+ml('Création de votre Love Story','Création de votre Story')+'\u2026 💕');
   setTimeout(() => {
     const lt = document.querySelector('.loader-text');
     if (lt) lt.textContent = 'On y est presque !';
@@ -1867,7 +1896,7 @@ function generatePreview() {
   // ═══ FREE SLIDES (6) ═══
   var freeSlides = [
     // 1. Intro
-    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">'+ml('Nos premiers mots','Notre histoire')+'</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
     // 2. Premiers mots
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+fmHtml},
     // 3. Total
@@ -1889,7 +1918,7 @@ function generatePreview() {
     {icon:'\u{1F4DD}',q:'Qui \u00E9crit les plus gros pav\u00E9s ?'},
   ];
   var teaserList = teaserItems.map(function(item){return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.04);z-index:1;"><span style="font-size:16px;width:24px;text-align:center;">'+item.icon+'</span><span style="font-size:11px;color:rgba(0,0,0,0.45);flex:1;">'+item.q+'</span><span style="font-size:9px;color:var(--rose);font-weight:600;">\u{1F512}</span></div>';}).join('');
-  var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:20px;text-align:center;line-height:1.3;margin-bottom:4px;z-index:1;">Vous voulez<br/>la suite ?</div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">20+ slides vous attendent</div><div style="width:100%;max-width:250px;z-index:1;">'+teaserList+'</div><div style="font-size:10px;color:rgba(0,0,0,0.3);text-align:center;margin:14px 0 16px;z-index:1;line-height:1.5;">+ lien interactif \u00E0 envoyer<br/>\u00E0 votre moiti\u00E9 avec message perso \u{1F48C}</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 3,99\u20AC</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:8px;z-index:1;">Le prix d\u2019une rose \u{1F339}</div>'};
+  var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:20px;text-align:center;line-height:1.3;margin-bottom:4px;z-index:1;">Vous voulez<br/>la suite ?</div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">20+ slides vous attendent</div><div style="width:100%;max-width:250px;z-index:1;">'+teaserList+'</div><div style="font-size:10px;color:rgba(0,0,0,0.3);text-align:center;margin:14px 0 16px;z-index:1;line-height:1.5;">+ lien interactif \u00E0 envoyer<br/>\u00E0 '+ml('votre moiti\u00E9','votre BFF')+' avec message perso \u{1F48C}</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 3,99\u20AC</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:8px;z-index:1;">Le prix d\u2019une rose \u{1F339}</div>'};
 
   // ═══ PAID SLIDES (18) ═══
   var paidSlides = [
@@ -1933,7 +1962,7 @@ function generatePreview() {
   ]);
 
   // ═══ CTA SLIDE (link generation) ═══
-  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F495}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:16px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">G\u00E9n\u00E9rer le lien surprise \u2192</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
+  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">'+ml('Envoyez la surprise<br/>\u00E0 votre moiti\u00E9','Envoyez la surprise<br/>\u00E0 votre BFF')+' \u{1F495}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:16px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">G\u00E9n\u00E9rer le lien surprise \u2192</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
 
   // ═══ STORE DATA FOR LINK GENERATION ═══
   window._topEmojiCount=topEmoji[1];
@@ -2091,7 +2120,8 @@ function generateShareLink() {
       wp: s.topWord||null, td: window._donutPcts||[25,25,25,25],
       te: window._topEmojis||[], jt: window._jtData||null, fn: window._fnData||null,
       fm: window._firstMsgsData||[],
-      cm: window._convMsgsData||[]
+      cm: window._convMsgsData||[],
+      mode: storyMode
     };
 
     var json = JSON.stringify(data);
