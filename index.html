@@ -1297,19 +1297,19 @@
     <p class="section-sub">En trois étapes, vos messages deviennent une story.</p>
     <div class="steps">
       <div class="step reveal delay-1">
-        <span class="step-icon">💬</span>
-        <h3>Uploadez votre conversation</h3>
-        <p>Depuis WhatsApp, exportez votre discussion (sans médias), puis déposez le fichier ici. 30 secondes chrono.</p>
+        <span class="step-icon" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:white;font-family:var(--font-display);font-size:20px;font-weight:600;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</span>
+        <h3>Déposez votre conversation</h3>
+        <p>Dans WhatsApp, exportez votre discussion sans médias. Puis glissez le fichier sur notre site.</p>
       </div>
       <div class="step reveal delay-2">
-        <span class="step-icon">✨</span>
-        <h3>Découvrez votre story</h3>
-        <p>En quelques secondes, on génère votre story de couple : qui est le plus bavard, le plus de cœurs, premier je t'aime… C'est gratuit.</p>
+        <span class="step-icon" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:white;font-family:var(--font-display);font-size:20px;font-weight:600;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</span>
+        <h3>Votre story est prête</h3>
+        <p>En quelques secondes, votre story de couple est générée : qui est le plus bavard, vos emojis préférés, votre premier je t'aime…</p>
       </div>
       <div class="step reveal delay-3">
-        <span class="step-icon">💕</span>
-        <h3>Envoyez-lui la surprise</h3>
-        <p>Débloquez la story complète et envoyez un lien interactif à votre moitié. Il/elle swipe, découvre, et sourit.</p>
+        <span class="step-icon" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:white;font-family:var(--font-display);font-size:20px;font-weight:600;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</span>
+        <h3>Envoyez la surprise à votre moitié</h3>
+        <p>Débloquez toutes les slides, ajoutez un message perso et partagez le lien. Votre moitié swipe et découvre votre histoire.</p>
       </div>
     </div>
   </div>
@@ -1557,7 +1557,10 @@ const stSlides = [
   // 1. Intro
   {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:32px;text-align:center;line-height:1.15;z-index:1;">Marine<br/>&amp;<br/>Baptiste</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">60 jours de conversation</div>'},
 
-  // 2. Total
+  // 2. Premiers mots
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \\u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\\u2019as ajout\\u00E9 \\u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \\u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
+
+  // 3. Total
   {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez échangé</div><div id="st-counter" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:20px;padding:8px 18px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 80 par jour</div>'},
 
   // 3. Bavard — two rings
@@ -1578,10 +1581,7 @@ const stSlides = [
   // 8. Bonjour — ring
   {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(68,'#C27C5A',130,10,'<span id="st-bj-count" class="gn" style="font-size:40px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-weight:600;margin-top:14px;z-index:1;">Marine</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
 
-  // 9. Premiers mots
-  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px;transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
-
-  // 10. Emoji podium
+  // 9. Emoji podium
   {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis préférés</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:6px;z-index:1;margin-bottom:12px;"></div><div style="display:flex;gap:6px;font-size:9px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
 
   // 11. Je t'aime
