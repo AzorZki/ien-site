@@ -1168,6 +1168,35 @@ const fileInput = document.getElementById('file-input');
 const btnGenerate = document.getElementById('btn-generate');
 const fileDrop = document.getElementById('file-drop');
 
+// Auto-select period if conversation is short, or show period selector
+function tryAutoSelectPeriod() {
+  var raw = pasteInput.value;
+  if (!raw || raw.length < 20) return;
+  var testMsgs = parseWhatsApp(raw);
+  if (testMsgs.length < 2) {
+    // Show error immediately instead of leaving user stuck
+    document.getElementById('zip-warning').style.display = 'block';
+    var firstLines = raw.substring(0, 300).split('\n').slice(0, 3).join('\n');
+    document.getElementById('zip-warning').innerHTML = '⚠️ <strong>Format non reconnu.</strong> ' + testMsgs.length + ' message(s) détecté(s).<br/><br/><div style="background:rgba(0,0,0,0.03);padding:8px 12px;border-radius:8px;font-size:11px;font-family:monospace;word-break:break-all;margin-top:8px;">Premières lignes :<br/>' + firstLines.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><br/>Envoyez cette capture à <strong>contact@nospremiersmots.fr</strong> et on corrigera !';
+    return;
+  }
+  // Check conversation span
+  var firstDate = parseDate(testMsgs[0].date);
+  var lastDate = parseDate(testMsgs[testMsgs.length-1].date);
+  if (firstDate && lastDate) {
+    var spanDays = Math.round((lastDate - firstDate) / (1000*60*60*24));
+    if (spanDays <= 62) {
+      // Short conversation — auto-select 2 months and skip period step
+      var pill = document.querySelector('.period-pill:last-child');
+      if (pill) { selectPeriod(pill, '2m'); }
+      document.getElementById('period-selector').classList.add('show');
+      return;
+    }
+  }
+  // Longer conversation — show period selector
+  document.getElementById('period-selector').classList.add('show');
+}
+
 pasteInput.addEventListener('input', () => {
   const hasContent = pasteInput.value.trim().length > 50;
   if (hasContent) {
@@ -1182,7 +1211,7 @@ fileInput.addEventListener('change', (e) => {
   if (!file) return;
   
   document.getElementById('zip-warning').style.display = 'none';
-  showFullscreenLoader('Comptage des cœurs en cours 💕');
+  showFullscreenLoader('Création de votre Love Story\u2026 💕');
 
   if (file.name.endsWith('.zip')) {
     // Auto-extract .txt from zip
@@ -1208,12 +1237,13 @@ fileInput.addEventListener('change', (e) => {
         try {
           txt = await txtFile.async('string');
           // Check if it looks like valid WhatsApp (has dates)
-          if (!/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(txt.substring(0, 500))) {
+          var dateReZ = /\d{1,2}[\/\.]\d{1,2}[\/\.]\d{2,4}/;
+          if (!dateReZ.test(txt.substring(0, 500))) {
             // Might be UTF-16, try binary decoding
             const buf = await txtFile.async('arraybuffer');
             const decoder = new TextDecoder('utf-16le');
             const decoded = decoder.decode(buf);
-            if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(decoded.substring(0, 500))) {
+            if (dateReZ.test(decoded.substring(0, 500))) {
               txt = decoded;
             }
           }
@@ -1224,8 +1254,7 @@ fileInput.addEventListener('change', (e) => {
         }
         pasteInput.value = txt;
         showFileLoaded(file.name + ' → ' + txtFile.name);
-        document.getElementById('period-selector').classList.add('show');
-        setTimeout(() => removeFullscreenLoader(), 1500);
+        setTimeout(() => { removeFullscreenLoader(); tryAutoSelectPeriod(); }, 1500);
       } catch (err) {
         removeFullscreenLoader();
         document.getElementById('zip-warning').innerHTML = '⚠️ Impossible de lire le fichier zip : ' + (err.message || 'erreur inconnue') + '. Essayez de décompresser le .zip et d\'importer le .txt directement.';
@@ -1239,27 +1268,26 @@ fileInput.addEventListener('change', (e) => {
     reader.onload = (ev) => {
       let txt = ev.target.result;
       // Check if it looks like valid WhatsApp (has date patterns)
-      if (!/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(txt.substring(0, 500)) && txt.length > 0) {
+      var dateRe = /\d{1,2}[\/\.]\d{1,2}[\/\.]\d{2,4}/;
+      if (!dateRe.test(txt.substring(0, 500)) && txt.length > 0) {
         // Might be UTF-16, re-read as arraybuffer
         const reader2 = new FileReader();
         reader2.onload = (ev2) => {
           const decoder = new TextDecoder('utf-16le');
           const decoded = decoder.decode(ev2.target.result);
-          if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(decoded.substring(0, 500))) {
+          if (dateRe.test(decoded.substring(0, 500))) {
             txt = decoded;
           }
           pasteInput.value = txt;
           showFileLoaded(file.name);
-          document.getElementById('period-selector').classList.add('show');
-          setTimeout(() => removeFullscreenLoader(), 1500);
+          setTimeout(() => { removeFullscreenLoader(); tryAutoSelectPeriod(); }, 1500);
         };
         reader2.readAsArrayBuffer(file);
         return;
       }
       pasteInput.value = txt;
       showFileLoaded(file.name);
-      document.getElementById('period-selector').classList.add('show');
-      setTimeout(() => removeFullscreenLoader(), 1500);
+      setTimeout(() => { removeFullscreenLoader(); tryAutoSelectPeriod(); }, 1500);
     };
     reader.readAsText(file);
   }
@@ -1279,6 +1307,8 @@ fileDrop.addEventListener('drop', (e) => {
 
 // ═══ PARSER ═══
 function parseWhatsApp(raw) {
+  // Normalize line endings and remove BOM
+  raw = raw.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   const lines = raw.split('\n');
   const messages = [];
   // All known WhatsApp export formats:
@@ -1291,29 +1321,56 @@ function parseWhatsApp(raw) {
     /^\[(\d{1,2}\/\d{1,2}\/\d{2,4})\s*(?:à|a)\s*(\d{1,2}:\d{2}(?::\d{2})?)\]\s*([^:]+):\s*(.+)$/,
     // Dot dates: 14.01.2024, 19:32 - Name: text
     /^(\d{1,2}\.\d{1,2}\.\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)\s*-\s*([^:]+):\s*(.+)$/,
+    // Bracket + dots: [14.01.24, 19:32:45] Name: text
+    /^\[(\d{1,2}\.\d{1,2}\.\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)\]\s*([^:]+):\s*(.+)$/,
+    // Format "à" sans brackets: 14/01/2024 à 19:32 - Name: text
+    /^(\d{1,2}\/\d{1,2}\/\d{2,4})\s*(?:à|a)\s*(\d{1,2}:\d{2}(?::\d{2})?)\s*-\s*([^:]+):\s*(.+)$/,
     // US format: 1/14/24, 7:32 PM - Name: text
     /^(\d{1,2}\/\d{1,2}\/\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?\s*[AP]M)\s*-\s*([^:]+):\s*(.+)$/,
     // No dash: 14/01/2024 19:32 Name: text (rare)
     /^(\d{1,2}\/\d{1,2}\/\d{2,4})\s+(\d{1,2}:\d{2}(?::\d{2})?)\s+([^:]+):\s*(.+)$/,
+    // Dash-separated dates: 2024-01-14, 19:32 - Name: text
+    /^(\d{4}-\d{1,2}-\d{1,2}),?\s*(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)\s*-\s*([^:]+):\s*(.+)$/,
   ];
   let current = null;
   let matchedPattern = null;
 
-  // WhatsApp system messages to filter out (session 2)
+  // WhatsApp system messages to filter out
   const systemPatterns = [
     /^<média omis>$/i, /^<media omitted>$/i,
     /médias? omis/i, /image omise/i, /vidéo omise/i, /audio omis/i,
+    /média omis/i, /media omitted/i,
     /^ce message a été supprimé$/i, /^this message was deleted$/i,
     /^vous avez supprimé ce message$/i, /^you deleted this message$/i,
     /^null$/i, /^sticker omis$/i, /^gif omis$/i, /^document omis$/i,
     /^fichier joint omis$/i, /^contact omis$/i, /^position omise$/i,
+    /^location:/i, /^contact card omitted$/i,
     /a changé le sujet/i, /a créé ce groupe/i, /a ajouté/i, /a quitté/i,
     /les messages et les appels/i, /chiffrement de bout/i,
+    /changed the subject/i, /created this group/i, /added you/i, /left$/i,
+    /messages and calls are end-to-end encrypted/i,
+    /^Missed voice call$/i, /^Appel vocal manqué$/i,
+    /^Missed video call$/i, /^Appel vidéo manqué$/i,
   ];
 
-  // Clean emojis from sender names (session 2)
+  // Clean emojis from sender names
   function cleanName(name) {
     return name.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu, '').trim();
+  }
+
+  // Convert AM/PM time to 24h format
+  function normTime(timeStr) {
+    var t = timeStr.replace(/(\d{1,2}:\d{2}):\d{2}/, '$1').trim();
+    var ampm = t.match(/(\d{1,2}):(\d{2})\s*([AP]M)/i);
+    if (ampm) {
+      var h = parseInt(ampm[1], 10);
+      var min = ampm[2];
+      var ispm = ampm[3].toUpperCase() === 'PM';
+      if (ispm && h !== 12) h += 12;
+      if (!ispm && h === 12) h = 0;
+      t = (h < 10 ? '0' : '') + h + ':' + min;
+    }
+    return t;
   }
 
   for (const line of lines) {
@@ -1336,11 +1393,14 @@ function parseWhatsApp(raw) {
           messages.push(current);
         }
       }
-      // Normalize date separators (dots → slashes)
-      var normDate = m[1].replace(/\./g, '/');
-      // Strip seconds from time if present
-      var normTime = m[2].replace(/(\d{1,2}:\d{2}):\d{2}/, '$1').trim();
-      current = { date: normDate, time: normTime, sender: cleanName(m[3].trim()), text: m[4].trim() };
+      // Normalize date separators (dots/dashes → slashes)
+      var normDate = m[1].replace(/\./g, '/').replace(/-/g, '/');
+      // Handle ISO dates (YYYY/MM/DD → DD/MM/YYYY)
+      if (/^\d{4}\//.test(normDate)) {
+        var dp = normDate.split('/');
+        normDate = dp[2] + '/' + dp[1] + '/' + dp[0];
+      }
+      current = { date: normDate, time: normTime(m[2]), sender: cleanName(m[3].trim()), text: m[4].trim() };
     } else if (current && line.trim()) {
       current.text += '\n' + line.trim();
     }
@@ -1579,7 +1639,22 @@ let detectedS2 = '';
 
 function showNameMapping() {
   const msgs = window._filteredMessages;
-  if (!msgs || msgs.length < 2) return;
+  if (!msgs || msgs.length < 2) {
+    // Never fail silently — show a clear error
+    var raw = pasteInput.value || '';
+    var allMsgs = raw.length > 20 ? parseWhatsApp(raw) : [];
+    var errMsg = '😕 Impossible de lire votre conversation.\n\n';
+    if (raw.length < 20) {
+      errMsg += 'Le fichier semble vide. Réessayez l\'import.';
+    } else if (allMsgs.length < 2) {
+      var firstLines = raw.substring(0, 200).split('\n').slice(0, 3).join('\n');
+      errMsg += allMsgs.length + ' message(s) détecté(s). Le format n\'est peut-être pas reconnu.\n\nPremières lignes :\n' + firstLines + '\n\nEnvoyez une capture à contact@nospremiersmots.fr et on corrige !';
+    } else {
+      errMsg += 'Sélectionnez d\'abord une période (premier mois ou 2 mois).';
+    }
+    alert(errMsg);
+    return;
+  }
   
   // Detect the two senders
   const senders = [...new Set(msgs.map(m => m.sender))];
@@ -1684,7 +1759,7 @@ function generatePreview() {
   const jtaSender = jta ? dn(jta.sender) : null;
   const jtaColor = jta ? ((dn(jta.sender)===roseName)?'#C27C5A':'#5A8FA8') : '#C27C5A';
 
-  // ═══ Build slides — DA v5 — 26 slides (8 free + teaser + 17 paid + CTA) ═══
+  // ═══ Build slides — DA v5 — 26 slides (6 free + teaser + 18 paid + CTA) ═══
   var firstMsgs = convMsgs.slice(0, 4);
 
   // Top emoji
@@ -1836,6 +1911,8 @@ function generatePreview() {
   window._topEmojis=topEmojis;
   window._donutPcts=[donutData[0].p,donutData[1].p,donutData[2].p,donutData[3].p];
   window._firstMsgsData=firstMsgs.slice(0,4).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,100),t:m.time};});
+  // Store conversation messages (2-11) for story.html
+  window._convMsgsData=convMsgs.slice(1,11).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,100),t:m.time};});
   window._jtData=jta?{d:jta.date,t:jta.time,x:jta.text.substring(0,120),s:dn(jta.sender)}:null;
   window._fnData=stats.firstNickname?{w:stats.firstNickname.word,s:dn(stats.firstNickname.sender)}:null;
 
@@ -1983,7 +2060,8 @@ function generateShareLink() {
       tw: s.totalWords||0, bp: s.bookPages||0, nm: s.nightMsgs||0,
       wp: s.topWord||null, td: window._donutPcts||[25,25,25,25],
       te: window._topEmojis||[], jt: window._jtData||null, fn: window._fnData||null,
-      fm: window._firstMsgsData||[]
+      fm: window._firstMsgsData||[],
+      cm: window._convMsgsData||[]
     };
 
     var json = JSON.stringify(data);
