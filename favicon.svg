@@ -1,3 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <path d="M16 28.5C14.5 27 4 19.5 4 12.5C4 8.9 6.9 6 10.5 6C12.7 6 14.7 7.2 16 9C17.3 7.2 19.3 6 21.5 6C25.1 6 28 8.9 28 12.5C28 19.5 17.5 27 16 28.5Z" fill="#C27C5A"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4956B"/>
+      <stop offset="100%" stop-color="#C27C5A"/>
+    </linearGradient>
+  </defs>
+  <!-- Chat bubble 1 (left) -->
+  <rect x="6" y="12" width="30" height="22" rx="11" fill="url(#g)"/>
+  <polygon points="14,34 10,42 22,34" fill="url(#g)"/>
+  <!-- Chat bubble 2 (right) -->
+  <rect x="28" y="22" width="30" height="22" rx="11" fill="#5A8FA8"/>
+  <polygon points="50,44 54,52 42,44" fill="#5A8FA8"/>
+  <!-- Heart dot on bubble 1 -->
+  <text x="21" y="27" font-size="12" text-anchor="middle" fill="white">♥</text>
 </svg>
