@@ -1276,14 +1276,14 @@
     </div>
     <!-- Trust bar -->
     <div style="display:flex; gap:20px; justify-content:center; margin-top:28px; flex-wrap:wrap;">
-      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
-        <span style="font-size:14px;">🔒</span> Vos messages restent sur votre appareil
+      <span style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-muted);">
+        <svg width="16" height="16" fill="none" stroke="#C27C5A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Vos messages restent sur votre appareil
       </span>
-      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
-        <span style="font-size:14px;">🗑️</span> Aucune donnée stockée
+      <span style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-muted);">
+        <svg width="16" height="16" fill="none" stroke="#C27C5A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke-linecap="round"/></svg> Aucune donnée stockée
       </span>
-      <span style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-muted);">
-        <span style="font-size:14px;">🚫</span> Jamais revendu
+      <span style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-muted);">
+        <svg width="16" height="16" fill="none" stroke="#C27C5A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg> Jamais revendu
       </span>
     </div>
   </div>
@@ -1374,24 +1374,32 @@
     <p class="section-sub">On sait que vos conversations sont intimes. Voici nos engagements.</p>
     <div class="trust-grid">
       <div class="trust-item reveal delay-1">
-        <span class="icon">📱</span>
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#D4956B,#C27C5A);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 12px rgba(194,124,90,0.2);">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <h4>Traitement local</h4>
-        <p>Vos messages sont analysés directement dans votre navigateur. Les statistiques et le filtrage ne quittent jamais votre appareil.</p>
+        <p>Vos messages restent dans votre navigateur. Rien ne quitte votre appareil.</p>
       </div>
       <div class="trust-item reveal delay-2">
-        <span class="icon">🗑️</span>
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#D4956B,#C27C5A);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 12px rgba(194,124,90,0.2);">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <h4>Rien n'est stocké</h4>
-        <p>Aucune base de données, aucun compte utilisateur. Vos conversations ne sont jamais enregistrées sur nos serveurs.</p>
+        <p>Aucune base de données, aucun compte. Vos conversations ne sont jamais enregistrées.</p>
       </div>
       <div class="trust-item reveal delay-3">
-        <span class="icon">🔒</span>
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#D4956B,#C27C5A);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 12px rgba(194,124,90,0.2);">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke-linecap="round"/></svg>
+        </div>
         <h4>Connexion sécurisée</h4>
-        <p>Toutes les communications passent par HTTPS. Votre fichier WhatsApp est chiffré pendant le transfert.</p>
+        <p>Toutes les communications passent par HTTPS. Vos données sont chiffrées.</p>
       </div>
       <div class="trust-item reveal delay-4">
-        <span class="icon">🚫</span>
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#D4956B,#C27C5A);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 12px rgba(194,124,90,0.2);">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
+        </div>
         <h4>Aucune exploitation</h4>
-        <p>Vos messages ne sont jamais revendus, partagés ou utilisés à des fins publicitaires. Jamais.</p>
+        <p>Vos messages ne sont jamais revendus ni utilisés à des fins publicitaires. Jamais.</p>
       </div>
     </div>
   </div>
@@ -1558,7 +1566,7 @@ const stSlides = [
   {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:32px;text-align:center;line-height:1.15;z-index:1;">Marine<br/>&amp;<br/>Baptiste</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">60 jours de conversation</div>'},
 
   // 2. Premiers mots
-  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \\u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\\u2019as ajout\\u00E9 \\u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \\u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajout\u00E9 \u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
 
   // 3. Total
   {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez échangé</div><div id="st-counter" class="gn" style="font-size:56px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:20px;padding:8px 18px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 80 par jour</div>'},
