@@ -830,7 +830,7 @@
       </div>
     </div>
 
-    <button class="btn-generate" id="btn-generate" disabled onclick="showNameMapping()">
+    <button class="btn-generate" id="btn-generate" disabled onclick="launchStory()">
       Découvrir ma story
     </button>
 
@@ -861,6 +861,11 @@
     <!-- Story Phone -->
     <div style="display:flex; justify-content:center; padding:20px 0;">
       <div id="story-phone" style="width:100%; max-width:360px; aspect-ratio:9/17.5; border-radius:32px; background:#1A1A1A; border:5px solid #222; overflow:hidden; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2); cursor:pointer; user-select:none;">
+        <div id="swipe-hint-creer" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);backdrop-filter:blur(2px);border-radius:28px;transition:opacity 0.4s ease;pointer-events:none;">
+          <span style="font-size:36px;animation:swipeHand 1.5s ease-in-out infinite;">👆</span>
+          <span style="color:#fff;font-size:13px;font-weight:500;margin-top:8px;letter-spacing:0.5px;">Tapez pour défiler</span>
+        </div>
+        <style>@keyframes swipeHand{0%,100%{transform:translateX(0);opacity:0.9}50%{transform:translateX(20px);opacity:1}}</style>
         <div id="st-progress" style="display:flex; gap:3px; padding:10px 14px 0; position:absolute; top:0; left:0; right:0; z-index:10;"></div>
         <div id="st-slide" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; transition:background 0.5s ease; font-family:var(--font-body);"></div>
         <div style="position:absolute; bottom:14px; left:0; right:0; text-align:center; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.2); z-index:10; pointer-events:none;">nospremiersmots.fr</div>
@@ -1092,9 +1097,12 @@ function selectPeriod(el, period) {
     document.getElementById('moderation-info').style.display = 'none';
   }
   
-  // Enable generate button
-  btnGenerate.disabled = filtered.length < 2;
-  if (filtered.length < 2) {
+  // Show name mapping if enough messages, otherwise show error
+  if (filtered.length >= 2) {
+    btnGenerate.disabled = true; // stays disabled until name confirmed
+    showNameMapping();
+  } else {
+    btnGenerate.disabled = true;
     document.getElementById('zip-warning').innerHTML = '⚠️ Pas assez de messages sur cette période (' + filtered.length + ' message(s) trouvé(s) sur ' + allMsgs.length + ' au total). Essayez une autre période.';
     document.getElementById('zip-warning').style.display = 'block';
   }
@@ -1697,6 +1705,17 @@ function confirmMapping(choice) {
   }
   nameMapConfirmed = true;
   document.getElementById('name-mapping').style.display = 'none';
+  // Enable the Découvrir button now that names are confirmed
+  btnGenerate.disabled = false;
+  btnGenerate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ═══ LAUNCH STORY (button click) ═══
+function launchStory() {
+  if (!nameMapConfirmed) {
+    showNameMapping();
+    return;
+  }
   showFullscreenLoader('Création de votre Love Story\u2026 💕');
   setTimeout(() => {
     const lt = document.querySelector('.loader-text');
@@ -1787,7 +1806,7 @@ function generatePreview() {
   var fmIsR = (dn(firstMsg.sender)===roseName);
   var fmCol = fmIsR?'#C27C5A':'#5A8FA8';
   var fmTxt = firstMsg.text.length>120?firstMsg.text.substring(0,120)+'\u2026':firstMsg.text;
-  var fmHtml='<div class="st-label" style="color:#5A8FA8;">Votre tout premier message</div>';
+  var fmHtml='<div class="st-label" style="color:#C27C5A;">Votre tout premier message</div>';
   fmHtml+='<div style="font-size:10px;color:rgba(0,0,0,0.25);margin-bottom:12px;z-index:1;">'+firstMsg.date+' \u00B7 '+firstMsg.time+'</div>';
   fmHtml+='<div style="max-width:90%;padding:12px 16px;font-size:13px;line-height:1.5;background:rgba('+(fmIsR?'194,124,90':'90,143,168')+',0.1);border-radius:18px 18px '+(fmIsR?'4px 18px':'18px 4px')+';margin-'+(fmIsR?'left':'right')+':auto;box-shadow:0 2px 8px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:8px;font-weight:600;color:'+fmCol+';margin-bottom:4px;">'+dn(firstMsg.sender)+'</div>'+fmTxt+'</div>';
   fmHtml+='<div style="margin-top:20px;font-size:10px;color:rgba(0,0,0,0.2);z-index:1;text-align:center;font-style:italic;">Le tout d\u00E9but de votre histoire</div>';
@@ -1840,7 +1859,7 @@ function generatePreview() {
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
     // 2. Premiers mots
-    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+fmHtml},
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+fmHtml},
     // 3. Total
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
     // 4. Bavard — two rings
@@ -1904,7 +1923,7 @@ function generatePreview() {
   ]);
 
   // ═══ CTA SLIDE (link generation) ═══
-  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F48C}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:16px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">\u{1F517} G\u00E9n\u00E9rer le lien surprise</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
+  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F495}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:16px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">G\u00E9n\u00E9rer le lien surprise \u2192</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
 
   // ═══ STORE DATA FOR LINK GENERATION ═══
   window._topEmojiCount=topEmoji[1];
@@ -1927,13 +1946,14 @@ function generatePreview() {
 
   // Click nav
   document.getElementById('story-phone').onclick = function(e) {
-    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('textarea,input,button,a')) return;
+    var hint=document.getElementById('swipe-hint-creer');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';}
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('textarea,input,button,a,[onclick]')) return;
     var rect = this.getBoundingClientRect();
     if (e.clientX - rect.left > rect.width/2) stNextR(); else stPrevR();
   };
   // Touch swipe
   var tsx = null;
-  document.getElementById('story-phone').addEventListener('touchstart', function(e){ tsx=e.touches[0].clientX; });
+  document.getElementById('story-phone').addEventListener('touchstart', function(e){ var hint=document.getElementById('swipe-hint-creer');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';} tsx=e.touches[0].clientX; });
   document.getElementById('story-phone').addEventListener('touchend', function(e){ if(tsx===null)return; var d=tsx-e.changedTouches[0].clientX; if(d>40)stNextR();else if(d<-40)stPrevR(); tsx=null; });
 
   document.getElementById('results').scrollIntoView({ behavior:'smooth' });
