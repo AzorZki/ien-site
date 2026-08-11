@@ -1921,7 +1921,7 @@ function generateShareLink() {
       resultEl.innerHTML = '<div style="background:rgba(90,186,122,0.1);border:1px solid rgba(90,186,122,0.2);border-radius:14px;padding:14px;text-align:center;">' +
         '<div style="font-size:13px;color:#3A8F5A;font-weight:600;margin-bottom:8px;">\u2705 Lien g\u00E9n\u00E9r\u00E9 !</div>' +
         '<button onclick="copyLink()" id="st-copy-btn" style="display:block;width:100%;background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--ink-soft);cursor:pointer;word-break:break-all;line-height:1.4;margin-bottom:8px;font-family:var(--font-body);">' + url.substring(0,50) + '\u2026<br/><strong style="color:var(--rose);">Tap pour copier le lien</strong></button>' +
-        '<button onclick="copyMessage()" style="display:block;width:100%;background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px;font-family:var(--font-body);">\u{1F4CB} Copier le message + lien</button>' +
+        '<button onclick="copyMessage()" style="display:block;width:100%;background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px;font-family:var(--font-body);">' + (navigator.share ? '\u{1F48C} Envoyer la surprise' : '\u{1F4CB} Copier le message + lien') + '</button>' +
         '</div>';
     }
   } catch(err) {
@@ -1932,45 +1932,88 @@ function generateShareLink() {
 function fallbackCopy(text) {
   var ta = document.createElement('textarea');
   ta.value = text;
-  ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
+  ta.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:80px;z-index:99999;font-size:14px;padding:12px;opacity:1;';
   document.body.appendChild(ta);
   ta.focus();
   ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-function copyToClipboard(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); return Promise.resolve(); });
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e) {}
+  if (ok) {
+    document.body.removeChild(ta);
+  } else {
+    // Can't auto-copy: leave textarea visible for manual copy
+    ta.style.background = '#FFF8EC';
+    ta.style.border = '2px solid #C27C5A';
+    ta.style.borderRadius = '12px';
+    var hint = document.createElement('div');
+    hint.style.cssText = 'position:fixed;left:0;top:84px;width:100%;z-index:99999;text-align:center;padding:8px;background:#C27C5A;color:white;font-size:13px;font-family:Inter,sans-serif;';
+    hint.textContent = 'Maintenez le texte pour le copier, puis fermez';
+    hint.onclick = function() { document.body.removeChild(ta); document.body.removeChild(hint); };
+    document.body.appendChild(hint);
+    setTimeout(function() { try { document.body.removeChild(ta); document.body.removeChild(hint); } catch(e){} }, 30000);
   }
-  fallbackCopy(text);
-  return Promise.resolve();
+  return ok;
 }
 
 function copyLink() {
   if (!window._shareUrl) return;
-  copyToClipboard(window._shareUrl).then(function() {
-    var btn = document.getElementById('st-copy-btn');
-    if (btn) btn.innerHTML = '<strong style="color:#3A8F5A;">\u2705 Lien copi\u00E9 !</strong>';
-  });
+  // Try Web Share API first (iOS native share sheet)
+  if (navigator.share) {
+    navigator.share({
+      title: 'Ta Love Story \u{1F48C}',
+      text: 'J\u2019ai quelque chose pour toi \u{1F48C} Ouvre ce lien et swipe \u{1F449}',
+      url: window._shareUrl
+    }).then(function() {
+      var btn = document.getElementById('st-copy-btn');
+      if (btn) btn.innerHTML = '<strong style="color:#3A8F5A;">\u2705 Partag\u00E9 !</strong>';
+    }).catch(function() {});
+    return;
+  }
+  // Fallback: clipboard
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(window._shareUrl).then(function() {
+      var btn = document.getElementById('st-copy-btn');
+      if (btn) btn.innerHTML = '<strong style="color:#3A8F5A;">\u2705 Lien copi\u00E9 !</strong>';
+    }).catch(function() { fallbackCopy(window._shareUrl); });
+  } else {
+    fallbackCopy(window._shareUrl);
+  }
 }
 
 function copyMessage() {
   if (!window._shareUrl) return;
   var text = "J\u2019ai quelque chose pour toi \u{1F48C}\nOuvre ce lien et swipe \u{1F449}\n\n" + window._shareUrl;
-  copyToClipboard(text).then(function() {
-    var overlay = document.createElement('div');
+  // Try Web Share API first
+  if (navigator.share) {
+    navigator.share({
+      title: 'Ta Love Story \u{1F48C}',
+      text: text
+    }).then(function() {
+      showCopyOverlay();
+    }).catch(function() {});
+    return;
+  }
+  // Fallback: clipboard
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showCopyOverlay();
+    }).catch(function() { fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function showCopyOverlay() {
+  var overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;';
     overlay.innerHTML = '<div style="background:white;border-radius:20px;padding:32px 24px;max-width:320px;text-align:center;">' +
       '<div style="font-size:36px;margin-bottom:12px;">\u{1F48C}</div>' +
-      '<div style="font-family:var(--font-display);font-size:18px;margin-bottom:8px;">Message copi\u00E9 !</div>' +
-      '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;">Collez-le dans WhatsApp, iMessage ou o\u00F9 vous voulez pour envoyer la surprise \u00E0 votre moiti\u00E9.</div>' +
+      '<div style="font-family:var(--font-display);font-size:18px;margin-bottom:8px;">C\u2019est parti !</div>' +
+      '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;">Envoyez la surprise \u00E0 votre moiti\u00E9 par WhatsApp, iMessage ou o\u00F9 vous voulez.</div>' +
       '<button onclick="this.closest(\'div[style]\').remove()" style="background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 32px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);">Compris !</button>' +
       '</div>';
     overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
     document.body.appendChild(overlay);
-  });
 }
 
 // ═══ SHARE ═══
