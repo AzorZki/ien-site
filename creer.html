@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Créer ma story — Nos premiers mots</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
     --font-body: 'Inter', -apple-system, sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: var(--font-body); color: var(--ink); background: var(--warm-white); -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--warm-white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
   /* ═══ STORY DA v5 ═══ */
   .gn {
@@ -711,11 +711,11 @@
     <div style="display: flex; gap: 16px; max-width: 400px; margin: 0 auto 24px;">
       <div style="flex:1;">
         <label style="font-size: 11px; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Prénom 1</label>
-        <input type="text" id="name-1" placeholder="Ex : Baptiste" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 14px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
+        <input type="text" id="name-1" placeholder="Ex : Baptiste" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 16px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
       </div>
       <div style="flex:1;">
         <label style="font-size: 11px; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Prénom 2</label>
-        <input type="text" id="name-2" placeholder="Ex : Marine" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 14px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
+        <input type="text" id="name-2" placeholder="Ex : Marine" autocomplete="off" style="width:100%; padding: 12px 16px; font-size: 16px; font-family: var(--font-body); border: 1px solid var(--border); border-radius: 12px; background: var(--cream); outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'" oninput="checkNames()" onkeyup="checkNames()" onchange="checkNames()">
       </div>
     </div>
     <button class="btn-generate" id="btn-names" disabled onclick="goToUpload()" style="max-width: 400px; margin: 0 auto;">
@@ -1752,7 +1752,7 @@ function generatePreview() {
   ]);
 
   // ═══ CTA SLIDE (link generation) ═══
-  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F48C}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:12px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">\u{1F517} G\u00E9n\u00E9rer le lien surprise</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
+  var ctaSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:16px;z-index:1;">Envoyez-lui<br/>la surprise \u{1F48C}</div><div style="width:100%;max-width:260px;z-index:1;"><textarea id="st-msg-input" placeholder="Un petit message pour '+userName2+'\u2026 (optionnel)" style="width:100%;height:70px;padding:12px;font-family:var(--font-body);font-size:16px;border:1px solid rgba(0,0,0,0.08);border-radius:14px;background:rgba(255,255,255,0.6);resize:none;outline:none;color:var(--ink);line-height:1.5;"></textarea></div><div onclick="generateShareLink()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:260px;margin-top:12px;">\u{1F517} G\u00E9n\u00E9rer le lien surprise</div><div id="st-link-result" style="display:none;width:100%;max-width:260px;z-index:1;margin-top:12px;"></div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:16px;z-index:1;">Le lien contient votre story interactive.<br/>Aucune donn\u00E9e stock\u00E9e sur nos serveurs.</div>'};
 
   // ═══ STORE DATA FOR LINK GENERATION ═══
   window._topEmojiCount=topEmoji[1];
