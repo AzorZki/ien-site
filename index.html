@@ -914,8 +914,9 @@
     background: white;
     border: 2px solid var(--rose);
     border-radius: 20px;
-    padding: 40px 32px;
+    padding: 32px 16px;
     text-align: center;
+    overflow: hidden;
   }
   .pricing-card .price {
     font-family: var(--font-display);
@@ -949,18 +950,20 @@
     font-weight: 600;
   }
   .pricing-card .cta-btn {
-    display: inline-block;
-    padding: 14px 40px;
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
     background: var(--rose);
     color: white;
     border: none;
     border-radius: 100px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     font-family: var(--font-body);
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.2s;
+    box-sizing: border-box;
   }
   .pricing-card .cta-btn:hover { transform: scale(1.03); }
   /* ═══ TRUST ═══ */
@@ -1340,10 +1343,9 @@
         <div class="price" style="color:var(--ink);">Gratuit</div>
         <div class="price-sub">Story découverte</div>
         <ul class="pricing-features">
-          <li>8 slides animées à swiper</li>
+          <li>6 slides animées à swiper</li>
           <li>Qui est le plus bavard ?</li>
           <li>Vos premiers mots reproduits</li>
-          <li>Premier « je t'aime »</li>
           <li>Top 3 emojis, jour record</li>
         </ul>
         <a href="creer.html" class="cta-btn" style="display:block; text-align:center; background:var(--ink);">Créer ma story</a>
@@ -1352,8 +1354,9 @@
         <div class="price">3,99 €</div>
         <div class="price-sub">Lien surprise interactif</div>
         <ul class="pricing-features">
-          <li>Les 8 slides gratuites +</li>
-          <li>18 slides exclusives (cœurs, fous rires, couche-tard, nuits blanches…)</li>
+          <li>Les 6 slides gratuites +</li>
+          <li>Premier « je t'aime » 💕</li>
+          <li>19 slides exclusives (cœurs, fous rires, couche-tard, nuits blanches…)</li>
           <li>Un lien interactif à envoyer</li>
           <li>Votre moitié vit la story en swipant</li>
           <li>Message personnel intégré</li>
@@ -1511,7 +1514,7 @@ function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*c
 function mkShapes(v){var cfgs=[[['60px','rgba(194,124,90,0.07)','top:8%;right:5%'],['90px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['75px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['45px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['75px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['60px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
 // Donut for slide 12
-var donutData=[{l:'Matin',p:18,c:'#F0B888',e:'\u2600\uFE0F'},{l:'Après-midi',p:22,c:'#E8956A',e:'\u{1F324}\uFE0F'},{l:'Soirée',p:42,c:'#7BBAD0',e:'\u{1F319}'},{l:'Nuit',p:18,c:'#A0D0E0',e:'\u{1F30C}'}];
+var donutData=[{l:'Matin',p:18,c:'#F0B888',e:'\u2600\uFE0F'},{l:'Aprèm',p:22,c:'#E8956A',e:'\u{1F324}\uFE0F'},{l:'Soirée',p:42,c:'#7BBAD0',e:'\u{1F319}'},{l:'Nuit',p:18,c:'#A0D0E0',e:'\u{1F30C}'}];
 var donutSvg='<svg width="120" height="120" viewBox="0 0 180 180" style="z-index:1;margin-bottom:16px;">';var dCum=0;
 donutData.forEach(function(d){donutSvg+='<circle cx="90" cy="90" r="70" fill="none" stroke="'+d.c+'" stroke-width="18" stroke-dasharray="'+(d.p/100*439.8)+' 439.8" stroke-dashoffset="'+(-dCum/100*439.8)+'" transform="rotate(-90 90 90)"/>';dCum+=d.p;});
 donutSvg+='</svg>';
@@ -1554,7 +1557,7 @@ const stSlides = [
   {bg:'linear-gradient(145deg,#2A3A4A,#1E3040)',html:'<div class="st-label" style="color:rgba(255,255,255,0.6);">Quand discutez-vous ?</div>'+donutSvg+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;z-index:1;">'+donutData.map(function(d){return '<div style="display:flex;align-items:center;gap:5px;"><div style="width:7px;height:7px;border-radius:50%;background:'+d.c+';"></div><span style="font-size:10px;color:rgba(255,255,255,0.8);">'+d.e+' '+d.l+' <strong style="color:#fff;font-size:11px;">'+d.p+'%</strong></span></div>';}).join('')+'</div>'},
 
   // 13. Heure — clock
-  {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div><div style="position:relative;width:110px;height:110px;margin-bottom:16px;z-index:1;"><svg width="110" height="110" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="8" stroke-dasharray="62.8 377" stroke-dashoffset="-329.9" stroke-linecap="round" transform="rotate(-90 70 70)" style="filter:drop-shadow(0 0 6px rgba(255,255,255,0.3));"/><text x="70" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">0h</text><text x="95" y="20" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8" font-family="Inter,sans-serif">21h</text></svg></div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;z-index:1;">Votre heure préférée</div><div style="font-family:var(--font-display);font-size:42px;font-weight:700;color:#fff;z-index:1;">23h</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:6px;z-index:1;">38% de vos messages</div>'},
+  {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Le saviez-vous ?</div><div style="font-family:var(--font-display);font-size:17px;color:#fff;text-align:center;z-index:1;">Votre heure préférée</div><div style="font-family:var(--font-display);font-size:56px;font-weight:700;color:#fff;z-index:1;margin:12px 0;">23h</div><div style="font-size:11px;color:rgba(255,255,255,0.45);z-index:1;">38% de vos messages</div>'},
 
   // 14. Bonne nuit
   {bg:'linear-gradient(145deg,#FCE4D8,#F0D0BE)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos rituels du soir</div><div style="font-size:36px;margin-bottom:10px;z-index:1;">\u{1F319}</div><div id="st-bn-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:12px;color:rgba(0,0,0,0.4);margin-top:6px;z-index:1;">bonne nuit échangés</div><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-top:14px;text-align:center;line-height:1.6;max-width:200px;z-index:1;font-style:italic;">Chaque soir, un petit mot<br/>avant de dormir</div>'},
