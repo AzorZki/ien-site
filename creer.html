@@ -1367,15 +1367,18 @@ function getStats(msgs) {
   // Double-texteur (max consecutive messages without reply)
   let maxConsec1 = 0, maxConsec2 = 0, currentConsec = 0, currentConsecSender = '';
   let maxConsecDate1 = '', maxConsecDate2 = '';
+  let consecMsgs1 = [], consecMsgs2 = [], currentConsecMsgs = [];
   for (const m of msgs) {
     if (m.sender === currentConsecSender) {
       currentConsec++;
+      currentConsecMsgs.push(m);
     } else {
       currentConsec = 1;
       currentConsecSender = m.sender;
+      currentConsecMsgs = [m];
     }
-    if (m.sender === s1 && currentConsec > maxConsec1) { maxConsec1 = currentConsec; maxConsecDate1 = m.date; }
-    if (m.sender === s2 && currentConsec > maxConsec2) { maxConsec2 = currentConsec; maxConsecDate2 = m.date; }
+    if (m.sender === s1 && currentConsec > maxConsec1) { maxConsec1 = currentConsec; maxConsecDate1 = m.date; consecMsgs1 = currentConsecMsgs.slice(); }
+    if (m.sender === s2 && currentConsec > maxConsec2) { maxConsec2 = currentConsec; maxConsecDate2 = m.date; consecMsgs2 = currentConsecMsgs.slice(); }
   }
 
   // Who opens / closes the conversation each day
@@ -1465,7 +1468,7 @@ function getStats(msgs) {
     firstMsg: msgs[0],
     // New fun stats
     avgWords1, avgWords2, totalWords, bookPages,
-    maxConsec1, maxConsec2, maxConsecDate1, maxConsecDate2,
+    maxConsec1, maxConsec2, maxConsecDate1, maxConsecDate2, consecMsgs1, consecMsgs2,
     opens1, opens2, closes1, closes2, totalDays,
     questions1, questions2,
     streak: maxStreak,
@@ -1821,8 +1824,11 @@ function stRenderR() {
   }
   // Double-texteur bubbles
   var dtBub=document.getElementById('st-dt-bubbles');
-  if(dtBub){var dtMsgs=["T'es o\u00F9 ?","Allooo","???","Ok boude pas \u{1F624}","Bon je vais dormir","... \u{1F622}"];
-    dtBub.innerHTML=dtMsgs.map(function(t,i){return '<div style="max-width:75%;padding:7px 12px;margin-bottom:3px;font-size:12px;line-height:1.4;background:rgba(194,124,90,'+(0.08+i*0.02)+');border-radius:12px 12px 4px 12px;margin-left:auto;opacity:0;transform:translateX(20px);transition:all 0.4s ease '+(0.15+i*0.12)+'s;">'+t+'</div>';}).join('');
+  if(dtBub){
+    var realConsecMsgs = s.maxConsec1 > s.maxConsec2 ? s.consecMsgs1 : s.consecMsgs2;
+    var dtMsgs = realConsecMsgs ? realConsecMsgs.slice(0, 6).map(function(m){ var t = m.text; return t.length > 40 ? t.substring(0, 40) + '\u2026' : t; }) : [];
+    if (dtMsgs.length === 0) dtMsgs = ['...'];
+    dtBub.innerHTML=dtMsgs.map(function(t,i){return '<div style="max-width:75%;padding:7px 12px;margin-bottom:3px;font-size:11px;line-height:1.4;background:rgba(194,124,90,'+(0.08+i*0.02)+');border-radius:12px 12px 4px 12px;margin-left:auto;opacity:0;transform:translateX(20px);transition:all 0.4s ease '+(0.15+i*0.12)+'s;">'+t+'</div>';}).join('');
     setTimeout(function(){dtBub.querySelectorAll('div').forEach(function(d){d.style.opacity='1';d.style.transform='translateX(0)';});},100);
   }
   // Record bars
@@ -1873,47 +1879,53 @@ function unlockStory() {
 
 // ═══ GENERATE SHARE LINK ═══
 function generateShareLink() {
-  var msg = '';
-  var msgInput = document.getElementById('st-msg-input');
-  if (msgInput) msg = msgInput.value.trim();
+  try {
+    var msg = '';
+    var msgInput = document.getElementById('st-msg-input');
+    if (msgInput) msg = msgInput.value.trim();
 
-  var s = window._lastStats;
-  var data = {
-    n1: userName1, n2: userName2, ri: roseIdx, sn: userName1, msg: msg,
-    t: s.total, d: s.totalDays, p1: s.pct1, p2: s.pct2,
-    c1: s.count1, c2: s.count2,
-    h: s.hearts, h1: s.hearts1, h2: s.hearts2,
-    l1: s.laughs1, l2: s.laughs2,
-    q1: s.questions1, q2: s.questions2,
-    o1: s.opens1, o2: s.opens2,
-    cl1: s.closes1, cl2: s.closes2,
-    mc1: s.maxConsec1, mc2: s.maxConsec2,
-    bn: s.bonneNuit, ph: s.peakHour, pp: s.peakHourPct,
-    rd: s.recordDay, rc: s.recordCount, sk: s.streak,
-    e1: s.earliest1, e2: s.earliest2,
-    lt1: s.latest1, lt2: s.latest2,
-    f1: s.fast1, f2: s.fast2, ar: s.avgResp,
-    aw1: s.avgWords1, aw2: s.avgWords2,
-    tw: s.totalWords, bp: s.bookPages, nm: s.nightMsgs,
-    wp: s.topWord, td: window._donutPcts,
-    te: window._topEmojis, jt: window._jtData, fn: window._fnData,
-    fm: window._firstMsgsData
-  };
+    var s = window._lastStats;
+    if (!s) { alert('Erreur : stats non trouvées. Rechargez la page.'); return; }
 
-  var json = JSON.stringify(data);
-  var encoded = btoa(unescape(encodeURIComponent(json)));
-  var url = window.location.origin + window.location.pathname.replace('creer.html','story.html') + '#' + encoded;
+    var data = {
+      n1: userName1, n2: userName2, ri: roseIdx, sn: userName1, msg: msg,
+      t: s.total, d: s.totalDays, p1: s.pct1, p2: s.pct2,
+      c1: s.count1, c2: s.count2,
+      h: s.hearts||0, h1: s.hearts1||0, h2: s.hearts2||0,
+      l1: s.laughs1||0, l2: s.laughs2||0,
+      q1: s.questions1||0, q2: s.questions2||0,
+      o1: s.opens1||0, o2: s.opens2||0,
+      cl1: s.closes1||0, cl2: s.closes2||0,
+      mc1: s.maxConsec1||0, mc2: s.maxConsec2||0,
+      bn: s.bonneNuit||0, ph: s.peakHour||0, pp: s.peakHourPct||0,
+      rd: s.recordDay||'', rc: s.recordCount||0, sk: s.streak||0,
+      e1: s.earliest1||'', e2: s.earliest2||'',
+      lt1: s.latest1||'', lt2: s.latest2||'',
+      f1: s.fast1, f2: s.fast2, ar: s.avgResp||0,
+      aw1: s.avgWords1||0, aw2: s.avgWords2||0,
+      tw: s.totalWords||0, bp: s.bookPages||0, nm: s.nightMsgs||0,
+      wp: s.topWord||null, td: window._donutPcts||[25,25,25,25],
+      te: window._topEmojis||[], jt: window._jtData||null, fn: window._fnData||null,
+      fm: window._firstMsgsData||[]
+    };
 
-  // Show result
-  var resultEl = document.getElementById('st-link-result');
-  if (resultEl) {
-    resultEl.style.display = 'block';
-    resultEl.innerHTML = '<div style="background:rgba(90,186,122,0.1);border:1px solid rgba(90,186,122,0.2);border-radius:14px;padding:14px;text-align:center;">' +
-      '<div style="font-size:13px;color:#3A8F5A;font-weight:600;margin-bottom:8px;">\u2705 Lien g\u00E9n\u00E9r\u00E9 !</div>' +
-      '<div onclick="copyLink()" id="st-copy-btn" style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--ink-soft);cursor:pointer;word-break:break-all;line-height:1.4;margin-bottom:8px;">' + url.substring(0,60) + '\u2026<br/><strong style="color:var(--rose);">Tap pour copier</strong></div>' +
-      '<div onclick="copyMessage()" style="background:var(--rose);color:white;border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;cursor:pointer;margin-top:4px;">\u{1F4CB} Copier le message + lien</div>' +
-      '</div>';
+    var json = JSON.stringify(data);
+    var encoded = btoa(unescape(encodeURIComponent(json)));
+    var url = window.location.origin + window.location.pathname.replace('creer.html','story.html') + '#' + encoded;
     window._shareUrl = url;
+
+    // Show result
+    var resultEl = document.getElementById('st-link-result');
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div style="background:rgba(90,186,122,0.1);border:1px solid rgba(90,186,122,0.2);border-radius:14px;padding:14px;text-align:center;">' +
+        '<div style="font-size:13px;color:#3A8F5A;font-weight:600;margin-bottom:8px;">\u2705 Lien g\u00E9n\u00E9r\u00E9 !</div>' +
+        '<button onclick="copyLink()" id="st-copy-btn" style="display:block;width:100%;background:white;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--ink-soft);cursor:pointer;word-break:break-all;line-height:1.4;margin-bottom:8px;font-family:var(--font-body);">' + url.substring(0,50) + '\u2026<br/><strong style="color:var(--rose);">Tap pour copier le lien</strong></button>' +
+        '<button onclick="copyMessage()" style="display:block;width:100%;background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px;font-family:var(--font-body);">\u{1F4CB} Copier le message + lien</button>' +
+        '</div>';
+    }
+  } catch(err) {
+    alert('Erreur lors de la génération du lien : ' + err.message);
   }
 }
 
@@ -1937,12 +1949,15 @@ function copyToClipboard(text) {
 }
 
 function copyLink() {
+  if (!window._shareUrl) return;
   copyToClipboard(window._shareUrl).then(function() {
-    document.getElementById('st-copy-btn').innerHTML = '<strong style="color:#3A8F5A;">\u2705 Lien copi\u00E9 !</strong>';
+    var btn = document.getElementById('st-copy-btn');
+    if (btn) btn.innerHTML = '<strong style="color:#3A8F5A;">\u2705 Lien copi\u00E9 !</strong>';
   });
 }
 
 function copyMessage() {
+  if (!window._shareUrl) return;
   var text = "J\u2019ai quelque chose pour toi \u{1F48C}\nOuvre ce lien et swipe \u{1F449}\n\n" + window._shareUrl;
   copyToClipboard(text).then(function() {
     var overlay = document.createElement('div');
