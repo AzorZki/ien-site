@@ -991,17 +991,22 @@ function switchTab(tab) {
 }
 
 function selectPeriod(el, period) {
+  try {
   document.querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   
   const raw = pasteInput.value;
-  if (!raw || raw.length < 20) return;
+  if (!raw || raw.length < 20) {
+    document.getElementById('zip-warning').innerHTML = '⚠️ Aucun contenu détecté dans le fichier. Réessayez.';
+    document.getElementById('zip-warning').style.display = 'block';
+    return;
+  }
   
   const allMsgs = parseWhatsApp(raw);
   if (allMsgs.length < 2) {
     removeFullscreenLoader();
     var firstLines = raw.substring(0, 300).split('\n').slice(0, 3).join('\n');
-    document.getElementById('zip-warning').innerHTML = '⚠️ <strong>Format non reconnu.</strong> Aucun message détecté dans votre fichier.<br/><br/><div style="background:rgba(0,0,0,0.03);padding:8px 12px;border-radius:8px;font-size:11px;font-family:monospace;word-break:break-all;margin-top:8px;">Premières lignes :<br/>' + firstLines.replace(/</g,'&lt;') + '</div><br/>Envoyez cette capture à <strong>contact@nospremiersmots.fr</strong> et on corrigera !';
+    document.getElementById('zip-warning').innerHTML = '⚠️ <strong>Format non reconnu.</strong> ' + allMsgs.length + ' message(s) détecté(s).<br/><br/><div style="background:rgba(0,0,0,0.03);padding:8px 12px;border-radius:8px;font-size:11px;font-family:monospace;word-break:break-all;margin-top:8px;">Premières lignes :<br/>' + firstLines.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><br/>Envoyez cette capture à <strong>contact@nospremiersmots.fr</strong> et on corrigera !';
     document.getElementById('zip-warning').style.display = 'block';
     return;
   }
@@ -1062,6 +1067,15 @@ function selectPeriod(el, period) {
   
   // Enable generate button
   btnGenerate.disabled = filtered.length < 2;
+  if (filtered.length < 2) {
+    document.getElementById('zip-warning').innerHTML = '⚠️ Pas assez de messages sur cette période (' + filtered.length + ' message(s) trouvé(s) sur ' + allMsgs.length + ' au total). Essayez une autre période.';
+    document.getElementById('zip-warning').style.display = 'block';
+  }
+  } catch(err) {
+    document.getElementById('zip-warning').innerHTML = '⚠️ <strong>Erreur :</strong> ' + (err.message || err) + '<br/><br/>Envoyez cette capture à <strong>contact@nospremiersmots.fr</strong>';
+    document.getElementById('zip-warning').style.display = 'block';
+    btnGenerate.disabled = true;
+  }
 }
 
 function filterByPeriod(msgs, period) {
