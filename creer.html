@@ -742,7 +742,7 @@
       <span class="file-drop-icon">💬</span>
       <div class="file-drop-text">Importez votre conversation WhatsApp</div>
       <div class="file-drop-sub">Glissez votre fichier .txt ou .zip ici, ou cliquez pour parcourir</div>
-      <input type="file" id="file-input" accept=".txt,.zip">
+      <input type="file" id="file-input" accept=".txt,.zip,text/plain,application/zip,application/x-zip-compressed">
     </div>
     <div id="zip-warning" style="display:none; margin-top:12px; padding:12px 16px; background:#FFF8EC; border:1px solid #F0E0C0; border-radius:10px; font-size:13px; color:#8A6D2B;">
       ⚠️ Fichier .zip détecté ! Décompressez-le d'abord (clic droit → Extraire), puis importez le fichier <strong>.txt</strong> qu'il contient.
@@ -1143,30 +1143,73 @@ fileInput.addEventListener('change', (e) => {
     reader.onload = async (ev) => {
       try {
         const zip = await JSZip.loadAsync(ev.target.result);
-        const txtFile = Object.values(zip.files).find(f => f.name.endsWith('.txt') && !f.dir);
+        // Search for .txt file anywhere in the zip (including subdirectories on iPhone)
+        let txtFile = null;
+        zip.forEach(function(relativePath, zipEntry) {
+          if (!zipEntry.dir && relativePath.endsWith('.txt') && !txtFile) {
+            txtFile = zipEntry;
+          }
+        });
         if (!txtFile) {
           removeFullscreenLoader();
           document.getElementById('zip-warning').innerHTML = '⚠️ Aucun fichier .txt trouvé dans le zip. Vérifiez votre export WhatsApp.';
           document.getElementById('zip-warning').style.display = 'block';
           return;
         }
-        const txt = await txtFile.async('string');
+        // Try UTF-8 first, then fallback to raw binary string for UTF-16
+        let txt;
+        try {
+          txt = await txtFile.async('string');
+          // Check if it looks like valid WhatsApp (has dates)
+          if (!/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(txt.substring(0, 500))) {
+            // Might be UTF-16, try binary decoding
+            const buf = await txtFile.async('arraybuffer');
+            const decoder = new TextDecoder('utf-16le');
+            const decoded = decoder.decode(buf);
+            if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(decoded.substring(0, 500))) {
+              txt = decoded;
+            }
+          }
+        } catch(e) {
+          const buf = await txtFile.async('arraybuffer');
+          const decoder = new TextDecoder('utf-8');
+          txt = decoder.decode(buf);
+        }
         pasteInput.value = txt;
         showFileLoaded(file.name + ' → ' + txtFile.name);
         document.getElementById('period-selector').classList.add('show');
         setTimeout(() => removeFullscreenLoader(), 1500);
       } catch (err) {
         removeFullscreenLoader();
-        document.getElementById('zip-warning').innerHTML = '⚠️ Impossible de lire le fichier zip. Réessayez ou décompressez-le manuellement.';
+        document.getElementById('zip-warning').innerHTML = '⚠️ Impossible de lire le fichier zip : ' + (err.message || 'erreur inconnue') + '. Essayez de décompresser le .zip et d\'importer le .txt directement.';
         document.getElementById('zip-warning').style.display = 'block';
       }
     };
     reader.readAsArrayBuffer(file);
   } else {
-    // Regular .txt file
+    // Regular .txt file — try UTF-8, fallback to UTF-16 for iPhone
     const reader = new FileReader();
     reader.onload = (ev) => {
-      pasteInput.value = ev.target.result;
+      let txt = ev.target.result;
+      // Check if it looks like valid WhatsApp (has date patterns)
+      if (!/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(txt.substring(0, 500)) && txt.length > 0) {
+        // Might be UTF-16, re-read as arraybuffer
+        const reader2 = new FileReader();
+        reader2.onload = (ev2) => {
+          const decoder = new TextDecoder('utf-16le');
+          const decoded = decoder.decode(ev2.target.result);
+          if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(decoded.substring(0, 500))) {
+            txt = decoded;
+          }
+          pasteInput.value = txt;
+          showFileLoaded(file.name);
+          document.getElementById('period-selector').classList.add('show');
+          setTimeout(() => removeFullscreenLoader(), 1500);
+        };
+        reader2.readAsArrayBuffer(file);
+        return;
+      }
+      pasteInput.value = txt;
       showFileLoaded(file.name);
       document.getElementById('period-selector').classList.add('show');
       setTimeout(() => removeFullscreenLoader(), 1500);
