@@ -1061,6 +1061,36 @@
     cursor: pointer;
     user-select: none;
   }
+  .swipe-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(2px);
+    border-radius: 28px;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .swipe-hint.hidden { opacity: 0; }
+  .swipe-hint-hand {
+    font-size: 36px;
+    animation: swipeHandMove 1.5s ease-in-out infinite;
+  }
+  .swipe-hint-text {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+  @keyframes swipeHandMove {
+    0%, 100% { transform: translateX(0); opacity: 0.9; }
+    50% { transform: translateX(20px); opacity: 1; }
+  }
   .story-progress {
     display: flex;
     gap: 3px;
@@ -1319,6 +1349,10 @@
 
     <div class="reveal-scale" style="display:flex; justify-content:center; margin-bottom:20px;">
       <div class="story-phone" id="story-phone">
+        <div class="swipe-hint" id="swipe-hint">
+          <span class="swipe-hint-hand">👆</span>
+          <span class="swipe-hint-text">Tapez pour défiler</span>
+        </div>
         <div class="story-progress" id="story-progress"></div>
         <div class="story-slide" id="story-slide"></div>
         <div class="story-watermark">nospremiersmots.fr</div>
@@ -1545,7 +1579,7 @@ const stSlides = [
   {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Qui dit bonjour en premier ?</div>'+mkRing(68,'#C27C5A',130,10,'<span id="st-bj-count" class="gn" style="font-size:40px;">0%</span>')+'<div style="font-family:var(--font-display);font-size:18px;color:#C27C5A;font-weight:600;margin-top:14px;z-index:1;">Marine</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">ouvre la conversation</div>'},
 
   // 9. Premiers mots
-  {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+'<div class="st-label" style="color:#5A8FA8;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px;transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px;transition:all 0.5s ease;" data-delay="0.2"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Salut \u{1F60A}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:32</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(90,143,168,0.1);border-radius:14px 14px 4px 14px;margin-left:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.35"><div style="font-size:7px;font-weight:600;color:#5A8FA8;margin-bottom:2px;">Baptiste</div>Heyy ! Ah cool tu m\u2019as ajouté \u{1F604}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:35</div></div><div style="max-width:85%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.4;background:rgba(194,124,90,0.1);border-radius:14px 14px 14px 4px;margin-right:auto;box-shadow:0 1px 4px rgba(0,0,0,0.04);z-index:1;opacity:0;transform:translateY(10px);transition:all 0.5s ease;" data-delay="0.5"><div style="font-size:7px;font-weight:600;color:#C27C5A;margin-bottom:2px;">Marine</div>Tu fais quoi ce soir ? \u{1F60F}<div style="font-size:6px;color:rgba(0,0,0,0.2);text-align:right;margin-top:2px;">19:40</div></div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:12px;font-style:italic;text-align:center;z-index:1;">+ 247 messages dans votre lien surprise</div>'},
 
   // 10. Emoji podium
   {bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis préférés</div><div id="st-podium" style="display:flex;align-items:flex-end;gap:6px;z-index:1;margin-bottom:12px;"></div><div style="display:flex;gap:6px;font-size:9px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>'},
@@ -1639,6 +1673,9 @@ function stGo(i) { stCurrent = i; stRender(); }
 
 // Click left/right on phone
 document.getElementById('story-phone').addEventListener('click', function(e) {
+  // Dismiss swipe hint on first interaction
+  var hint = document.getElementById('swipe-hint');
+  if (hint && !hint.classList.contains('hidden')) hint.classList.add('hidden');
   const rect = this.getBoundingClientRect();
   const x = e.clientX - rect.left;
   if (x > rect.width / 2) stNext(); else stPrev();
@@ -1646,7 +1683,7 @@ document.getElementById('story-phone').addEventListener('click', function(e) {
 
 // Touch swipe
 var stTsx = null;
-document.getElementById('story-phone').addEventListener('touchstart', function(e){ stTsx=e.touches[0].clientX; });
+document.getElementById('story-phone').addEventListener('touchstart', function(e){ var hint=document.getElementById('swipe-hint');if(hint&&!hint.classList.contains('hidden'))hint.classList.add('hidden'); stTsx=e.touches[0].clientX; });
 document.getElementById('story-phone').addEventListener('touchend', function(e){ if(stTsx===null)return; var d=stTsx-e.changedTouches[0].clientX; if(d>40)stNext();else if(d<-40)stPrev(); stTsx=null; });
 
 stRender();

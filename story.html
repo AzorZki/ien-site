@@ -250,6 +250,11 @@
 
 <!-- STORY VIEWER -->
 <div id="viewer">
+  <div id="swipe-hint-story" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);backdrop-filter:blur(2px);transition:opacity 0.4s ease;pointer-events:none;">
+    <span style="font-size:36px;animation:swipeH 1.5s ease-in-out infinite;">👆</span>
+    <span style="color:#fff;font-size:14px;font-weight:500;margin-top:8px;letter-spacing:0.5px;">Tapez pour défiler</span>
+  </div>
+  <style>@keyframes swipeH{0%,100%{transform:translateX(0);opacity:0.9}50%{transform:translateX(20px);opacity:1}}</style>
   <div id="progress"></div>
   <div id="slide"></div>
   <div id="watermark">nospremiersmots.fr</div>
@@ -353,7 +358,7 @@ if (D) {
   }
 
   // First messages
-  var fmHtml = '<div class="st-label" style="color:#5A8FA8;">Vos tout premiers mots</div>';
+  var fmHtml = '<div class="st-label" style="color:#C27C5A;">Vos tout premiers mots</div>';
   if (s.fm && s.fm.length) {
     s.fm.forEach(function(m, i) {
       var isR = (m.s === roseName);
@@ -387,7 +392,7 @@ if (D) {
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">Nos premiers mots</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+n1+'<br/>&amp;<br/>'+n2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+s.d+' jours de conversation</div>'},
     // 2. Premiers mots
-    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(0)+fmHtml},
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+fmHtml},
     // 3. Total
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+ppd+' par jour</div>'},
     // 4. Bavard
@@ -496,13 +501,14 @@ if (D) {
   function prev() { if (current > 0) { current--; render(); } }
 
   document.getElementById('slide').addEventListener('click', function(e) {
+    var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';}
     if (e.target.tagName === 'A' || e.target.closest('a')) return;
     var rect = this.getBoundingClientRect();
     if (e.clientX - rect.left > rect.width / 2) next(); else prev();
   });
 
   var tsx = null;
-  document.getElementById('slide').addEventListener('touchstart', function(e) { tsx = e.touches[0].clientX; });
+  document.getElementById('slide').addEventListener('touchstart', function(e) { var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';} tsx = e.touches[0].clientX; });
   document.getElementById('slide').addEventListener('touchend', function(e) {
     if (tsx === null) return;
     var d = tsx - e.changedTouches[0].clientX;
