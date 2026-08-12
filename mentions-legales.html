@@ -6,8 +6,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Mentions légales — Nos premiers mots</title>
+<meta name="description" content="Mentions légales du site nospremiersmots.fr">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -16,8 +17,6 @@
     --ink-soft: #4A4640;
     --ink-muted: #8A857D;
     --rose: #C27C5A;
-    --rose-light: #F0D5C8;
-    --rose-bg: #FDF0EA;
     --cream: #FAF7F3;
     --warm-white: #FDFCFA;
     --border: #E8E2DA;
@@ -25,44 +24,37 @@
     --font-body: 'Inter', -apple-system, sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: var(--font-body);
-    color: var(--ink);
-    background: var(--warm-white);
-    -webkit-font-smoothing: antialiased;
-  }
-  .legal-container {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 60px 24px 80px;
-  }
-  .legal-back {
-    display: inline-flex;
+  body { font-family: var(--font-body); color: var(--ink); background: var(--warm-white); -webkit-font-smoothing: antialiased; }
+
+  nav {
+    padding: 16px 32px;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--rose);
-    text-decoration: none;
-    margin-bottom: 32px;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
   }
-  .legal-back:hover { text-decoration: underline; }
+  .logo { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .logo em { color: var(--rose); font-style: italic; }
+  .back-link { font-size: 13px; color: var(--ink-muted); text-decoration: none; }
+  .back-link:hover { color: var(--rose); }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
   h1 {
     font-family: var(--font-display);
-    font-size: 32px;
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 32px;
   }
-  .legal-date {
-    font-size: 13px;
-    color: var(--ink-muted);
-    margin-bottom: 40px;
-  }
+  h1 em { font-style: italic; color: var(--rose); }
   h2 {
     font-family: var(--font-display);
     font-size: 20px;
-    font-weight: 500;
-    margin-top: 36px;
-    margin-bottom: 12px;
+    font-weight: 400;
+    margin: 32px 0 12px;
     color: var(--ink);
   }
   p, li {
@@ -71,98 +63,93 @@
     color: var(--ink-soft);
     margin-bottom: 12px;
   }
-  ul { padding-left: 20px; margin-bottom: 12px; }
   a { color: var(--rose); }
-  .placeholder {
-    background: #FFF3CD;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 13px;
-    color: #856404;
+  .updated {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 32px;
   }
+
   footer {
     text-align: center;
     padding: 32px 24px;
-    font-size: 13px;
-    color: var(--ink-muted);
     border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink-muted);
   }
   footer a { color: var(--rose); text-decoration: none; }
-  footer em { font-style: italic; color: var(--rose); }
 </style>
 </head>
 <body>
 
-<div class="legal-container">
-  <a href="index.html" class="legal-back">← Retour à l'accueil</a>
+<nav>
+  <a href="index.html" class="logo">Nos premiers <em>mots</em></a>
+  <a href="index.html" class="back-link">← Retour à l'accueil</a>
+</nav>
 
-  <h1>Mentions légales</h1>
-  <p class="legal-date">Dernière mise à jour : août 2026</p>
+<div class="container">
+  <h1>Mentions <em>légales</em></h1>
+  <p class="updated">Dernière mise à jour : août 2026</p>
 
-  <h2>1. Éditeur du site</h2>
+  <h2>Éditeur du site</h2>
   <p>
-    Le site <strong>nospremiersmots.fr</strong> est édité par :<br>
-    <span class="placeholder">[PRÉNOM NOM]</span><br>
-    Entrepreneur individuel (micro-entreprise)<br>
-    SIRET : <span class="placeholder">[NUMÉRO SIRET]</span><br>
-    Adresse : <span class="placeholder">[ADRESSE POSTALE]</span><br>
-    Email : <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a><br>
-    Directeur de la publication : <span class="placeholder">[PRÉNOM NOM]</span>
-  </p>
-
-  <h2>2. Hébergement</h2>
-  <p>
-    Le site est hébergé par :<br>
-    <strong>GitHub, Inc.</strong><br>
-    88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis<br>
-    Site web : <a href="https://github.com" target="_blank" rel="noopener">github.com</a>
-  </p>
-
-  <h2>3. Activité</h2>
-  <p>
-    Nos premiers mots est un service en ligne permettant d'analyser une conversation WhatsApp exportée et de générer une story interactive de couple. Le service propose une version gratuite (6 slides) et une version payante (lien surprise interactif à 3,99 €).
-  </p>
-
-  <h2>4. Propriété intellectuelle</h2>
-  <p>
-    L'ensemble du contenu du site (textes, design, code, illustrations, logo) est la propriété exclusive de l'éditeur, sauf mention contraire. Toute reproduction, même partielle, est interdite sans autorisation préalable.
+    Ce site est édité à titre personnel, conformément à l'article 6-III-2 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN).
   </p>
   <p>
-    Le contenu généré par les utilisateurs (stories, statistiques) leur appartient. L'éditeur ne revendique aucun droit sur les données personnelles ou les conversations des utilisateurs.
+    L'identité de l'éditeur a été communiquée à l'hébergeur du site.
+  </p>
+  <p>
+    Contact : <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>
   </p>
 
-  <h2>5. Données personnelles</h2>
+  <h2>Hébergement</h2>
   <p>
-    Le traitement des données personnelles est décrit dans notre <a href="confidentialite.html">Politique de confidentialité</a>.
-  </p>
-  <p>
-    En résumé : les conversations WhatsApp sont traitées localement dans le navigateur de l'utilisateur. Aucune donnée de conversation n'est transmise ni stockée sur nos serveurs.
+    Ce site est hébergé par GitHub Inc. — 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis — <a href="https://github.com" target="_blank" rel="noopener">github.com</a>
   </p>
 
-  <h2>6. Paiement</h2>
+  <h2>Nature du service</h2>
   <p>
-    Les paiements sont gérés par <strong>Stripe, Inc.</strong> (stripe.com). L'éditeur n'a jamais accès aux coordonnées bancaires des utilisateurs. Les conditions de paiement de Stripe s'appliquent.
+    Nos premiers mots est un outil gratuit qui permet de transformer un export de conversation WhatsApp en story interactive. Le traitement des données est effectué intégralement dans le navigateur de l'utilisateur. Aucune donnée n'est transmise, stockée ni traitée sur un serveur distant.
   </p>
 
-  <h2>7. Cookies</h2>
+  <h2>Données personnelles</h2>
   <p>
-    Le site n'utilise aucun cookie de suivi, aucun outil d'analytics tiers, et aucun pixel publicitaire. Aucun consentement n'est requis.
+    Ce site ne collecte, ne stocke et ne traite aucune donnée personnelle côté serveur. Aucun compte utilisateur n'est nécessaire. Aucun cookie n'est déposé. Aucune donnée n'est transmise à des tiers.
+  </p>
+  <p>
+    L'analyse de la conversation WhatsApp est réalisée localement, dans le navigateur de l'utilisateur. Les fichiers importés ne quittent jamais l'appareil.
+  </p>
+  <p>
+    Le lien de partage généré contient les données de la story encodées directement dans l'URL (hash). Ce lien est personnel et sa diffusion relève de la seule responsabilité de l'utilisateur.
+  </p>
+  <p>
+    Pour plus de détails, consultez notre <a href="confidentialite.html">politique de confidentialité</a>.
   </p>
 
-  <h2>8. Responsabilité</h2>
+  <h2>Propriété intellectuelle</h2>
   <p>
-    L'éditeur s'efforce de fournir un service fiable, mais ne garantit pas l'absence d'erreurs dans l'analyse des conversations. Le site est fourni « en l'état ». L'éditeur ne saurait être tenu responsable d'une interprétation erronée des statistiques générées.
+    L'ensemble du contenu de ce site (textes, design, code source, illustrations) est protégé par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable.
+  </p>
+  <p>
+    Les conversations WhatsApp importées par les utilisateurs restent leur propriété exclusive. Nos premiers mots n'en revendique aucun droit.
   </p>
 
-  <h2>9. Droit applicable</h2>
+  <h2>Responsabilité</h2>
   <p>
-    Le présent site et ses mentions légales sont régis par le droit français. En cas de litige, les tribunaux français sont seuls compétents.
+    L'éditeur s'efforce de maintenir le site accessible et fonctionnel, mais ne peut garantir l'absence d'erreurs ou d'interruptions. Le site est fourni « en l'état ».
+  </p>
+  <p>
+    L'utilisateur est seul responsable de l'utilisation qu'il fait du service, notamment du partage des liens de story contenant des extraits de conversation. L'éditeur ne saurait être tenu responsable de la diffusion publique d'un lien personnel par un utilisateur.
+  </p>
+
+  <h2>Droit applicable</h2>
+  <p>
+    Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.
   </p>
 </div>
 
 <footer>
-  <p>Nos premiers <em>mots</em> · <a href="index.html">Accueil</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="mailto:contact@nospremiersmots.fr">Contact</a></p>
+  <p>Nos premiers <em style="font-style:italic; color:var(--rose);">mots</em> · <a href="mailto:contact@nospremiersmots.fr">Contact</a> · <a href="mentions-legales.html" style="color:var(--ink-muted);">Mentions légales</a> · <a href="confidentialite.html" style="color:var(--ink-muted);">Confidentialité</a></p>
 </footer>
 
 </body>
