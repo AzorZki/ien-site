@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Créer ma story — Nos premiers mots</title>
+<meta name="description" content="Importez votre conversation WhatsApp et créez une story interactive : qui est le plus bavard, vos emojis préférés, vos premiers mots. Couple ou amitié. Gratuit.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -702,7 +703,7 @@
 
 <div class="container">
   <h1>Créez votre <em>story</em></h1>
-  <p class="subtitle">Découvrez votre couple en quelques slides</p>
+  <p class="subtitle">Découvrez votre histoire en quelques slides</p>
 
   <div class="steps-bar">
     <div class="step-dot active" id="dot-1">1</div>
@@ -923,7 +924,7 @@
         </div>
         <div style="max-width:320px; margin:0 auto 20px;">
           <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
-            <span style="color:var(--rose); font-weight:600;">✓</span> Premier « je t'aime » 💕
+            <span style="color:var(--rose); font-weight:600;">✓</span> <span id="upsell-love-label">Premier « je t'aime » 💕</span>
           </div>
           <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #ede8e1; font-size:13px; color:var(--ink-soft);">
             <span style="color:var(--rose); font-weight:600;">✓</span> Cœurs, fous rires, nuits blanches…
@@ -1039,6 +1040,9 @@ function selectMode(mode) {
     btnAmitie.style.cssText = 'padding:10px 24px;font-size:14px;border-color:var(--rose);color:white;background:linear-gradient(135deg,#5A8FA8,#4A7A90);box-shadow:0 4px 16px rgba(90,143,168,0.25);border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid transparent;';
     btnCouple.style.cssText = 'padding:10px 24px;font-size:14px;border-radius:100px;cursor:pointer;font-family:var(--font-body);font-weight:500;border:1.5px solid var(--border);background:white;color:var(--ink-soft);';
   }
+  // Update upsell label
+  var upsellLove = document.getElementById('upsell-love-label');
+  if (upsellLove) upsellLove.textContent = mode === 'couple' ? 'Premier « je t\u2019aime » \u{1F495}' : 'Premier surnom, vos \u00E9toiles \u2B50';
 }
 
 // Mode-aware labels
@@ -1833,11 +1837,11 @@ function generatePreview() {
   var topEmojis=Object.entries(emojiCounts).sort(function(a,b){return b[1]-a[1];}).slice(0,3);
   var topEmoji=topEmojis[0]||['\u2764\uFE0F',0];
 
-  // Love slide fallback
+  // Love slide fallback (en amitié : pas de "je t'aime", on passe au fallback)
   var lovHtml;
-  if(jta){lovHtml='<div class="st-label" style="color:#C27C5A;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-bottom:14px;z-index:1;">'+jta.date+' \u00B7 '+jta.time+'</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:18px 18px 18px 4px;padding:14px 18px;max-width:230px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 16px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:14px;color:#2A2320;line-height:1.55;">'+jta.text.substring(0,120)+'</div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:'+jtaColor+';font-weight:600;">'+jtaSender+'</span></div></div>';}
+  if(jta && storyMode === 'couple'){lovHtml='<div class="st-label" style="color:#C27C5A;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:11px;color:rgba(0,0,0,0.25);margin-bottom:14px;z-index:1;">'+jta.date+' \u00B7 '+jta.time+'</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:18px 18px 18px 4px;padding:14px 18px;max-width:230px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 16px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:14px;color:#2A2320;line-height:1.55;">'+jta.text.substring(0,120)+'</div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:6px;text-align:right;"><span style="color:'+jtaColor+';font-weight:600;">'+jtaSender+'</span></div></div>';}
   else if(stats.firstNickname){lovHtml='<div class="st-label" style="color:#C27C5A;">Le premier surnom</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F495}</div><div style="font-family:var(--font-display);font-size:22px;color:#2A2320;text-align:center;z-index:1;">\u201C'+stats.firstNickname.word+'\u201D</div><div style="font-size:12px;color:rgba(0,0,0,0.4);margin-top:8px;z-index:1;">par '+dn(stats.firstNickname.sender)+'</div>';}
-  else{lovHtml='<div class="st-label" style="color:#C27C5A;">Vos c\u0153urs</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u2764\uFE0F</div><div id="st-hearts-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:4px;z-index:1;">c\u0153urs \u00E9chang\u00E9s</div>';}
+  else{lovHtml='<div class="st-label" style="color:#C27C5A;">'+ml('Vos c\u0153urs','Vos \u00E9toiles')+'</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">'+ml('\u2764\uFE0F','\u2B50')+'</div><div id="st-hearts-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="font-size:14px;color:rgba(0,0,0,0.4);margin-top:4px;z-index:1;">'+ml('c\u0153urs \u00E9chang\u00E9s','emojis \u00E9chang\u00E9s')+'</div>';}
 
   // Donut data
   var morning=0,afternoon=0,evening=0,nightD=0;
@@ -2090,7 +2094,7 @@ function unlockStory() {
   overlay.innerHTML = '<div style="background:white;border-radius:24px;padding:40px 32px;max-width:320px;text-align:center;animation:loaderFadeIn 0.3s ease;">' +
     '<div style="font-size:48px;margin-bottom:16px;">🎉</div>' +
     '<div style="font-family:var(--font-display);font-size:22px;margin-bottom:8px;">Story d\u00E9bloqu\u00E9e !</div>' +
-    '<div style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:24px;">20+ nouvelles slides vous attendent.<br/>Swipez jusqu\u2019au bout pour envoyer<br/>la surprise \u00E0 votre moiti\u00E9 \u{1F48C}</div>' +
+    '<div style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:24px;">20+ nouvelles slides vous attendent.<br/>Swipez jusqu\u2019au bout pour envoyer<br/>la surprise \u00E0 '+ml('votre moiti\u00E9','votre BFF')+' \u{1F48C}</div>' +
     '<button onclick="document.getElementById(\'unlock-overlay\').remove();document.getElementById(\'story-phone\').scrollIntoView({behavior:\'smooth\',block:\'center\'});" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:white;border:none;border-radius:100px;padding:14px 40px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-body);box-shadow:0 4px 16px rgba(194,124,90,0.3);">Voir ma story \u2192</button>' +
     '</div>';
   document.body.appendChild(overlay);
@@ -2183,7 +2187,7 @@ function copyLink() {
   // Try Web Share API first (iOS native share sheet)
   if (navigator.share) {
     navigator.share({
-      title: 'Ta Love Story \u{1F48C}',
+      title: ml('Ta Love Story \u{1F48C}', 'Ta Story \u{1F48C}'),
       text: 'J\u2019ai quelque chose pour toi \u{1F48C} Ouvre ce lien et swipe \u{1F449}',
       url: window._shareUrl
     }).then(function() {
@@ -2209,7 +2213,7 @@ function copyMessage() {
   // Try Web Share API first
   if (navigator.share) {
     navigator.share({
-      title: 'Ta Love Story \u{1F48C}',
+      title: ml('Ta Love Story \u{1F48C}', 'Ta Story \u{1F48C}'),
       text: text
     }).then(function() {
       showCopyOverlay();
@@ -2232,7 +2236,7 @@ function showCopyOverlay() {
     overlay.innerHTML = '<div style="background:white;border-radius:20px;padding:32px 24px;max-width:320px;text-align:center;">' +
       '<div style="font-size:36px;margin-bottom:12px;">\u{1F48C}</div>' +
       '<div style="font-family:var(--font-display);font-size:18px;margin-bottom:8px;">C\u2019est parti !</div>' +
-      '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;">Envoyez la surprise \u00E0 votre moiti\u00E9 par WhatsApp, iMessage ou o\u00F9 vous voulez.</div>' +
+      '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;">Envoyez la surprise \u00E0 '+ml('votre moiti\u00E9','votre BFF')+' par WhatsApp, iMessage ou o\u00F9 vous voulez.</div>' +
       '<button onclick="this.closest(\'div[style]\').remove()" style="background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 32px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);">Compris !</button>' +
       '</div>';
     overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
@@ -2248,7 +2252,7 @@ function shareStory() {
   overlay.innerHTML = '<div style="background:white;border-radius:20px;padding:32px 24px;max-width:320px;text-align:center;">' +
     '<div style="font-size:36px;margin-bottom:12px;">📸</div>' +
     '<div style="font-family:var(--font-display);font-size:18px;margin-bottom:8px;">Screenshotez & envoyez !</div>' +
-    '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:20px;">Naviguez vers votre slide préféré, faites une capture d\u2019écran et envoyez-la à votre moitié par WhatsApp, iMessage, Insta...</div>' +
+    '<div style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:20px;">Naviguez vers votre slide pr\u00E9f\u00E9r\u00E9, faites une capture d\u2019\u00E9cran et envoyez-la \u00E0 '+ml('votre moiti\u00E9','votre BFF')+' par WhatsApp, iMessage, Insta...</div>' +
     '<div style="font-size:11px;color:var(--ink-muted);margin-bottom:16px;">Le partage par lien arrive bientôt 💕</div>' +
     '<button onclick="document.getElementById(\'share-tip\').remove()" style="background:var(--rose);color:white;border:none;border-radius:100px;padding:12px 32px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);">Compris !</button>' +
     '</div>';
