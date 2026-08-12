@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TikTok Demo — Nos premiers mots</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1A1A18;--rose:#C27C5A;--blue:#5A8FA8;--cream:#FAF7F3;--font-display:'Playfair Display',Georgia,serif;--font-body:'Inter',-apple-system,sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#000;font-family:var(--font-body);}
+  .tiktok{position:relative;width:100vw;height:100vh;max-width:450px;margin:0 auto;overflow:hidden;background:var(--cream);}
+
+  .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;opacity:0;transition:opacity 0.5s ease;pointer-events:none;}
+  .scene.active{opacity:1;}
+
+  /* ═══ WATERMARK GLOBAL ═══ */
+  .global-wm{position:fixed;bottom:14px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,0.1);z-index:40;pointer-events:none;max-width:450px;margin:0 auto;}
+  .global-wm.light{color:rgba(255,255,255,0.12);}
+
+  .tap-start{position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);cursor:pointer;}
+  .tap-start.hidden{display:none;}
+  .tap-icon{font-size:48px;margin-bottom:12px;animation:pulse 1.5s ease infinite;}
+  .tap-label{color:#fff;font-size:15px;font-weight:500;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .anim{opacity:0;transform:translateY(20px);transition:all 0.7s cubic-bezier(0.23,1,0.32,1);}
+  .anim.show{opacity:1;transform:translateY(0);}
+  .anim-scale{opacity:0;transform:scale(0.85);transition:all 0.7s cubic-bezier(0.23,1,0.32,1);}
+  .anim-scale.show{opacity:1;transform:scale(1);}
+  .delay-1{transition-delay:0.15s;}.delay-2{transition-delay:0.3s;}.delay-3{transition-delay:0.5s;}.delay-4{transition-delay:0.7s;}.delay-5{transition-delay:0.9s;}
+
+  .hook{font-family:var(--font-display);font-size:30px;font-weight:400;text-align:center;color:var(--ink);line-height:1.3;}
+  .hook em{font-style:italic;color:var(--rose);}
+  .hook-small{font-size:15px;color:rgba(0,0,0,0.4);text-align:center;margin-top:12px;line-height:1.6;}
+
+  /* ═══ SCENE 1: CINEMATIC HOOK ═══ */
+  .s1-bg{position:absolute;inset:0;background:linear-gradient(160deg,#0C1220,#162035 40%,#1A2540 70%,#0E1628);overflow:hidden;}
+  .s1-particles{position:absolute;inset:0;pointer-events:none;}
+  .s1-particle{position:absolute;font-size:20px;opacity:0;animation:floatUp 4s ease-in infinite;}
+  @keyframes floatUp{0%{transform:translateY(0) scale(0.5);opacity:0;}15%{opacity:0.5;}100%{transform:translateY(-110vh) rotate(25deg) scale(0.3);opacity:0;}}
+  .s1-line{opacity:0;transform:translateY(16px);transition:all 0.6s cubic-bezier(0.23,1,0.32,1);}
+  .s1-line.show{opacity:1;transform:translateY(0);}
+  .s1-line-1{font-family:var(--font-body);font-size:13px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:20px;}
+  .s1-line-2{font-family:var(--font-display);font-size:34px;font-weight:400;color:#fff;text-align:center;line-height:1.25;margin-bottom:8px;}
+  .s1-line-2 em{font-style:italic;color:#D4956B;}
+  .s1-line-3{font-family:var(--font-display);font-size:34px;font-weight:400;color:#fff;text-align:center;line-height:1.25;}
+  .s1-line-4{font-size:12px;color:rgba(255,255,255,0.25);margin-top:28px;display:flex;align-items:center;gap:16px;}
+  .s1-badge{padding:6px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:100px;display:flex;align-items:center;gap:6px;}
+  .s1-badge svg{flex-shrink:0;}
+
+  /* ═══ SCENE 2 ═══ */
+  .ba-container{display:flex;align-items:center;gap:12px;margin-top:24px;}
+  .ba-whatsapp{width:120px;background:#E8F5E9;border-radius:14px;padding:10px 8px;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+  .ba-wa-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,0.06);}
+  .ba-wa-dot{width:24px;height:24px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;}
+  .ba-wa-name{font-size:9px;font-weight:600;color:#1A3A1A;}
+  .ba-msg{padding:4px 7px;border-radius:8px;font-size:7px;line-height:1.3;margin-bottom:2px;color:#1A3A1A;}
+  .ba-msg-l{background:white;margin-right:auto;max-width:85%;border-bottom-left-radius:2px;}
+  .ba-msg-r{background:#DCF8C6;margin-left:auto;max-width:85%;border-bottom-right-radius:2px;}
+  .ba-arrow{font-size:28px;color:var(--rose);animation:arrowPulse 1.2s ease infinite;}
+  @keyframes arrowPulse{0%,100%{transform:translateX(0);opacity:0.7;}50%{transform:translateX(4px);opacity:1;}}
+  .ba-phone{width:110px;height:200px;border-radius:18px;background:#1A1A1A;border:3px solid #222;overflow:hidden;position:relative;box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+  .ba-phone-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 8px;background:linear-gradient(145deg,#FFF8F0,#FFF0E2);}
+  .ba-phone .gn-mini{font-family:var(--font-display);font-weight:700;font-size:14px;text-align:center;line-height:1.15;background:linear-gradient(135deg,#C27C5A,#D4956B,#5A8FA8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .ba-phone-wm{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:5px;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,0.12);}
+  .ba-phone-progress{display:flex;gap:1px;padding:5px 6px 0;position:absolute;top:0;left:0;right:0;}
+  .ba-phone-progress div{flex:1;height:1.5px;border-radius:1px;background:rgba(0,0,0,0.08);}
+  .ba-phone-progress div.done{background:rgba(0,0,0,0.25);}
+
+  /* ═══ PHONE STORY ═══ */
+  .phone{width:240px;height:440px;border-radius:28px;background:#1A1A1A;border:4px solid #222;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+  .phone-progress{display:flex;gap:2px;padding:8px 10px 0;position:absolute;top:0;left:0;right:0;z-index:10;}
+  .phone-progress .bar{flex:1;height:2px;border-radius:1px;background:rgba(255,255,255,0.15);transition:background 0.3s;}
+  .phone-progress .bar.done{background:rgba(255,255,255,0.8);}
+  .phone-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;font-family:var(--font-body);transition:background 0.5s;}
+  .phone-wm{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.2);z-index:10;}
+  .st-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;margin-bottom:14px;}
+  .gn{font-family:var(--font-display);font-weight:700;line-height:1;background:linear-gradient(135deg,#C27C5A,#D4956B,#5A8FA8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+  .msg-bubble{max-width:88%;padding:6px 10px;margin-bottom:3px;font-size:9px;line-height:1.4;border-radius:12px 12px 12px 4px;opacity:0;transform:translateY(8px);transition:all 0.5s ease;}
+  .msg-bubble.show{opacity:1;transform:translateY(0);}
+  .msg-bubble.right{border-radius:12px 12px 4px 12px;margin-left:auto;}
+  .msg-name{font-size:6px;font-weight:600;margin-bottom:1px;}
+  .msg-time{font-size:5px;color:rgba(0,0,0,0.15);text-align:right;margin-top:1px;}
+
+  .overlay{position:absolute;bottom:90px;left:16px;right:16px;text-align:center;z-index:20;}
+  .overlay span{display:inline-block;font-size:14px;font-weight:600;color:#fff;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);padding:8px 16px;border-radius:8px;opacity:0;transform:translateY(10px);transition:all 0.5s ease;line-height:1.5;}
+  .overlay span.show{opacity:1;transform:translateY(0);}
+
+  /* ═══ COUNTER ═══ */
+  .counter-wrap{position:relative;z-index:1;text-align:center;}
+  .counter-num{font-family:var(--font-display);font-weight:700;font-size:56px;background:linear-gradient(135deg,#C27C5A,#D4956B,#5A8FA8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;transition:transform 0.15s ease;}
+  .counter-num.bump{transform:scale(1.08);}
+  .counter-pulse{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(194,124,90,0.08) 0%,transparent 70%);animation:counterPulse 1.5s ease-out;pointer-events:none;opacity:0;}
+  @keyframes counterPulse{0%{transform:scale(0.5);opacity:0.6;}100%{transform:scale(2);opacity:0;}}
+
+  /* ═══ PODIUM ═══ */
+  .podium{display:flex;align-items:flex-end;gap:10px;margin-top:8px;margin-bottom:16px;z-index:1;height:170px;}
+  .pod-col{display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+  .pod-col.show{opacity:1;transform:translateY(0);}
+  .pod-bar{display:flex;align-items:flex-start;justify-content:center;padding-top:12px;border-radius:14px 14px 0 0;height:0;transition:height 1s cubic-bezier(0.34,1.56,0.64,1);}
+  .pod-bar span{font-family:var(--font-display);font-weight:700;}
+
+  /* ═══ SEND SCENE ═══ */
+  .send-mockup{width:220px;background:white;border-radius:20px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.08);border:1px solid rgba(0,0,0,0.05);}
+  .send-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.05);}
+  .send-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#D4956B,#C27C5A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;font-family:var(--font-display);}
+  .send-name{font-size:12px;font-weight:600;color:var(--ink);}
+  .send-status{font-size:9px;color:#25D366;}
+  .send-body{padding:14px 16px 16px;min-height:140px;}
+  .send-msg-out{max-width:85%;margin-left:auto;background:#E8F8D4;border-radius:12px 12px 4px 12px;padding:10px 12px;margin-bottom:6px;opacity:0;transform:translateY(8px) scale(0.95);transition:all 0.4s ease;}
+  .send-msg-out.show{opacity:1;transform:translateY(0) scale(1);}
+  .send-msg-out-text{font-size:11px;color:#1A3A1A;line-height:1.5;}
+  .send-msg-out-link{font-size:9px;color:#1A7F40;margin-top:4px;display:block;word-break:break-all;}
+  .send-msg-out-time{font-size:8px;color:rgba(0,0,0,0.25);text-align:right;margin-top:4px;}
+  .send-typing{display:flex;gap:3px;padding:8px 12px;background:#F0F0F0;border-radius:12px 12px 12px 4px;max-width:60px;margin-bottom:6px;opacity:0;transition:opacity 0.3s;}
+  .send-typing.show{opacity:1;}
+  .send-typing span{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.25);animation:typingDot 1.2s ease-in-out infinite;}
+  .send-typing span:nth-child(2){animation-delay:0.2s;}
+  .send-typing span:nth-child(3){animation-delay:0.4s;}
+  @keyframes typingDot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-4px);}}
+  .send-msg-in{max-width:85%;background:#F0F0F0;border-radius:12px 12px 12px 4px;padding:10px 12px;margin-bottom:6px;opacity:0;transform:translateY(8px) scale(0.95);transition:all 0.4s ease;}
+  .send-msg-in.show{opacity:1;transform:translateY(0) scale(1);}
+  .send-msg-in-text{font-size:11px;color:var(--ink);line-height:1.5;}
+
+  .final-url{font-size:15px;font-weight:600;color:var(--rose);letter-spacing:0.5px;}
+  .final-badge{display:inline-block;margin-top:14px;padding:10px 24px;background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;font-size:13px;font-weight:600;border-radius:100px;}
+  .final-sub{font-size:11px;color:rgba(0,0,0,0.3);margin-top:16px;}
+</style>
+</head>
+<body>
+<div class="tiktok" id="tiktok">
+
+  <!-- GLOBAL WATERMARK -->
+  <div class="global-wm" id="global-wm">nospremiersmots.fr</div>
+
+  <div class="tap-start" id="tap-start" onclick="startDemo()">
+    <div class="tap-icon">▶️</div>
+    <div class="tap-label">Appuie pour lancer</div>
+  </div>
+
+  <!-- SCENE 1: CINEMATIC HOOK -->
+  <div class="scene" id="s1">
+    <div class="s1-bg"><div class="s1-particles" id="s1-particles"></div></div>
+    <div class="s1-line s1-line-1" id="s1-a">Le cadeau parfait</div>
+    <div class="s1-line s1-line-2" id="s1-b">Fais <em>pleurer</em></div>
+    <div class="s1-line s1-line-3" id="s1-c">ta moitié 😭💕</div>
+    <div class="s1-line s1-line-4" id="s1-d">
+      <span class="s1-badge"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 100% privé</span>
+      <span class="s1-badge">🎁 gratuit</span>
+    </div>
+  </div>
+
+  <!-- SCENE 2: BEFORE/AFTER -->
+  <div class="scene" id="s2" style="background:var(--cream);">
+    <div class="hook anim" id="s2-title" style="font-size:16px;margin-bottom:20px;">Ta conversation WhatsApp…</div>
+    <div class="ba-container">
+      <div class="ba-whatsapp anim-scale" id="s2-wa">
+        <div class="ba-wa-header">
+          <div class="ba-wa-dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg></div>
+          <div><div class="ba-wa-name">Marine ❤️</div></div>
+        </div>
+        <div class="ba-msg ba-msg-l">Salut 😊</div>
+        <div class="ba-msg ba-msg-l">C'est Marine haha</div>
+        <div class="ba-msg ba-msg-r">Heyy ! 😄</div>
+        <div class="ba-msg ba-msg-r">Tu fais quoi ?</div>
+        <div class="ba-msg ba-msg-l">Netflix et toi ?</div>
+      </div>
+      <div class="ba-arrow anim delay-2" id="s2-arrow">→</div>
+      <div class="ba-phone anim-scale delay-3" id="s2-phone">
+        <div class="ba-phone-progress"><div class="done"></div><div></div><div></div><div></div><div></div></div>
+        <div class="ba-phone-slide">
+          <div style="font-size:5px;letter-spacing:1.5px;text-transform:uppercase;color:#C27C5A;font-weight:600;margin-bottom:8px;">Nos premiers mots</div>
+          <div class="gn-mini">Marine<br/>&amp;<br/>Baptiste</div>
+          <div style="width:16px;height:1px;background:#C27C5A;margin:10px 0;opacity:0.4;"></div>
+          <div style="font-size:7px;color:rgba(0,0,0,0.35);">187 jours</div>
+        </div>
+        <div class="ba-phone-wm">nospremiersmots.fr</div>
+      </div>
+    </div>
+    <div class="hook anim delay-4" id="s2-sub" style="font-family:var(--font-display);font-size:20px;color:var(--ink);margin-top:20px;text-align:center;line-height:1.3;">…devient une <em style="font-style:italic;color:var(--rose);">story interactive</em> ✨</div>
+  </div>
+
+  <!-- SCENE 3: PHONE SLIDES -->
+  <div class="scene" id="s3" style="background:var(--cream);">
+    <div class="phone anim-scale" id="phone">
+      <div class="phone-progress" id="progress"></div>
+      <div class="phone-slide" id="slide"></div>
+      <div class="phone-wm">nospremiersmots.fr</div>
+    </div>
+    <div class="overlay"><span id="overlay-txt"></span></div>
+  </div>
+
+  <!-- SCENE 4: SEND SURPRISE (WhatsApp-style) -->
+  <div class="scene" id="s4" style="background:var(--cream);">
+    <div class="hook anim" id="s4-title" style="font-size:18px;margin-bottom:16px;">Envoie le lien…<br/>et regarde sa <em>réaction</em> 😭</div>
+    <div class="send-mockup anim-scale delay-1" id="s4-mockup">
+      <div class="send-header">
+        <div class="send-avatar">M</div>
+        <div><div class="send-name">Marine ❤️</div><div class="send-status">en ligne</div></div>
+      </div>
+      <div class="send-body" id="s4-body">
+        <div class="send-msg-out" id="s4-msg-out">
+          <div class="send-msg-out-text">J'ai quelque chose pour toi 💌<br/>Ouvre et swipe 👉</div>
+          <span class="send-msg-out-link">nospremiersmots.fr/story#...</span>
+          <div class="send-msg-out-time">11:42 ✓✓</div>
+        </div>
+        <div class="send-typing" id="s4-typing"><span></span><span></span><span></span></div>
+        <div class="send-msg-in" id="s4-reply">
+          <div class="send-msg-in-text">Omg 😭😭😭❤️<br/>Comment t'as fait ça ???</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 5: CTA -->
+  <div class="scene" id="s5" style="background:var(--cream);">
+    <div class="hook anim" id="s5-title" style="margin-bottom:24px;">Offre-lui le début<br/>de votre <em>histoire</em></div>
+    <div class="final-url anim delay-1" id="s5-url">nospremiersmots.fr</div>
+    <div class="final-badge anim delay-2" id="s5-badge">🎁 Gratuit — Fonce</div>
+    <div class="final-sub anim delay-3" id="s5-sub">30 secondes · Aucun compte · 🔒 100% privé</div>
+  </div>
+
+</div>
+
+<script>
+// ═══ PARTICLES ═══
+(function(){
+  var c=document.getElementById('s1-particles');
+  var em=['💕','✨','💗','❤️','💌','💖','✨','💕'];
+  for(var i=0;i<14;i++){
+    var p=document.createElement('span');
+    p.className='s1-particle';p.textContent=em[i%em.length];
+    p.style.left=(5+Math.random()*90)+'%';p.style.bottom='-30px';
+    p.style.animationDelay=(Math.random()*3.5)+'s';
+    p.style.animationDuration=(3+Math.random()*2.5)+'s';
+    p.style.fontSize=(12+Math.random()*16)+'px';
+    c.appendChild(p);
+  }
+})();
+
+// ═══ COUNTER ═══
+function animCount(el,target,dur){
+  var start=performance.now();
+  function tick(now){
+    var p=Math.min((now-start)/dur,1);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(e*target).toLocaleString('fr-FR');
+    if(p>=0.95&&!el.dataset.bumped){el.dataset.bumped='1';el.classList.add('bump');setTimeout(function(){el.classList.remove('bump');},150);}
+    if(p<1)requestAnimationFrame(tick);
+    else{el.textContent=target.toLocaleString('fr-FR');var pulse=document.createElement('div');pulse.className='counter-pulse';el.parentElement.appendChild(pulse);setTimeout(function(){pulse.remove();},1500);}
+  }
+  requestAnimationFrame(tick);
+}
+
+// ═══ WATERMARK MODE ═══
+function wmMode(dark){
+  var wm=document.getElementById('global-wm');
+  if(dark)wm.classList.add('light');else wm.classList.remove('light');
+}
+
+// ═══ SLIDES ═══
+var SLIDES=[
+  {
+    bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',
+    html:'<div class="st-label" style="color:#C27C5A;">L\u2019histoire commence\u2026</div><div style="width:100%;max-width:200px;"><div class="msg-bubble" style="background:rgba(194,124,90,0.1);"><div class="msg-name" style="color:#C27C5A;">Marine</div>Salut \u{1F60A}<div class="msg-time">19:32</div></div><div class="msg-bubble" style="background:rgba(194,124,90,0.1);"><div class="msg-name" style="color:#C27C5A;">Marine</div>C\u2019est Marine, de Tinder haha<div class="msg-time">19:33</div></div><div class="msg-bubble right" style="background:rgba(90,143,168,0.1);"><div class="msg-name" style="color:#5A8FA8;">Baptiste</div>Heyy ! Ah cool \u{1F604}<div class="msg-time">19:35</div></div><div class="msg-bubble right" style="background:rgba(90,143,168,0.1);"><div class="msg-name" style="color:#5A8FA8;">Baptiste</div>Tu fais quoi ce soir ?<div class="msg-time">19:36</div></div></div>',
+    overlay:'Vos tout premiers \u00E9changes \u{1F62D}',
+    duration:3000,animateBubbles:true,
+  },
+  {
+    bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',
+    html:'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div class="counter-wrap"><div class="counter-num" id="counter-el">0</div></div><div style="font-family:var(--font-display);font-size:13px;color:#C27C5A;font-style:italic;margin-top:8px;">messages</div><div style="margin-top:18px;padding:7px 16px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:9px;color:rgba(0,0,0,0.4);">\u2248 64 par jour</div>',
+    overlay:'Rien que \u00E7a \u{1F92F}',
+    duration:2500,animateCounter:true, counterTarget:3847,
+  },
+  {
+    bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',dark:true,
+    html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:16px;align-items:center;"><div style="position:relative;"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="8" stroke-dasharray="0 239" stroke-linecap="round" transform="rotate(-90 50 50)" class="ring-anim" data-target="146"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#fff;">61%</span><span style="font-size:9px;color:rgba(255,255,255,0.7);">Marine</span></div></div><div style="position:relative;"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="7"/><circle cx="40" cy="40" r="30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="7" stroke-dasharray="0 189" stroke-linecap="round" transform="rotate(-90 40 40)" class="ring-anim" data-target="74"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:var(--font-display);font-size:18px;font-weight:700;color:rgba(255,255,255,0.8);">39%</span><span style="font-size:9px;color:rgba(255,255,255,0.5);">Baptiste</span></div></div></div>',
+    overlay:'Qui parle le plus ? \u{1F440}',
+    duration:2200,animateRings:true,
+  },
+  {
+    bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',
+    html:'<div class="st-label" style="color:#C27C5A;">Le premier \u00AB je t\u2019aime \u00BB</div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-bottom:12px;">15 f\u00E9vrier \u00B7 00:01</div><div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:200px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 16px rgba(0,0,0,0.04);"><div style="font-size:12px;color:#2A2320;line-height:1.55;">Je t\u2019aime \u{2764}\uFE0F</div><div style="font-size:7px;color:rgba(0,0,0,0.25);margin-top:5px;text-align:right;"><span style="color:#5A8FA8;font-weight:600;">Baptiste</span></div></div>',
+    overlay:'Le moment qui change tout \u{2764}\uFE0F',
+    duration:3000,
+  },
+  {
+    bg:'linear-gradient(145deg,#EDE5F0,#E0D5EA 50%,#D8CDE5)',
+    html:'<div class="st-label" style="color:#5A8FA8;">Vos emojis pr\u00E9f\u00E9r\u00E9s</div><div style="display:flex;align-items:flex-end;gap:14px;margin-top:8px;margin-bottom:12px;z-index:1;"><div class="pod-col" style="transition-delay:0.2s;display:flex;flex-direction:column;align-items:center;"><div style="font-size:22px;margin-bottom:4px;">\u2764\uFE0F</div><div style="width:50px;height:0;background:rgba(0,0,0,0.04);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;transition:height 1s cubic-bezier(0.34,1.56,0.64,1);" data-h="45px"><span style="font-family:var(--font-display);font-size:11px;font-weight:600;color:rgba(0,0,0,0.4);">312</span></div></div><div class="pod-col" style="transition-delay:0s;display:flex;flex-direction:column;align-items:center;"><div style="font-size:30px;margin-bottom:4px;">\u{1F602}</div><div style="width:58px;height:0;background:linear-gradient(to top,#C27C5A,#D4956B);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;transition:height 1s cubic-bezier(0.34,1.56,0.64,1);" data-h="75px"><span style="font-family:var(--font-display);font-size:13px;font-weight:700;color:#fff;">847</span></div></div><div class="pod-col" style="transition-delay:0.35s;display:flex;flex-direction:column;align-items:center;"><div style="font-size:22px;margin-bottom:4px;">\u{1F970}</div><div style="width:50px;height:0;background:rgba(0,0,0,0.04);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;transition:height 1s cubic-bezier(0.34,1.56,0.64,1);" data-h="30px"><span style="font-family:var(--font-display);font-size:11px;font-weight:600;color:rgba(0,0,0,0.4);">204</span></div></div></div><div style="display:flex;gap:8px;font-size:9px;color:rgba(0,0,0,0.3);z-index:1;">\u{1F948} 2e <span style="font-weight:700;color:#C27C5A;">\u{1F947} 1er</span> \u{1F949} 3e</div>',
+    overlay:'847 fois \u{1F602} quand m\u00EAme',
+    duration:2800,animatePodium:true,
+  },
+];
+
+var TOTAL=SLIDES.length;
+
+function startDemo(){document.getElementById('tap-start').classList.add('hidden');playScene1();}
+function showScene(id){document.getElementById(id).classList.add('active');}
+function hideScene(id){document.getElementById(id).classList.remove('active');}
+function animIn(id){setTimeout(function(){document.getElementById(id).classList.add('show');},50);}
+
+// ═══ S1: HOOK (3.5s) ═══
+function playScene1(){
+  wmMode(true);
+  showScene('s1');
+  setTimeout(function(){document.getElementById('s1-a').classList.add('show');},200);
+  setTimeout(function(){document.getElementById('s1-b').classList.add('show');},700);
+  setTimeout(function(){document.getElementById('s1-c').classList.add('show');},1100);
+  setTimeout(function(){document.getElementById('s1-d').classList.add('show');},1800);
+  setTimeout(function(){hideScene('s1');wmMode(false);playScene2();},3500);
+}
+
+// ═══ S2: BEFORE/AFTER (4.5s) ═══
+function playScene2(){
+  showScene('s2');
+  animIn('s2-title');animIn('s2-wa');animIn('s2-arrow');animIn('s2-phone');animIn('s2-sub');
+  setTimeout(function(){hideScene('s2');playSlides(0);},4500);
+}
+
+// ═══ S3: SLIDES ═══
+function playSlides(idx){
+  if(idx>=TOTAL){playScene4();return;}
+  var s=SLIDES[idx];
+  showScene('s3');
+  var phone=document.getElementById('phone');
+  var slideEl=document.getElementById('slide');
+  var overlayEl=document.getElementById('overlay-txt');
+  var progressEl=document.getElementById('progress');
+
+  setTimeout(function(){phone.classList.add('show');},50);
+  slideEl.style.background=s.bg;
+  slideEl.innerHTML=s.html;
+
+  progressEl.innerHTML='';
+  for(var i=0;i<TOTAL;i++){var b=document.createElement('div');b.className='bar'+(i<=idx?' done':'');progressEl.appendChild(b);}
+
+  var wm=document.querySelector('.phone-wm');
+  if(wm)wm.style.color=s.dark?'rgba(255,255,255,0.2)':'rgba(0,0,0,0.12)';
+
+  overlayEl.textContent=s.overlay;
+  overlayEl.className='';
+  setTimeout(function(){overlayEl.classList.add('show');},300);
+
+  if(s.animateBubbles){slideEl.querySelectorAll('.msg-bubble').forEach(function(b,i){setTimeout(function(){b.classList.add('show');},300+i*350);});}
+  if(s.animateCounter){var ce=slideEl.querySelector('#counter-el');if(ce)setTimeout(function(){animCount(ce,s.counterTarget||3847,1800);},200);}
+  if(s.animateRings){setTimeout(function(){slideEl.querySelectorAll('.ring-anim').forEach(function(r){r.style.transition='stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1)';r.setAttribute('stroke-dasharray',r.dataset.target+' 300');});},200);}
+  if(s.animatePodium){slideEl.querySelectorAll('.pod-col').forEach(function(p){setTimeout(function(){p.classList.add('show');var bar=p.querySelector('[data-h]');if(bar)bar.style.height=bar.dataset.h;},200);});}
+
+  setTimeout(function(){overlayEl.classList.remove('show');setTimeout(function(){playSlides(idx+1);},250);},s.duration);
+}
+
+// ═══ S4: SEND (5.5s) — WhatsApp conversation ═══
+function playScene4(){
+  hideScene('s3');
+  showScene('s4');
+  animIn('s4-title');animIn('s4-mockup');
+
+  // 1. Message sent appears
+  setTimeout(function(){document.getElementById('s4-msg-out').classList.add('show');},800);
+  // 2. Typing indicator
+  setTimeout(function(){document.getElementById('s4-typing').classList.add('show');},2000);
+  // 3. Typing hides, reply appears
+  setTimeout(function(){document.getElementById('s4-typing').classList.remove('show');},3200);
+  setTimeout(function(){document.getElementById('s4-reply').classList.add('show');},3400);
+
+  setTimeout(function(){hideScene('s4');playScene5();},5500);
+}
+
+// ═══ S5: CTA (5s then loop) ═══
+function playScene5(){
+  showScene('s5');
+  animIn('s5-title');animIn('s5-url');animIn('s5-badge');animIn('s5-sub');
+  setTimeout(function(){
+    hideScene('s5');
+    document.querySelectorAll('.anim.show,.anim-scale.show,.s1-line.show').forEach(function(el){el.classList.remove('show');});
+    document.getElementById('phone').classList.remove('show');
+    document.getElementById('s4-msg-out').classList.remove('show');
+    document.getElementById('s4-typing').classList.remove('show');
+    document.getElementById('s4-reply').classList.remove('show');
+    playScene1();
+  },5000);
+}
+</script>
+</body>
+</html>
