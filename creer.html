@@ -1914,9 +1914,6 @@ function generatePreview() {
   var convSlide4Html = convSlice4.length >= 2 ? buildConvSlide(convSlice4, 'La suite, vous la connaissez\u2026 \u{1F495}', '#5A8FA8') : null;
 
   // Winners
-  var dtWinner=stats.maxConsec1>stats.maxConsec2?n1:n2;
-  var dtColor=stats.maxConsec1>stats.maxConsec2?c1:c2;
-  var dtVal=Math.max(stats.maxConsec1||0,stats.maxConsec2||0);
   var bjWinner=stats.opens1>stats.opens2?n1:n2;
   var bjPct=Math.round(Math.max(stats.opens1,stats.opens2)/Math.max(stats.totalDays,1)*100);
   var qWinner=stats.questions1>stats.questions2?n1:n2;
@@ -1940,10 +1937,18 @@ function generatePreview() {
   // Shapes helper
   function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
+  // ═══ PREMIER MESSAGE — slide gratuite ═══
+  var firstMsg = convMsgs[0];
+  var fmIsR = (dn(firstMsg.sender) === roseName);
+  var fmCol = fmIsR ? '#C27C5A' : '#5A8FA8';
+  var fmTxt = firstMsg.text.length > 200 ? firstMsg.text.substring(0, 200) + '\u2026' : firstMsg.text;
+
   // ═══ FREE SLIDES (6) ═══
   var freeSlides = [
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">'+ml('Nos premiers mots','Notre histoire')+'</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
+    // 2. Premier message
+    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(1)+'<div class="st-label" style="color:#C27C5A;">Votre tout premier message</div><div style="font-size:10px;color:rgba(0,0,0,0.25);margin-bottom:16px;z-index:1;">'+firstMsg.date+' \u00B7 '+firstMsg.time+'</div><div style="max-width:90%;padding:14px 18px;font-size:13px;line-height:1.5;background:rgba('+(fmIsR?'194,124,90':'90,143,168')+',0.1);border-radius:18px 18px '+(fmIsR?'4px 18px':'18px 4px')+';margin-'+(fmIsR?'left':'right')+':auto;box-shadow:0 2px 8px rgba(0,0,0,0.04);z-index:1;"><div style="font-size:8px;font-weight:600;color:'+fmCol+';margin-bottom:4px;">'+dn(firstMsg.sender)+'</div>'+fmTxt+'</div><div style="margin-top:20px;font-size:11px;color:rgba(0,0,0,0.25);z-index:1;text-align:center;font-style:italic;">'+dn(firstMsg.sender)+' a \u00E9crit en premier \u{1F4AC}</div>'},
     // 2. Total
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
     // 4. Bavard — two rings
@@ -1971,8 +1976,6 @@ function generatePreview() {
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
     // 8-11. Conversation slides (4 slides)
   ].concat(convSlide1Html ? [{bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide1Html}] : []).concat(convSlide2Html ? [{bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide2Html}] : []).concat(convSlide3Html ? [{bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide3Html}] : []).concat(convSlide4Html ? [{bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(1)+convSlide4Html}] : []).concat([
-    // 11. Double-texteur
-    {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affil\u00E9e sans r\u00E9ponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">messages d\u2019affil\u00E9e</span></div></div>'},
     // 9. Hearts — liquid fill
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">C\u0153urs envoy\u00E9s</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+stats.hearts1+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+(stats.hearts1>stats.hearts2?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+stats.hearts2+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+(stats.hearts2>stats.hearts1?' \u{1F451}':'')+'</div></div></div>'},
     // 10. Laughs
@@ -2080,15 +2083,6 @@ function stRenderR() {
     podEl.innerHTML=order.map(function(idx){var e=te[idx];if(!e)return'';var isF=idx===0;return '<div style="display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:all 0.6s ease '+delays[idx]+'s;" data-pod><div style="font-size:'+(isF?48:36)+'px;margin-bottom:8px;">'+e[0]+'</div><div style="width:'+(isF?72:56)+'px;height:0;background:'+(isF?'linear-gradient(to top,#C27C5A,#D4956B)':'linear-gradient(to top,rgba(0,0,0,0.06),rgba(0,0,0,0.03))')+';border-radius:12px 12px 0 0;transition:height 0.8s cubic-bezier(0.34,1.56,0.64,1) '+delays[idx]+'s;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;" data-podh="'+heights[idx]+'"><span style="font-family:var(--font-display);font-size:'+(isF?16:13)+'px;font-weight:700;color:'+(isF?'#fff':'rgba(0,0,0,0.5)')+';">'+e[1]+'</span></div></div>';}).join('');
     setTimeout(function(){document.querySelectorAll('[data-pod]').forEach(function(p){p.style.opacity='1';p.style.transform='translateY(0)';});document.querySelectorAll('[data-podh]').forEach(function(b){b.style.height=b.dataset.podh+'px';});},100);
   }
-  // Double-texteur bubbles
-  var dtBub=document.getElementById('st-dt-bubbles');
-  if(dtBub){
-    var realConsecMsgs = s.maxConsec1 > s.maxConsec2 ? s.consecMsgs1 : s.consecMsgs2;
-    var dtMsgs = realConsecMsgs ? realConsecMsgs.slice(0, 6).map(function(m){ var t = m.text; return t.length > 40 ? t.substring(0, 40) + '\u2026' : t; }) : [];
-    if (dtMsgs.length === 0) dtMsgs = ['...'];
-    dtBub.innerHTML=dtMsgs.map(function(t,i){return '<div style="max-width:75%;padding:7px 12px;margin-bottom:3px;font-size:11px;line-height:1.4;background:rgba(194,124,90,'+(0.08+i*0.02)+');border-radius:12px 12px 4px 12px;margin-left:auto;opacity:0;transform:translateX(20px);transition:all 0.4s ease '+(0.15+i*0.12)+'s;">'+t+'</div>';}).join('');
-    setTimeout(function(){dtBub.querySelectorAll('div').forEach(function(d){d.style.opacity='1';d.style.transform='translateX(0)';});},100);
-  }
   // Record bars
   var barsEl=document.getElementById('st-bars');
   if(barsEl){var vals=[120,200,340,s.recordCount||100,250,180,90];var mx=Math.max.apply(null,vals);
@@ -2147,6 +2141,7 @@ function generateShareLink() {
 
     var data = {
       n1: userName1, n2: userName2, ri: roseIdx, sn: userName1, msg: msg,
+      fd: s.firstMsg ? s.firstMsg.date : '',
       t: s.total, d: s.totalDays, p1: s.pct1, p2: s.pct2,
       c1: s.count1, c2: s.count2,
       h: s.hearts||0, h1: s.hearts1||0, h2: s.hearts2||0,
@@ -2154,7 +2149,6 @@ function generateShareLink() {
       q1: s.questions1||0, q2: s.questions2||0,
       o1: s.opens1||0, o2: s.opens2||0,
       cl1: s.closes1||0, cl2: s.closes2||0,
-      mc1: s.maxConsec1||0, mc2: s.maxConsec2||0,
       bn: s.bonneNuit||0, ph: s.peakHour||0, pp: s.peakHourPct||0,
       rd: s.recordDay||'', rc: s.recordCount||0, sk: s.streak||0,
       e1: s.earliest1||'', e2: s.earliest2||'',
