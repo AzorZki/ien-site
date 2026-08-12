@@ -1889,26 +1889,29 @@ function generatePreview() {
     msgs.forEach(function(m, i) {
       var isR = (dn(m.sender) === roseName);
       var col = isR ? '#C27C5A' : '#5A8FA8';
-      var txt = m.text.length > 150 ? m.text.substring(0, 150) + '\u2026' : m.text;
+      var txt = m.text.length > 300 ? m.text.substring(0, 300) + '\u2026' : m.text;
       h += '<div data-delay="' + (0.15 + i * 0.12) + '" style="max-width:88%;padding:8px 12px;margin-bottom:4px;font-size:11px;line-height:1.45;background:rgba(' + (isR ? '194,124,90' : '90,143,168') + ',0.1);border-radius:' + (isR ? '14px 14px 4px 14px' : '14px 14px 14px 4px') + ';margin-' + (isR ? 'left' : 'right') + ':auto;box-shadow:0 1px 3px rgba(0,0,0,0.03);opacity:0;transform:translateY(8px);transition:all 0.4s ease;z-index:1;"><div style="font-size:7px;font-weight:600;color:' + col + ';margin-bottom:2px;">' + dn(m.sender) + '</div>' + txt + '<div style="font-size:6px;color:rgba(0,0,0,0.15);text-align:right;margin-top:2px;">' + m.time + '</div></div>';
     });
     return h;
   }
 
-  // Slide 1 (free): "L'histoire commence..." — first 5 messages
+  // ═══ 4 CONVERSATION SLIDES (toutes payantes) ═══
+  // Slide 1: "L'histoire commence..." — messages 0-4
   var convSlice1 = convMsgs.slice(0, 5);
-  var convSlide1Title = 'L\u2019histoire commence\u2026';
-  var convSlide1Html = convSlice1.length >= 2 ? buildConvSlide(convSlice1, convSlide1Title, '#C27C5A') : null;
+  var convSlide1Html = convSlice1.length >= 2 ? buildConvSlide(convSlice1, 'L\u2019histoire commence\u2026', '#C27C5A') : null;
 
-  // Slide 2 (paid): mode-aware title — messages 5-9
+  // Slide 2: mode-aware — messages 5-9
   var convSlice2 = convMsgs.slice(5, 10);
   var convSlide2Title = ml('\u00C7a matche on dirait \u{1F60F}', 'Une amiti\u00E9 est n\u00E9e \u{1F91D}');
   var convSlide2Html = convSlice2.length >= 2 ? buildConvSlide(convSlice2, convSlide2Title, '#5A8FA8') : null;
 
-  // Slide 3 (paid): "La suite, vous la connaissez..." — messages 10-14
+  // Slide 3: "La conversation continue..." — messages 10-14
   var convSlice3 = convMsgs.slice(10, 15);
-  var convSlide3Title = 'La suite, vous la connaissez\u2026 \u{1F495}';
-  var convSlide3Html = convSlice3.length >= 2 ? buildConvSlide(convSlice3, convSlide3Title, '#C27C5A') : null;
+  var convSlide3Html = convSlice3.length >= 2 ? buildConvSlide(convSlice3, 'La conversation continue\u2026', '#C27C5A') : null;
+
+  // Slide 4: "La suite, vous la connaissez..." — messages 15-19
+  var convSlice4 = convMsgs.slice(15, 20);
+  var convSlide4Html = convSlice4.length >= 2 ? buildConvSlide(convSlice4, 'La suite, vous la connaissez\u2026 \u{1F495}', '#5A8FA8') : null;
 
   // Winners
   var dtWinner=stats.maxConsec1>stats.maxConsec2?n1:n2;
@@ -1941,9 +1944,7 @@ function generatePreview() {
   var freeSlides = [
     // 1. Intro
     {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">'+ml('Nos premiers mots','Notre histoire')+'</div><div class="gn" style="font-size:38px;text-align:center;line-height:1.15;z-index:1;">'+userName1+'<br/>&amp;<br/>'+userName2+'</div><div style="width:28px;height:2px;background:#C27C5A;margin:24px 0;border-radius:1px;z-index:1;opacity:0.4;"></div><div style="font-size:12px;color:rgba(0,0,0,0.35);text-align:center;line-height:1.7;z-index:1;">'+stats.totalDays+' jours de conversation</div>'},
-    // 2. L'histoire commence (premiers messages de la conv)
-    {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+(convSlide1Html || '<div class="st-label" style="color:#C27C5A;">L\u2019histoire commence\u2026</div><div style="font-size:48px;margin-bottom:12px;z-index:1;">\u{1F4AC}</div><div style="font-size:14px;color:rgba(0,0,0,0.35);text-align:center;z-index:1;">Vos tout premiers \u00E9changes</div>')},
-    // 3. Total
+    // 2. Total
     {bg:'linear-gradient(145deg,#F5E6D8,#EDD8C8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Vous avez \u00E9chang\u00E9</div><div id="st-counter-r" class="gn" style="font-size:68px;z-index:1;">0</div><div style="font-family:var(--font-display);font-size:16px;color:#C27C5A;font-style:italic;margin-top:8px;z-index:1;">messages</div><div style="margin-top:24px;padding:10px 20px;background:rgba(0,0,0,0.03);border-radius:100px;font-size:11px;color:rgba(0,0,0,0.4);z-index:1;">\u2248 '+Math.round(stats.total/Math.max(stats.totalDays,1))+' par jour</div>'},
     // 4. Bavard — two rings
     {bg:'linear-gradient(145deg,#E8B8A0,#D4956B 50%,#C27C5A)',html:'<div class="st-label" style="color:rgba(255,255,255,0.5);">Bavard(e) ?</div><div style="display:flex;gap:20px;align-items:center;z-index:1;">'+mkRing(stats.pct1,'rgba(255,255,255,0.85)',120,10,'<span style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;">'+stats.pct1+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">'+n1+'</span>')+mkRing(stats.pct2,'rgba(255,255,255,0.4)',100,8,'<span style="font-family:var(--font-display);font-size:24px;font-weight:700;color:rgba(255,255,255,0.8);">'+stats.pct2+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;">'+n2+'</span>')+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:20px;z-index:1;">'+stats.count1.toLocaleString("fr-FR")+' vs '+stats.count2.toLocaleString("fr-FR")+' messages</div>'},
@@ -1964,12 +1965,12 @@ function generatePreview() {
   var teaserList = teaserItems.map(function(item){return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.04);z-index:1;"><span style="font-size:16px;width:24px;text-align:center;">'+item.icon+'</span><span style="font-size:11px;color:rgba(0,0,0,0.45);flex:1;">'+item.q+'</span><span style="font-size:9px;color:var(--rose);font-weight:600;">\u{1F512}</span></div>';}).join('');
   var teaserSlide = {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(2)+'<div class="gn" style="font-size:20px;text-align:center;line-height:1.3;margin-bottom:4px;z-index:1;">Vous voulez<br/>la suite ?</div><div style="font-size:11px;color:rgba(0,0,0,0.3);text-align:center;margin-bottom:16px;z-index:1;">20+ slides vous attendent</div><div style="width:100%;max-width:250px;z-index:1;">'+teaserList+'</div><div style="font-size:10px;color:rgba(0,0,0,0.3);text-align:center;margin:14px 0 16px;z-index:1;line-height:1.5;">+ lien interactif \u00E0 envoyer<br/>\u00E0 '+ml('votre moiti\u00E9','votre BFF')+' avec message perso \u{1F48C}</div><div onclick="unlockStory()" style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:28px;padding:14px 32px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:240px;">D\u00E9bloquer \u2014 Offert \u{1F381}</div><div style="font-size:10px;color:rgba(0,0,0,0.2);margin-top:8px;z-index:1;">Offre de lancement \u00B7 <span style="text-decoration:line-through;">3,99\u20AC</span> \u2192 Gratuit</div>'};
 
-  // ═══ PAID SLIDES (18) ═══
+  // ═══ PAID SLIDES ═══
   var paidSlides = [
-    // 8. Je t'aime (moved from free)
+    // 7. Je t'aime
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
-    // 9-10-11. Conversation slides (paid)
-  ].concat(convSlide2Html ? [{bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide2Html}] : []).concat(convSlide3Html ? [{bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(0)+convSlide3Html}] : []).concat([
+    // 8-11. Conversation slides (4 slides)
+  ].concat(convSlide1Html ? [{bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide1Html}] : []).concat(convSlide2Html ? [{bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide2Html}] : []).concat(convSlide3Html ? [{bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide3Html}] : []).concat(convSlide4Html ? [{bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(1)+convSlide4Html}] : []).concat([
     // 11. Double-texteur
     {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Le double-texteur</div><div style="font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:16px;z-index:1;text-align:center;">Qui envoie le plus de messages<br/>d\u2019affil\u00E9e sans r\u00E9ponse ?</div><div style="width:100%;max-width:240px;z-index:1;" id="st-dt-bubbles"></div><div style="margin-top:20px;z-index:1;text-align:center;"><div style="font-family:var(--font-display);font-size:20px;color:'+dtColor+';font-weight:600;">'+dtWinner+' \u{1F451}</div><div style="display:flex;gap:4px;align-items:baseline;justify-content:center;margin-top:4px;"><span class="gn" style="font-size:36px;">'+dtVal+'</span><span style="font-size:12px;color:rgba(0,0,0,0.35);">messages d\u2019affil\u00E9e</span></div></div>'},
     // 9. Hearts — liquid fill
@@ -2012,19 +2013,18 @@ function generatePreview() {
   window._topEmojiCount=topEmoji[1];
   window._topEmojis=topEmojis;
   window._donutPcts=[donutData[0].p,donutData[1].p,donutData[2].p,donutData[3].p];
-  window._firstMsgsData=convMsgs.slice(0,5).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,150),t:m.time};});
-  // Store conversation messages (5-14) for story.html — slides 2 and 3
-  window._convMsgsData=convMsgs.slice(5,15).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,150),t:m.time};});
+  window._firstMsgsData=convMsgs.slice(0,5).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,300),t:m.time};});
+  // Store conversation messages (5-19) for story.html — slides 2, 3, 4
+  window._convMsgsData=convMsgs.slice(5,20).map(function(m){return{s:dn(m.sender),x:m.text.substring(0,300),t:m.time};});
   window._jtData=jta?{d:jta.date,t:jta.time,x:jta.text.substring(0,120),s:dn(jta.sender)}:null;
   window._fnData=stats.firstNickname?{w:stats.firstNickname.word,s:dn(stats.firstNickname.sender)}:null;
 
-  // ═══ SET INITIAL SLIDES (tout gratuit pour le lancement) ═══
+  // ═══ SET INITIAL SLIDES (FREE + TEASER) ═══
   window._freeSlides = freeSlides;
   window._paidSlides = paidSlides;
   window._ctaSlide = ctaSlide;
-  window._paidUnlocked = true; // tout est débloqué
-  // TODO: Pour réactiver le paywall, remettre: freeSlides.concat([teaserSlide])
-  window._stSlides = freeSlides.concat(paidSlides).concat([ctaSlide]);
+  window._paidUnlocked = false;
+  window._stSlides = freeSlides.concat([teaserSlide]);
   window._stCurrent = 0;
   stRenderR();
 
