@@ -1403,15 +1403,16 @@
         <p>Vos messages ne sont jamais revendus ni utilisés à des fins publicitaires. Jamais.</p>
       </div>
     </div>
+    <p style="text-align:center; font-size:12px; color:var(--ink-muted); margin-top:24px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.6;">Le lien surprise que vous partagez est personnel : il contient vos prénoms et extraits de conversation dans l'URL. Ne le publiez pas publiquement. <a href="confidentialite.html" style="color:var(--rose);">En savoir plus</a></p>
   </div>
 </section>
 
 <!-- PRICING -->
 <section>
   <div class="container">
-    <div class="section-eyebrow reveal">Tarifs</div>
-    <h2 class="section-title">La story est <em>gratuite</em></h2>
-    <p class="section-sub">Découvrez votre story sans rien payer. Envie de tout débloquer et de lui envoyer la surprise ? C'est le prix d'une rose — mais celle-ci ne fanera jamais.</p>
+    <div class="section-eyebrow reveal">Offre de lancement</div>
+    <h2 class="section-title">Tout est <em>offert</em></h2>
+    <p class="section-sub">Pour le lancement, toute la story est gratuite. 25+ slides, lien surprise, message perso — tout. Profitez-en.</p>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 600px; margin: 0 auto;">
       <div class="pricing-card" style="border-color: var(--border);">
         <div class="price" style="color:var(--ink);">Gratuit</div>
@@ -1422,13 +1423,14 @@
           <li>Vos premiers mots reproduits</li>
           <li>Top 3 emojis, jour record</li>
         </ul>
-        <a href="creer.html" class="cta-btn" style="display:block; text-align:center; background:var(--ink);">Créer ma story</a>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center; background:var(--ink);">Toujours gratuit</a>
       </div>
-      <div class="pricing-card">
-        <div class="price">3,99 €</div>
-        <div class="price-sub">Lien surprise interactif</div>
+      <div class="pricing-card" style="position:relative; overflow:visible;">
+        <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#D4956B,#C27C5A); color:white; font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:4px 14px; border-radius:100px; white-space:nowrap;">🎁 Offert pour le lancement</div>
+        <div class="price"><span style="text-decoration:line-through; opacity:0.4; font-size:32px;">3,99 €</span> <span style="color:#3A8F5A;">Offert</span></div>
+        <div class="price-sub">Story complète + lien surprise</div>
         <ul class="pricing-features">
-          <li>Les 6 slides gratuites +</li>
+          <li>Les 6 slides découverte +</li>
           <li>Moments clés & premiers surnoms 💕</li>
           <li>19 slides exclusives (cœurs, fous rires, couche-tard, nuits blanches…)</li>
           <li>Un lien interactif à envoyer</li>
@@ -1436,7 +1438,7 @@
           <li>Message personnel intégré</li>
           <li>Aucune donnée stockée</li>
         </ul>
-        <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">Créer & envoyer →</a>
+        <a href="creer.html" class="cta-btn" style="display:block; text-align:center;">Créer & envoyer — Offert 🎁</a>
       </div>
     </div>
     <p style="text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 16px;">Aucun compte requis · Vos données restent privées</p>
@@ -1609,7 +1611,7 @@ const stSlides = [
   {bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(1)+'<div class="st-label" style="color:#5A8FA8;">Votre jour record</div><div id="st-bars" style="display:flex;align-items:flex-end;gap:3px;height:100px;margin-bottom:12px;z-index:1;"></div><div id="st-record-count" class="gn" style="font-size:44px;z-index:1;">0</div><div style="font-size:11px;color:rgba(0,0,0,0.35);margin-top:4px;z-index:1;">messages le 14 fév.</div><div style="margin-top:14px;padding:7px 14px;background:rgba(0,0,0,0.03);border-radius:100px;display:flex;align-items:center;gap:5px;z-index:1;"><span style="font-size:13px;">\u{1F525}</span><span style="font-size:10px;color:rgba(0,0,0,0.4);">47 jours sans interruption</span></div>'},
 
   // 16. CTA
-  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:10px;z-index:1;">Votre story<br/>est prête</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin:0 0 24px;max-width:200px;line-height:1.6;z-index:1;">Screenshotez vos slides préférés et envoyez-les à votre moitié</div><div style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:24px;padding:11px 28px;font-size:12px;font-weight:600;text-align:center;box-shadow:0 4px 16px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:210px;">\u{1F4F8} Screenshotez & envoyez</div><div style="background:rgba(0,0,0,0.03);color:#2A2320;border:1px solid rgba(0,0,0,0.06);border-radius:24px;padding:10px 24px;font-size:11px;font-weight:500;text-align:center;margin-top:8px;z-index:1;width:100%;max-width:210px;">Débloquer 18 slides \u2192</div><div style="font-size:8px;color:rgba(0,0,0,0.15);margin-top:20px;letter-spacing:2px;text-transform:uppercase;z-index:1;">nospremiersmots.fr</div>'},
+  {bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+'<div class="gn" style="font-size:24px;text-align:center;line-height:1.3;margin-bottom:10px;z-index:1;">Votre story<br/>est pr\u00EAte</div><div style="font-size:11px;color:rgba(0,0,0,0.35);text-align:center;margin:0 0 24px;max-width:200px;line-height:1.6;z-index:1;">25+ slides \u00E0 swiper et un lien surprise \u00E0 envoyer</div><div style="background:linear-gradient(135deg,#D4956B,#C27C5A);color:#fff;border-radius:24px;padding:11px 28px;font-size:12px;font-weight:600;text-align:center;box-shadow:0 4px 16px rgba(194,124,90,0.3);z-index:1;width:100%;max-width:210px;">Cr\u00E9er ma story \u2192</div><div style="font-size:9px;color:rgba(0,0,0,0.25);margin-top:10px;z-index:1;">\u{1F381} Tout est offert pour le lancement</div><div style="font-size:8px;color:rgba(0,0,0,0.15);margin-top:16px;letter-spacing:2px;text-transform:uppercase;z-index:1;">nospremiersmots.fr</div>'},
 ];
 
 let stCurrent = 0;
