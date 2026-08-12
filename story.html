@@ -324,7 +324,7 @@ if (D) {
   // ═══ HELPERS ═══
   function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*ci;return '<div style="position:relative;width:'+sz+'px;height:'+sz+'px;z-index:1;"><svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="'+th+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+th+'" stroke-dasharray="0 '+ci+'" stroke-linecap="round" transform="rotate(-90 '+sz/2+' '+sz/2+')" data-ring="'+da+' '+ci+'" style="transition:stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1);"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+inner+'</div></div>';}
 
-  var periodBadge = D.dr ? '<div style="position:absolute;top:12px;left:14px;font-size:7px;color:rgba(0,0,0,0.15);z-index:2;letter-spacing:0.5px;">'+D.dr+'</div>' : '';
+  var periodBadge = D.dr ? '<div style="position:absolute;top:14px;left:14px;font-size:9px;color:rgba(0,0,0,0.25);z-index:2;letter-spacing:0.3px;">'+D.dr+'</div>' : '';
   function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h=periodBadge;cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
   // ═══ BUILD SLIDES ═══
