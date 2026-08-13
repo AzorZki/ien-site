@@ -297,6 +297,11 @@ try {
 }
 
 if (D) {
+  // Track story opened
+  if (typeof umami !== 'undefined') {
+    umami.track('story-opened', { mode: D.mode || 'couple' });
+  }
+
   // ═══ MODE (couple / amitié) ═══
   const storyMode = D.mode || 'couple';
   function ml(coupleText, amitieText) { return storyMode === 'couple' ? coupleText : amitieText; }

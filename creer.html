@@ -2177,6 +2177,11 @@ function generateShareLink() {
     var url = window.location.origin + window.location.pathname.replace('creer.html','story.html') + '#' + encoded;
     window._shareUrl = url;
 
+    // Track event
+    if (typeof umami !== 'undefined') {
+      umami.track('story-created', { mode: storyMode });
+    }
+
     // Show result
     var resultEl = document.getElementById('st-link-result');
     if (resultEl) {
