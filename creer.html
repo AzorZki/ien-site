@@ -699,6 +699,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://nospremiersmots.fr/og-image.png">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="231fdbae-9054-49db-9904-53fee6b17973"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 </head>
 <body>
 
@@ -2173,7 +2174,10 @@ function generateShareLink() {
     };
 
     var json = JSON.stringify(data);
-    var encoded = btoa(unescape(encodeURIComponent(json)));
+    var compressed = pako.deflate(new TextEncoder().encode(json));
+    var binaryStr = '';
+    for (var i = 0; i < compressed.length; i++) binaryStr += String.fromCharCode(compressed[i]);
+    var encoded = 'z.' + btoa(binaryStr);
     var url = window.location.origin + window.location.pathname.replace('creer.html','story.html') + '#' + encoded;
     window._shareUrl = url;
 
