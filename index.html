@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Nos premiers mots — Votre histoire en story</title>
-<meta name="description" content="Redécouvrez vos tout premiers messages WhatsApp — le premier salut, les premiers fous rires, le premier je t'aime. Plus des stats cachées : qui est le plus bavard, emojis préférés, jour record. Story interactive gratuite à swiper ensemble.">
+<meta name="description" content="Redécouvrez vos tout premiers messages WhatsApp — le premier salut, les premiers fous rires, le premier je t'aime. Premier message, premier je t'aime, qui est le plus bavard, emojis préférés, jour record… Story interactive gratuite à swiper ensemble.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -358,96 +358,73 @@
   .hc-podium-rank { font-size: 7px; color: rgba(0,0,0,0.25); margin-top: 2px; }
 
   @media (max-width: 900px) {
-    .hero { padding: 100px 24px 40px; min-height: auto; }
-    .hero-layout { flex-direction: column; gap: 20px; }
-    .hero-text { flex: none; width: 100%; text-align: center; }
-    .hero-cta-row { justify-content: center; }
-    .hero-privacy { justify-content: center; }
-    .hero-ami { text-align: center; }
-    .hero-compat { justify-content: center; }
+    .hero { padding: 90px 24px 20px; min-height: auto; }
+    .hero-layout { flex-direction: column; gap: 0; }
+    .hero-text {
+      flex: none; width: 100%; text-align: center;
+      position: relative; z-index: 5;
+    }
+    .hero h1 { font-size: 32px; }
+    .hero-sub { font-size: 14px; margin-bottom: 20px; }
+    .hero-cta-row { justify-content: center; margin-bottom: 12px; }
+    .hero-privacy { justify-content: center; margin-bottom: 6px; }
+    .hero-ami { text-align: center; margin-bottom: 6px; }
+    .hero-compat { justify-content: center; margin-bottom: 0; }
     .hero-trust { justify-content: center; }
-    .hero-cards { height: 340px; width: 100%; max-width: 400px; margin: 0 auto; }
-    .hc { width: 130px; height: 280px; border-radius: 20px; padding: 12px 8px; }
-    .hc-1 { --fan: -23deg; }
-    .hc-2 { --fan: -8deg; }
-    .hc-3 { --fan: 8deg; }
-    .hc-4 { --fan: 23deg; }
-    .hc:hover { transform: translateX(-50%) rotate(var(--fan)) translateY(-20px) scale(1.03) !important; }
-    .hc-chat-bubble { max-width: 105px; padding: 6px 8px; }
-    .hc-chat-text { font-size: 9px; }
-    .hc-love-heart { font-size: 22px; margin-top: 8px; }
-    .hc-podium-bar { width: 24px; }
-    .hc-msg { font-size: 8px; padding: 5px 7px; }
-    .hc-msg-more { font-size: 8px; }
-    .hc-label { font-size: 6px; letter-spacing: 2px; margin-bottom: 10px; }
-    .hc-bavard-sub { font-size: 7px; }
-    .hc-love-date { font-size: 7px; }
-  }
-  .hero-form {
-    display: flex;
-    gap: 10px;
-    max-width: 440px;
-    margin: 0 auto 16px;
-  }
-  .hero-form input {
-    flex: 1;
-    padding: 14px 20px;
-    font-size: 14px;
-    font-family: var(--font-body);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    background: white;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .hero-form input:focus { border-color: var(--rose); }
-  .hero-form input::placeholder { color: var(--ink-muted); }
-  .hero-form button {
-    padding: 14px 28px;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: var(--font-body);
-    background: var(--rose);
-    color: white;
-    border: none;
-    border-radius: 100px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: transform 0.2s, opacity 0.2s;
-  }
-  .hero-form button:hover { transform: scale(1.03); opacity: 0.9; }
-  .hero-note {
-    font-size: 12px;
-    color: var(--ink-muted);
+    .hero-cards {
+      position: relative;
+      width: 100%;
+      margin: 20px auto 0;
+      display: flex;
+      justify-content: center;
+      padding: 0 10px;
+    }
+    .hc {
+      position: relative;
+      width: 105px;
+      height: 220px;
+      border-radius: 16px;
+      padding: 10px 7px;
+      bottom: auto; left: auto; top: auto;
+      transform-origin: center;
+      transform: none;
+      margin-left: -18px;
+      flex-shrink: 0;
+    }
+    .hc:first-child { margin-left: 0; }
+    .hc-1 { transform: rotate(-4deg); z-index: 1; }
+    .hc-2 { transform: rotate(-1deg) translateY(-6px); z-index: 2; }
+    .hc-3 { transform: rotate(1deg) translateY(-6px); z-index: 3; }
+    .hc-4 { transform: rotate(4deg); z-index: 2; }
+    .hc:hover {
+      transform: translateY(-10px) scale(1.03) !important;
+      z-index: 10 !important;
+    }
+    .hc-label { font-size: 5px; letter-spacing: 1.5px; margin-bottom: 6px; }
+    .hc-ring-wrap { gap: 4px; }
+    .hc-ring-wrap svg { width: 44px; height: 44px; }
+    .hc-ring-pct { font-size: 12px !important; }
+    .hc-ring-name { font-size: 6px; }
+    .hc-bavard-sub { font-size: 5px; margin-top: 4px; }
+    .hc-chat-bubble { max-width: 90px; padding: 4px 6px; margin-bottom: 3px; }
+    .hc-chat-sender { font-size: 4px; }
+    .hc-chat-text { font-size: 8px; line-height: 1.3; }
+    .hc-chat-time { font-size: 3.5px; }
+    .hc-love-date { font-size: 5px; margin-bottom: 5px; }
+    .hc-love-heart { font-size: 18px; margin-top: 4px; }
+    .hc-podium { gap: 3px; }
+    .hc-podium-bar { width: 18px; }
+    .hc-podium-count { font-size: 6px; }
+    .hc-podium-rank { font-size: 4.5px; }
+    .hc-podium-item div[style*="font-size:22px"] { font-size: 16px !important; }
+    .hc-podium-item div[style*="font-size:28px"] { font-size: 20px !important; }
+    .hc-podium-item div[style*="font-size:18px"] { font-size: 14px !important; }
+    .hc-msg { font-size: 6px; padding: 3px 5px; }
+    .hc-msg-sender { font-size: 4px; }
+    .hc-msg-time { font-size: 3px; }
+    .hc-msg-more { font-size: 6px; margin-top: 4px; }
   }
 
-  /* ═══ PLATFORMS ═══ */
-  .platforms {
-    margin-top: 32px;
-    text-align: center;
-  }
-  .platform-label {
-    font-size: 11px;
-    color: var(--ink-muted);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 12px;
-  }
-  .platform-logos {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .platform-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--ink-soft);
-    font-weight: 400;
-  }
 
   /* ═══ PHONE MOCKUP ═══ */
   .mockup-section {
@@ -1413,8 +1390,6 @@
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 600px) {
     nav { padding: 12px 16px; }
-    .hero-form, .final-form { flex-direction: column; }
-    .hero-form button, .final-form button { width: 100%; }
     .formats-grid { grid-template-columns: 1fr; }
     .phone-wrapper { max-width: 200px; }
   }
@@ -1473,82 +1448,6 @@
     font-size: 18px;
     color: var(--rose);
     font-style: italic;
-  }
-  /* ═══ FAN OF CARDS ═══ */
-  .fan-section { padding: 60px 24px 80px; overflow: hidden; }
-  .fan-container { max-width: 900px; margin: 0 auto; position: relative; height: 420px; }
-  .fan-card {
-    position: absolute;
-    width: 200px; height: 400px;
-    border-radius: 28px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 22px 14px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.05);
-    overflow: hidden; text-align: center;
-    left: 50%; top: 50%;
-    transform-origin: 50% 100%;
-    transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
-  }
-  .fan-card .fc-shape { position: absolute; border-radius: 50%; pointer-events: none; }
-  .fan-card .fc-label {
-    font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
-    font-weight: 600; margin-bottom: 14px; z-index: 1;
-  }
-  /* Left: Bavard */
-  .fan-card-1 {
-    background: linear-gradient(145deg, #E8B8A0, #D4956B 50%, #C27C5A);
-    transform: translate(-50%, -50%) rotate(-14deg) translateX(-110px);
-    z-index: 1;
-  }
-  .fc-ring-wrap { display: flex; gap: 8px; align-items: center; z-index: 1; }
-  .fc-ring { position: relative; display: flex; align-items: center; justify-content: center; }
-  .fc-ring-inner { position: absolute; display: flex; flex-direction: column; align-items: center; }
-  .fc-ring-pct { font-family: var(--font-display); font-weight: 700; color: #fff; }
-  .fc-ring-name { font-size: 9px; margin-top: 2px; }
-  .fc-bavard-sub { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 12px; z-index: 1; }
-  /* Center: Je t'aime */
-  .fan-card-2 {
-    background: linear-gradient(145deg, #FCEAE0, #F5D5C5 50%, #F0C4AF);
-    transform: translate(-50%, -50%) rotate(0deg);
-    z-index: 3;
-  }
-  .fc-love-date { font-size: 10px; color: rgba(0,0,0,0.22); margin-bottom: 14px; z-index: 1; }
-  .fc-love-bubble {
-    background: rgba(255,255,255,0.55); backdrop-filter: blur(12px);
-    border-radius: 16px 16px 16px 4px; padding: 12px 16px; max-width: 170px;
-    border: 1px solid rgba(255,255,255,0.6);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04); z-index: 1;
-  }
-  .fc-love-text { font-size: 14px; color: #2A2320; line-height: 1.5; }
-  .fc-love-sender { font-size: 8px; color: rgba(0,0,0,0.22); margin-top: 5px; text-align: right; }
-  .fc-love-sender strong { color: var(--rose); font-weight: 600; }
-  .fc-love-heart { margin-top: 16px; font-size: 36px; z-index: 1; }
-  /* Right: Emojis */
-  .fan-card-3 {
-    background: linear-gradient(145deg, #EDE5F0, #E0D5EA 50%, #D8CDE5);
-    transform: translate(-50%, -50%) rotate(14deg) translateX(110px);
-    z-index: 2;
-  }
-  .fc-podium { display: flex; align-items: flex-end; gap: 5px; margin-bottom: 10px; z-index: 1; }
-  .fc-podium-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .fc-podium-bar {
-    width: 38px; border-radius: 7px 7px 3px 3px;
-    display: flex; align-items: center; justify-content: center; padding: 4px 0;
-  }
-  .fc-podium-count { font-size: 9px; font-weight: 700; color: rgba(0,0,0,0.35); }
-  .fc-podium-rank { font-size: 7px; color: rgba(0,0,0,0.25); margin-top: 2px; }
-
-  @media (max-width: 600px) {
-    .fan-container { height: 360px; }
-    .fan-card { width: 155px; height: 320px; padding: 16px 10px; border-radius: 22px; }
-    .fan-card-1 { transform: translate(-50%, -50%) rotate(-12deg) translateX(-80px); }
-    .fan-card-3 { transform: translate(-50%, -50%) rotate(12deg) translateX(80px); }
-    .fc-ring-wrap svg { width: 60px; height: 60px; }
-    .fc-ring-pct { font-size: 15px !important; }
-    .fc-love-bubble { max-width: 130px; padding: 10px 12px; }
-    .fc-love-text { font-size: 12px; }
-    .fc-love-heart { font-size: 28px; }
-    .fc-podium-bar { width: 30px; }
   }
 </style>
 <meta property="og:image" content="https://azorzki.github.io/nospremiersmots/og-image.png">
@@ -1644,7 +1543,7 @@
         <div class="hc-love-date">14 mars 2024 · 23:42</div>
         <div class="hc-chat-bubble">
           <div class="hc-chat-sender">Julien</div>
-          <div class="hc-chat-text">Hey... je crois bien que je t'aime</div>
+          <div class="hc-chat-text">Bon j'me lance. Je t'aime 🙈</div>
           <div class="hc-chat-time">23:42</div>
         </div>
         <div class="hc-love-heart">❤️</div>
@@ -1846,10 +1745,7 @@
             <span style="color:var(--rose); font-weight:600;">✓</span> Livré chez vous en 5 jours
           </div>
         </div>
-        <form onsubmit="handleSignup(event, this)" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
-          <input type="email" placeholder="votre@email.com" required style="flex:1; min-width:180px; padding:12px 16px; font-size:13px; font-family:var(--font-body); border:1px solid var(--border); border-radius:100px; outline:none;">
-          <button type="submit" style="padding:12px 24px; font-size:13px; font-weight:500; font-family:var(--font-body); background:var(--rose); color:white; border:none; border-radius:100px; cursor:pointer; white-space:nowrap;">Me prévenir</button>
-        </form>
+        <a href="mailto:contact@nospremiersmots.fr?subject=Livre%20imprim%C3%A9%20%E2%80%94%20Je%20veux%20%C3%AAtre%20pr%C3%A9venu(e)&body=Bonjour%2C%0A%0AJe%20souhaite%20%C3%AAtre%20pr%C3%A9venu(e)%20quand%20le%20livre%20imprim%C3%A9%20sera%20disponible.%0A%0AMerci%20!" style="display:inline-block; padding:12px 28px; font-size:13px; font-weight:500; font-family:var(--font-body); background:var(--rose); color:white; border:none; border-radius:100px; cursor:pointer; text-decoration:none;">Me prévenir →</a>
         <div style="font-size:11px; color:var(--ink-muted); margin-top:10px;">On vous envoie un email quand c'est prêt. Pas de spam.</div>
       </div>
     </div>
@@ -1859,7 +1755,7 @@
 <!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Vous vous souvenez de votre<br/>premier <em>message</em> ?</h2>
-  <p>Redécouvrez-le. Et avec lui, toutes les petites stats cachées de votre conversation. Le plus beau cadeau que vous puissiez offrir — et c'est gratuit.</p>
+  <p>Redécouvrez-le. Et avec lui, toutes les petites pépites de votre conversation. Le plus beau cadeau que vous puissiez offrir — et c'est gratuit.</p>
   <a href="creer.html" class="nav-cta" style="display:inline-block; padding:16px 40px; font-size:15px; text-decoration:none; box-shadow:0 4px 16px rgba(194,124,90,0.3);">Créer ma story →</a>
   <p class="final-note" style="margin-top:16px;">30 secondes · Aucun compte · 100% privé</p>
 </section>
@@ -1871,60 +1767,6 @@
 
 <!-- THANK YOU SCRIPT -->
 <script>
-// ══ FORMSPREE ══
-// 1. Va sur https://formspree.io et crée un compte gratuit
-// 2. Crée un nouveau formulaire
-// 3. Remplace XXXXXXXX ci-dessous par ton ID Formspree
-const FORMSPREE_ID = 'xppaapze';
-
-async function handleSignup(e, form) {
-  e.preventDefault();
-  const email = form.querySelector('input').value;
-  const btn = form.querySelector('button');
-  const originalText = btn.textContent;
-  btn.textContent = 'Envoi...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, _subject: 'Nouvelle inscription Nos Premiers Mots !' })
-    });
-    
-    if (res.ok) {
-      btn.textContent = '✓ Inscrit !';
-      btn.style.background = '#5BA87A';
-      form.querySelector('input').value = '';
-      form.querySelector('input').placeholder = 'Merci ! On vous prévient bientôt 💕';
-    } else {
-      btn.textContent = 'Erreur, réessayez';
-      btn.style.background = '#D45B5B';
-    }
-  } catch (err) {
-    // Fallback si Formspree pas encore configuré
-    btn.textContent = '✓ Inscrit !';
-    btn.style.background = '#5BA87A';
-    form.querySelector('input').value = '';
-    form.querySelector('input').placeholder = 'Merci ! On vous prévient bientôt 💕';
-  }
-
-  btn.disabled = false;
-  setTimeout(() => {
-    btn.textContent = originalText;
-    btn.style.background = '';
-  }, 3000);
-}
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-});
-
 // ═══ STORY PREVIEW — DA v5 ═══
 
 // Ring SVG helper (matching creer.html)
