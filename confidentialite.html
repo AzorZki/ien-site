@@ -8,8 +8,14 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Politique de confidentialité — Nos premiers mots</title>
+<meta name="description" content="Politique de confidentialité du site nospremiersmots.fr — Aucune donnée collectée.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta property="og:image" content="https://azorzki.github.io/nospremiersmots/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://azorzki.github.io/nospremiersmots/og-image.png">
 <style>
   :root {
     --ink: #1A1A18;
@@ -31,38 +37,41 @@
     background: var(--warm-white);
     -webkit-font-smoothing: antialiased;
   }
-  .legal-container {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 60px 24px 80px;
-  }
-  .legal-back {
-    display: inline-flex;
+
+  nav {
+    padding: 16px 32px;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--rose);
-    text-decoration: none;
-    margin-bottom: 32px;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
   }
-  .legal-back:hover { text-decoration: underline; }
+  .logo { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .logo em { color: var(--rose); font-style: italic; }
+  .back-link { font-size: 13px; color: var(--ink-muted); text-decoration: none; }
+  .back-link:hover { color: var(--rose); }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
   h1 {
     font-family: var(--font-display);
-    font-size: 32px;
-    font-weight: 500;
+    font-size: 28px;
+    font-weight: 400;
     margin-bottom: 8px;
   }
-  .legal-date {
-    font-size: 13px;
+  h1 em { font-style: italic; color: var(--rose); }
+  .updated {
+    font-size: 12px;
     color: var(--ink-muted);
-    margin-bottom: 40px;
+    margin-bottom: 32px;
   }
   h2 {
     font-family: var(--font-display);
     font-size: 20px;
-    font-weight: 500;
-    margin-top: 36px;
-    margin-bottom: 12px;
+    font-weight: 400;
+    margin: 32px 0 12px;
     color: var(--ink);
   }
   p, li {
@@ -73,6 +82,7 @@
   }
   ul { padding-left: 20px; margin-bottom: 12px; }
   a { color: var(--rose); }
+
   .highlight-box {
     background: var(--rose-bg);
     border: 1px solid var(--rose-light);
@@ -82,14 +92,7 @@
   }
   .highlight-box p { color: var(--ink); margin-bottom: 6px; }
   .highlight-box p:last-child { margin-bottom: 0; }
-  .placeholder {
-    background: #FFF3CD;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 13px;
-    color: #856404;
-  }
+
   footer {
     text-align: center;
     padding: 32px 24px;
@@ -103,93 +106,92 @@
 </head>
 <body>
 
-<div class="legal-container">
-  <a href="index.html" class="legal-back">← Retour à l'accueil</a>
+<nav>
+  <a href="index.html" class="logo">Nos premiers <em>mots</em></a>
+  <a href="index.html" class="back-link">← Retour à l'accueil</a>
+</nav>
 
-  <h1>Politique de confidentialité</h1>
-  <p class="legal-date">Dernière mise à jour : août 2026</p>
+<div class="container">
+  <h1>Politique de <em>confidentialité</em></h1>
+  <p class="updated">Dernière mise à jour : août 2026</p>
 
   <div class="highlight-box">
     <p><strong>🔒 L'essentiel en 30 secondes :</strong></p>
-    <p>Vos conversations WhatsApp ne quittent jamais votre appareil. Tout le traitement se fait dans votre navigateur. Nous ne stockons, ne lisons et ne transmettons aucun message. Le lien surprise que vous générez contient vos données encodées dans l'URL — aucun serveur impliqué.</p>
+    <p>Nous ne collectons, ne stockons et ne transmettons aucune donnée personnelle. Vos conversations WhatsApp sont analysées entièrement dans votre navigateur. Rien ne quitte votre appareil. Le lien que vous générez contient vos données encodées dans l'URL — aucun serveur n'est impliqué.</p>
   </div>
 
-  <h2>1. Responsable du traitement</h2>
+  <h2>1. Éditeur</h2>
   <p>
-    <span class="placeholder">[PRÉNOM NOM]</span><br>
-    Entrepreneur individuel (micro-entreprise)<br>
-    SIRET : <span class="placeholder">[NUMÉRO SIRET]</span><br>
-    Email : <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>
+    Ce site est édité à titre personnel, conformément à l'article 6-III-2 de la LCEN.
+    L'identité de l'éditeur a été communiquée à l'hébergeur.
+    Pour toute question : <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>
   </p>
 
   <h2>2. Données que nous ne collectons PAS</h2>
-  <p>Soyons clairs sur ce que nous ne faisons pas :</p>
+  <p>Soyons clairs — nous ne collectons rien :</p>
   <ul>
-    <li><strong>Vos conversations WhatsApp</strong> : elles sont traitées à 100% dans votre navigateur (JavaScript côté client). Aucun message n'est envoyé à nos serveurs.</li>
-    <li><strong>Les statistiques générées</strong> : elles sont calculées localement et ne sont jamais transmises.</li>
-    <li><strong>Le lien surprise</strong> : les données sont encodées en base64 directement dans l'URL (après le #). Le contenu après le # n'est jamais envoyé au serveur — c'est un standard du protocole HTTP.</li>
-    <li><strong>Cookies de suivi</strong> : nous n'utilisons aucun cookie, aucun outil d'analytics (pas de Google Analytics), aucun pixel publicitaire.</li>
+    <li><strong>Vos conversations WhatsApp</strong> — le fichier que vous importez est traité à 100% dans votre navigateur (JavaScript côté client). Aucun message n'est envoyé à un serveur.</li>
+    <li><strong>Les statistiques générées</strong> — elles sont calculées localement et ne sont jamais transmises.</li>
+    <li><strong>Vos informations personnelles</strong> — aucun compte, aucune inscription, aucun email collecté.</li>
+    <li><strong>Cookies</strong> — nous n'utilisons aucun cookie, aucun traceur, aucun outil d'analytics, aucun pixel publicitaire.</li>
   </ul>
 
-  <h2>3. Données que nous collectons</h2>
-  <p>Nous collectons un minimum de données, uniquement dans les cas suivants :</p>
+  <h2>3. Le lien de partage</h2>
+  <p>
+    Lorsque vous générez un lien surprise, les données de la story (prénoms, extraits de messages, statistiques) sont encodées en base64 directement dans l'URL, après le caractère <code>#</code>.
+  </p>
+  <p>
+    Techniquement, le contenu situé après le <code>#</code> d'une URL (appelé « fragment ») n'est jamais transmis au serveur — c'est un standard du protocole HTTP. Vos données restent entre votre navigateur et celui de la personne qui ouvre le lien.
+  </p>
+  <p>
+    <strong>Important :</strong> ce lien est personnel. Il contient des extraits de votre conversation. Sa diffusion relève de votre seule responsabilité. Ne le publiez pas sur les réseaux sociaux ou dans des espaces publics.
+  </p>
 
-  <p><strong>3.1 Liste d'attente livre imprimé</strong></p>
-  <p>Si vous laissez votre email pour être prévenu de la disponibilité du livre imprimé, nous collectons votre adresse email via Formspree (formspree.io). Cet email est utilisé uniquement pour vous informer de la disponibilité du produit. Vous pouvez demander sa suppression à tout moment en écrivant à contact@nospremiersmots.fr.</p>
+  <h2>4. Hébergement</h2>
+  <p>
+    Le site est hébergé sur GitHub Pages (GitHub, Inc. — 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis).
+  </p>
+  <p>
+    GitHub peut collecter des données techniques de connexion (adresse IP, type de navigateur) conformément à sa propre politique de confidentialité : <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">docs.github.com</a>. Nous n'avons pas accès à ces données.
+  </p>
 
-  <p><strong>3.2 Paiement</strong></p>
-  <p>Les paiements sont traités par Stripe (stripe.com). Stripe collecte les données nécessaires au traitement du paiement (numéro de carte, nom, email). Nous n'avons jamais accès à vos coordonnées bancaires. Seule la confirmation de paiement (montant, date, identifiant de transaction) nous est communiquée par Stripe. La politique de confidentialité de Stripe est disponible sur <a href="https://stripe.com/fr/privacy" target="_blank" rel="noopener">stripe.com/fr/privacy</a>.</p>
+  <h2>5. Transferts hors UE</h2>
+  <p>
+    GitHub est une entreprise américaine. Les données techniques de connexion (logs serveur) peuvent être traitées aux États-Unis, conformément au Data Privacy Framework.
+  </p>
+  <p>
+    Vos conversations WhatsApp, en revanche, ne quittent jamais votre navigateur et ne font l'objet d'aucun transfert.
+  </p>
 
-  <p><strong>3.3 Hébergement</strong></p>
-  <p>Le site est hébergé sur GitHub Pages (GitHub, Inc.). GitHub peut collecter des données techniques de connexion (adresse IP, navigateur) conformément à sa propre politique de confidentialité : <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">docs.github.com</a>. Nous n'avons pas accès à ces données.</p>
+  <h2>6. Vos droits (RGPD)</h2>
+  <p>
+    Le RGPD vous garantit des droits d'accès, de rectification, de suppression, de portabilité et d'opposition sur vos données personnelles.
+  </p>
+  <p>
+    Dans les faits, nous ne détenons aucune donnée vous concernant. Il n'y a donc rien à consulter, rectifier ou supprimer de notre côté.
+  </p>
+  <p>
+    Si vous avez une question, écrivez à <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>. En cas de litige, vous pouvez contacter la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.
+  </p>
 
-  <h2>4. Finalités du traitement</h2>
-  <ul>
-    <li>Inscription à la liste d'attente : envoi d'un email d'information lors du lancement du livre imprimé.</li>
-    <li>Paiement : traitement de la transaction pour le déblocage du lien surprise interactif.</li>
-  </ul>
-
-  <h2>5. Base légale</h2>
-  <ul>
-    <li>Liste d'attente : votre consentement (vous entrez volontairement votre email).</li>
-    <li>Paiement : exécution du contrat (vous payez pour un service).</li>
-  </ul>
-
-  <h2>6. Durée de conservation</h2>
-  <ul>
-    <li>Email liste d'attente : conservé jusqu'au lancement du livre ou jusqu'à votre demande de suppression.</li>
-    <li>Données Stripe : conformément aux obligations légales de conservation (durée fixée par Stripe et la réglementation fiscale française).</li>
-  </ul>
-
-  <h2>7. Vos droits (RGPD)</h2>
-  <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
-  <ul>
-    <li><strong>Droit d'accès</strong> : savoir quelles données nous avons sur vous.</li>
-    <li><strong>Droit de rectification</strong> : corriger des données inexactes.</li>
-    <li><strong>Droit de suppression</strong> : demander l'effacement de vos données.</li>
-    <li><strong>Droit de portabilité</strong> : recevoir vos données dans un format lisible.</li>
-    <li><strong>Droit d'opposition</strong> : vous opposer au traitement de vos données.</li>
-  </ul>
-  <p>Pour exercer ces droits, écrivez à <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>. Nous répondons sous 30 jours.</p>
-  <p>En cas de litige, vous pouvez déposer une réclamation auprès de la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a> (Commission Nationale de l'Informatique et des Libertés).</p>
-
-  <h2>8. Transferts hors UE</h2>
-  <p>GitHub (hébergement) et Stripe (paiement) sont des entreprises américaines. Les données techniques et de paiement peuvent être transférées aux États-Unis. Ces entreprises sont conformes aux réglementations applicables (Data Privacy Framework).</p>
-  <p>Vos conversations WhatsApp, en revanche, ne quittent jamais votre navigateur et ne font l'objet d'aucun transfert.</p>
-
-  <h2>9. Sécurité</h2>
+  <h2>7. Sécurité</h2>
   <ul>
     <li>Connexion HTTPS sur l'ensemble du site.</li>
-    <li>Aucune base de données contenant des données utilisateur.</li>
+    <li>Aucune base de données.</li>
+    <li>Aucun compte utilisateur.</li>
     <li>Traitement 100% côté client pour les conversations.</li>
-    <li>Paiement sécurisé via Stripe (certifié PCI DSS).</li>
+    <li>Aucune donnée stockée sur nos serveurs (nous n'en avons pas).</li>
   </ul>
 
-  <h2>10. Modifications</h2>
-  <p>Cette politique peut être mise à jour. La date de dernière modification est indiquée en haut de page. En cas de modification substantielle, nous en informerons les utilisateurs concernés.</p>
+  <h2>8. Évolutions futures</h2>
+  <p>
+    Si le site évolue (ajout d'analytics, de paiement ou d'autres fonctionnalités impliquant une collecte de données), cette politique sera mise à jour en conséquence. La date de dernière modification est indiquée en haut de page.
+  </p>
 
-  <h2>11. Contact</h2>
-  <p>Pour toute question relative à cette politique, contactez-nous à <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>.</p>
+  <h2>9. Contact</h2>
+  <p>
+    Pour toute question relative à cette politique : <a href="mailto:contact@nospremiersmots.fr">contact@nospremiersmots.fr</a>
+  </p>
 </div>
 
 <footer>
