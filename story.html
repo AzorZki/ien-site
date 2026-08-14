@@ -446,12 +446,12 @@ if (D) {
     // 7. Je t'aime
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+lovHtml},
   ];
-  // 8-9. Conversation slides (if data exists)
-  // 8-11. Paid conversation slides (4 slides)
-  if (convSlide1Html) slides.push({bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide1Html});
-  if (convSlide2Html) slides.push({bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide2Html});
-  if (convSlide3Html) slides.push({bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide3Html});
-  if (convSlide4Html) slides.push({bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(1)+convSlide4Html});
+  // Insert conversation continuation slides right after "Et tout a commencé par..." (position 2)
+  var convInsert = [];
+  if (convSlide2Html) convInsert.push({bg:'linear-gradient(145deg,#D8EAF0,#C0D9E5 50%,#A8C8D8)',html:mkShapes(2)+convSlide2Html});
+  if (convSlide3Html) convInsert.push({bg:'linear-gradient(145deg,#FFF8F0,#FFF0E2)',html:mkShapes(0)+convSlide3Html});
+  if (convSlide4Html) convInsert.push({bg:'linear-gradient(145deg,#C0D9E5,#A8C8D8 50%,#98BCC8)',html:mkShapes(1)+convSlide4Html});
+  if (convInsert.length) { for (var ci=convInsert.length-1;ci>=0;ci--) slides.splice(2,0,convInsert[ci]); }
   slides.push(
     // 7. Hearts
     {bg:'linear-gradient(145deg,#FCEAE0,#F5D5C5 50%,#F0C4AF)',html:mkShapes(0)+'<div class="st-label" style="color:#C27C5A;">C\u0153urs envoy\u00E9s</div><div style="position:relative;width:100px;height:90px;margin-bottom:16px;z-index:1;"><svg viewBox="0 0 100 90" width="100" height="90"><defs><clipPath id="hC"><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z"/></clipPath><linearGradient id="hG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C27C5A"/><stop offset="100%" stop-color="#D4956B"/></linearGradient></defs><path d="M50 85 C25 65 0 45 0 25 C0 10 10 0 25 0 C35 0 45 10 50 20 C55 10 65 0 75 0 C90 0 100 10 100 25 C100 45 75 65 50 85Z" fill="rgba(0,0,0,0.04)"/><rect id="st-heart-fill" x="0" y="90" width="100" height="90" fill="url(#hG)" clip-path="url(#hC)" style="transition:y 1.5s cubic-bezier(0.23,1,0.32,1);"/></svg></div><div id="st-h-count" class="gn" style="font-size:48px;z-index:1;">0</div><div style="display:flex;gap:16px;margin-top:20px;z-index:1;"><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c1+';">'+(s.h1||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n1+((s.h1||0)>(s.h2||0)?' \u{1F451}':'')+'</div></div><div style="text-align:center;padding:8px 16px;background:rgba(0,0,0,0.03);border-radius:12px;"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:'+c2+';">'+(s.h2||0)+'</div><div style="font-size:10px;color:rgba(0,0,0,0.35);">'+n2+((s.h2||0)>(s.h1||0)?' \u{1F451}':'')+'</div></div></div>'},
@@ -539,14 +539,14 @@ if (D) {
   function prev() { if (current > 0) { current--; render(); } }
 
   document.getElementById('slide').addEventListener('click', function(e) {
-    var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';}
+    var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';return;}
     if (e.target.tagName === 'A' || e.target.closest('a')) return;
     var rect = this.getBoundingClientRect();
     if (e.clientX - rect.left > rect.width / 2) next(); else prev();
   });
 
   var tsx = null;
-  document.getElementById('slide').addEventListener('touchstart', function(e) { var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';} tsx = e.touches[0].clientX; });
+  document.getElementById('slide').addEventListener('touchstart', function(e) { var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';tsx=null;return;} tsx = e.touches[0].clientX; });
   document.getElementById('slide').addEventListener('touchend', function(e) {
     if (tsx === null) return;
     var d = tsx - e.changedTouches[0].clientX;
