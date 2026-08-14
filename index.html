@@ -357,33 +357,105 @@
   .hc-podium-count { font-size: 9px; font-weight: 700; color: rgba(0,0,0,0.35); }
   .hc-podium-rank { font-size: 7px; color: rgba(0,0,0,0.25); margin-top: 2px; }
 
+  /* ═══ STICKY MOBILE CTA ═══ */
+  .sticky-cta {
+    display: none;
+  }
   @media (max-width: 900px) {
-    .hero { padding: 90px 24px 20px; min-height: auto; }
+    .sticky-cta {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 12px 16px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      background: rgba(253,252,250,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+      gap: 10px;
+      align-items: center;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+    }
+    .sticky-cta.visible { transform: translateY(0); }
+    .sticky-cta-main {
+      flex: 1;
+      display: block;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--rose);
+      padding: 13px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(194,124,90,0.3);
+    }
+    .sticky-cta-demo {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--rose);
+      background: var(--rose-bg);
+      padding: 13px 14px;
+      border-radius: 100px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+  }
+
+  /* ═══ DEMO BUTTON (hero) ═══ */
+  .hero-demo-btn {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--rose);
+    background: var(--rose-bg);
+    padding: 12px 24px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+    border: 1px solid var(--rose-light);
+  }
+  .hero-demo-btn:hover { transform: scale(1.03); background: var(--rose-light); }
+
+  @media (max-width: 900px) {
+    body { padding-bottom: 72px; } /* space for sticky CTA */
+    .hero { padding: 80px 20px 16px; min-height: auto; }
     .hero-layout { flex-direction: column; gap: 0; }
     .hero-text {
       flex: none; width: 100%; text-align: center;
       position: relative; z-index: 5;
     }
-    .hero h1 { font-size: 30px; margin-bottom: 20px; }
-    .hero-sep { margin: 0 auto 20px; }
-    .hero-sub { font-size: 14px; margin-bottom: 28px; line-height: 1.8; }
-    .hero-cta-row { justify-content: center; margin-bottom: 20px; }
-    .hero-privacy { justify-content: center; margin-bottom: 10px; }
-    .hero-ami { text-align: center; margin-bottom: 10px; }
-    .hero-compat { justify-content: center; margin-bottom: 0; }
+    .hero h1 { font-size: 30px; font-weight: 500; margin-bottom: 14px; }
+    .hero-sep { margin: 0 auto 14px; }
+    .hero-sub { font-size: 13px; margin-bottom: 20px; line-height: 1.7; }
+    .hero-sub br { display: none; }
+    .hero-cta-row { justify-content: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+    .hero-privacy { justify-content: center; margin-bottom: 8px; }
+    .hero-ami { display: none; }
+    .hero-compat { display: none; }
     .hero-trust { justify-content: center; }
     .hero-cards {
       position: relative;
       width: 100%;
-      margin: 30px auto 0;
+      margin: 20px auto 0;
       display: flex;
       justify-content: center;
-      padding: 0 10px;
+      padding: 0 6px;
+      height: auto;
     }
     .hc {
       position: relative;
-      width: 105px;
-      height: 220px;
+      width: 22vw;
+      min-width: 80px;
+      max-width: 110px;
+      height: 210px;
       border-radius: 16px;
       padding: 10px 7px;
       bottom: auto; left: auto; top: auto;
@@ -1481,8 +1553,9 @@
       </p>
       <div class="hero-cta-row">
         <a href="creer.html" class="hero-cta-btn">Créer votre story →</a>
-        <span class="hero-cta-note">En 30 secondes</span>
+        <a href="story.html#z.eJx1VcuK5DYU/ZU7d1MbUViy69HaNEmY0DSBDqR3TS9Utjylii25LMndw1AQQiAPEgJ5QM8i9BBmFjWrLJNsTX5kfiD9CUGu6i5PcC8sLOnecx/nSHqBmiLHp2UpkKBmyPHUF0pqJFgr5JSg1QeD0mQSOabGV4VEgg45S+Y0JpghT+YzgnmGHGkCK6HHwCKWIMGsRo4PC/Dui1+gFCpMJkgwL5FfvEB7iHKNHD8ThXdwd3vz3S4M0iMeM9yQneVDksH2RD5/Dk/ggyWkxhTgPJQjYUGsjHftFu5uX297IJMHkF64E7EUYLyCJ3CmwY6kdZDWRtl2a6F9BYUAa1TdbiVkEj5ptwK00XDcw50OJ3fmlVIgr0XqZCl1V9NXsBqJRigLrjYVSN2oDtdJqGUl6kLWPeD5UMLnHvIAsPZGQSq77OA4gN8cXJMIN5cE00OH30vtfCQt1FK7rq5j+GjUbp1QbpfVQkl9j7yHZDGnbCibXZF3tzc/hMoUVMJC46EIJZWVDXMr+yjJcLM+FbVUxXg8hkY1u3YVAqrapEuhtITcKNtDGaTy3EMj/TWs/chosBIaoxxkshRKdx1683cP4hHW2m8blclyT9hPv/Y8ZoMN0NAIMO1fkHkIx+MgjYhHj+j2NLTK1cY37Ra8hko65aCW1hlQTgTLHRWleqaN7gEOFn627BRciToPJAY2ei6PFHoqd+QE7aVLWYcvCJ4eLd8rYVCEJ+3vTsKyN97dvvmj53U0HPTcQymhFHrtpYWs3a7aV/cdZjyhg7QaBcJbq4I60u6A5sbD2gudQdm+LWUPIR6O+7Hx4eaxB4H3fJKhqB8arSVorxyURkP6z8++/p8gJvPhYH1XAQtZFKE937/seR51x3PlkL/A7t6cQN5um4eLM9hFEY/oARJWo1JCIXQqx3AqwY2EKgPwy2+Q9JPYEDQUeRwzgoYhp5MJwTVFTlkyI7hmyOdHlGBahLXJNPyxYE8JyvAmRFOeMCQow6MQzUKdBAvXbbFwgsOs24s5C4Y5RR6NE4J5CDdmBMUVRT7f/THkk/GM4BI5nYcMFhp5QhnBOkXerdT7t6PrQSj/CjlN2GQeEdRll3lM0EnkFxf47rfX//75IxLKouSSXODd7c2XSObJbD+5QTKN2eUlQZchv6BzwhiJw3hJsFoiZ5RgVYUIBHMdKLhCjg8s77vZaWFD8Kq6t1i020UbHpTUeB0ewDihG4L2c+ShiNI+C/fH12IvUm1cLWGprDOqlmN46qCTQtgrjNKQjdq3wSRXWsl7bS06UnZ96piaTjf/AXalUYI=" class="hero-demo-btn">Voir un exemple</a>
       </div>
+      <div style="margin-bottom:16px;"><span class="hero-cta-note">En 30 secondes · Aucun compte requis</span></div>
       <div class="hero-privacy">
         <svg width="14" height="14" fill="none" stroke="#C27C5A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Vos messages ne quittent jamais votre appareil
@@ -1767,6 +1840,12 @@
   <p>Nos premiers <em style="font-style:italic; color:var(--rose);">mots</em> · Fait avec amour · <a href="mailto:contact@nospremiersmots.fr">Contact</a> · <a href="mentions-legales.html" style="color:var(--ink-muted);text-decoration:none;">Mentions légales</a> · <a href="confidentialite.html" style="color:var(--ink-muted);text-decoration:none;">Confidentialité</a></p>
 </footer>
 
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="creer.html" class="sticky-cta-main">Créer ma story →</a>
+  <a href="story.html#z.eJx1VcuK5DYU/ZU7d1MbUViy69HaNEmY0DSBDqR3TS9Utjylii25LMndw1AQQiAPEgJ5QM8i9BBmFjWrLJNsTX5kfiD9CUGu6i5PcC8sLOnecx/nSHqBmiLHp2UpkKBmyPHUF0pqJFgr5JSg1QeD0mQSOabGV4VEgg45S+Y0JpghT+YzgnmGHGkCK6HHwCKWIMGsRo4PC/Dui1+gFCpMJkgwL5FfvEB7iHKNHD8ThXdwd3vz3S4M0iMeM9yQneVDksH2RD5/Dk/ggyWkxhTgPJQjYUGsjHftFu5uX297IJMHkF64E7EUYLyCJ3CmwY6kdZDWRtl2a6F9BYUAa1TdbiVkEj5ptwK00XDcw50OJ3fmlVIgr0XqZCl1V9NXsBqJRigLrjYVSN2oDtdJqGUl6kLWPeD5UMLnHvIAsPZGQSq77OA4gN8cXJMIN5cE00OH30vtfCQt1FK7rq5j+GjUbp1QbpfVQkl9j7yHZDGnbCibXZF3tzc/hMoUVMJC46EIJZWVDXMr+yjJcLM+FbVUxXg8hkY1u3YVAqrapEuhtITcKNtDGaTy3EMj/TWs/chosBIaoxxkshRKdx1683cP4hHW2m8blclyT9hPv/Y8ZoMN0NAIMO1fkHkIx+MgjYhHj+j2NLTK1cY37Ra8hko65aCW1hlQTgTLHRWleqaN7gEOFn627BRciToPJAY2ei6PFHoqd+QE7aVLWYcvCJ4eLd8rYVCEJ+3vTsKyN97dvvmj53U0HPTcQymhFHrtpYWs3a7aV/cdZjyhg7QaBcJbq4I60u6A5sbD2gudQdm+LWUPIR6O+7Hx4eaxB4H3fJKhqB8arSVorxyURkP6z8++/p8gJvPhYH1XAQtZFKE937/seR51x3PlkL/A7t6cQN5um4eLM9hFEY/oARJWo1JCIXQqx3AqwY2EKgPwy2+Q9JPYEDQUeRwzgoYhp5MJwTVFTlkyI7hmyOdHlGBahLXJNPyxYE8JyvAmRFOeMCQow6MQzUKdBAvXbbFwgsOs24s5C4Y5RR6NE4J5CDdmBMUVRT7f/THkk/GM4BI5nYcMFhp5QhnBOkXerdT7t6PrQSj/CjlN2GQeEdRll3lM0EnkFxf47rfX//75IxLKouSSXODd7c2XSObJbD+5QTKN2eUlQZchv6BzwhiJw3hJsFoiZ5RgVYUIBHMdKLhCjg8s77vZaWFD8Kq6t1i020UbHpTUeB0ewDihG4L2c+ShiNI+C/fH12IvUm1cLWGprDOqlmN46qCTQtgrjNKQjdq3wSRXWsl7bS06UnZ96piaTjf/AXalUYI=" class="sticky-cta-demo">Exemple</a>
+</div>
+
 <!-- THANK YOU SCRIPT -->
 <script>
 // ═══ STORY PREVIEW — DA v5 ═══
@@ -2038,6 +2117,27 @@ function initCarousel(trackId, dotsId, interval) {
 }
 
 // No more carousels
+
+// ═══ STICKY MOBILE CTA ═══
+(function() {
+  const sticky = document.getElementById('stickyCta');
+  if (!sticky) return;
+  const heroCta = document.querySelector('.hero-cta-btn');
+  if (!heroCta) return;
+
+  function checkSticky() {
+    const rect = heroCta.getBoundingClientRect();
+    // Show sticky when hero CTA scrolls out of view
+    if (rect.bottom < 0) {
+      sticky.classList.add('visible');
+    } else {
+      sticky.classList.remove('visible');
+    }
+  }
+
+  window.addEventListener('scroll', checkSticky, { passive: true });
+  checkSticky();
+})();
 </script>
 
 </body>
