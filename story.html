@@ -209,7 +209,61 @@
     color: rgba(0,0,0,0.12);
     z-index: 10;
     pointer-events: none;
+    transition: bottom 0.3s ease;
   }
+  #viewer.has-demo-cta #watermark { bottom: 62px; }
+
+  /* ═══ DEMO FLOATING CTA ═══ */
+  #demo-cta {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    z-index: 15;
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), opacity 0.5s ease;
+    pointer-events: none;
+  }
+  #demo-cta.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #demo-cta a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 100px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  #demo-cta a:active {
+    transform: scale(0.96);
+    background: rgba(255,255,255,0.28);
+  }
+  #demo-cta .demo-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    font-size: 12px;
+    transition: transform 0.25s ease;
+  }
+  #demo-cta a:hover .demo-arrow { transform: translateX(3px); }
 
   /* ═══ ERROR ═══ */
   #error {
@@ -269,6 +323,7 @@
   <div id="progress"></div>
   <div id="slide"></div>
   <div id="watermark">nospremiersmots.fr</div>
+  <div id="demo-cta"><a href="https://nospremiersmots.fr/creer.html">Créer la mienne <span class="demo-arrow">→</span></a></div>
 </div>
 
 <!-- ERROR (no hash / bad data) -->
@@ -500,6 +555,26 @@ if (D) {
     el.innerHTML = slide.html;
     const dark = slide.bg.indexOf('#2A3') > -1 || slide.bg.indexOf('#1E3') > -1 || slide.bg.indexOf('#1A2') > -1 || slide.bg.indexOf('#D4956B 50%') > -1;
     document.getElementById('watermark').style.color = dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+    // Demo floating CTA
+    var demoCta = document.getElementById('demo-cta');
+    if (demoCta && s.demo) {
+      var isLast = current >= slides.length - 1;
+      if (current >= 2 && !isLast) {
+        demoCta.classList.add('visible');
+        var link = demoCta.querySelector('a');
+        if (dark) {
+          link.style.background = 'rgba(255,255,255,0.15)';
+          link.style.borderColor = 'rgba(255,255,255,0.2)';
+          link.style.color = '#fff';
+        } else {
+          link.style.background = 'rgba(255,255,255,0.7)';
+          link.style.borderColor = 'rgba(255,255,255,0.8)';
+          link.style.color = '#C27C5A';
+        }
+      } else {
+        demoCta.classList.remove('visible');
+      }
+    } else if (demoCta) { demoCta.classList.remove('visible'); }
     document.getElementById('progress').innerHTML = slides.map(function(_, i) {
       return '<div class="bar" style="background:' + (i <= current ? (dark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.3)') : (dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)')) + ';"></div>';
     }).join('');
@@ -564,7 +639,9 @@ if (D) {
     document.getElementById('splash').classList.add('hidden');
     setTimeout(function() {
       document.getElementById('splash').style.display = 'none';
-      document.getElementById('viewer').classList.add('active');
+      var viewer = document.getElementById('viewer');
+      viewer.classList.add('active');
+      if (s.demo) viewer.classList.add('has-demo-cta');
       render();
     }, 600);
   };
