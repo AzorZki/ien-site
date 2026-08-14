@@ -211,12 +211,61 @@
     pointer-events: none;
     transition: bottom 0.3s ease;
   }
-  #viewer.has-demo-cta #watermark { bottom: 62px; }
+  #viewer.has-demo-cta #watermark { bottom: 58px; }
+
+  /* ═══ PERIOD BADGE ═══ */
+  #period-badge {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 12;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    padding: 4px 14px;
+    border-radius: 100px;
+    pointer-events: none;
+    transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+  }
+  #period-badge.light {
+    color: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.04);
+    border: 0.5px solid rgba(0,0,0,0.06);
+  }
+  #period-badge.dark {
+    color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+
+  /* ═══ BACK BUTTON ═══ */
+  #story-back {
+    position: absolute;
+    top: 26px;
+    right: 16px;
+    z-index: 20;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    background: rgba(0,0,0,0.06);
+  }
+  #story-back:active { transform: scale(0.9); }
+  #story-back.light { background: rgba(0,0,0,0.06); }
+  #story-back.dark { background: rgba(255,255,255,0.1); }
+  #story-back svg { transition: stroke 0.3s ease; }
 
   /* ═══ DEMO FLOATING CTA ═══ */
   #demo-cta {
     position: absolute;
-    bottom: 32px;
+    bottom: 28px;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
     z-index: 15;
@@ -232,36 +281,35 @@
   #demo-cta a {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.25);
+    gap: 10px;
+    padding: 13px 24px 13px 28px;
+    background: linear-gradient(135deg, rgba(194,124,90,0.95), rgba(212,149,107,0.95));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 100px;
     color: #fff;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     text-decoration: none;
-    letter-spacing: 0.3px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
-    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 24px rgba(194,124,90,0.35), 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
   #demo-cta a:active {
     transform: scale(0.96);
-    background: rgba(255,255,255,0.28);
   }
   #demo-cta .demo-arrow {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    font-size: 12px;
-    transition: transform 0.25s ease;
+    background: rgba(255,255,255,0.25);
+    font-size: 11px;
+    transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
   }
   #demo-cta a:hover .demo-arrow { transform: translateX(3px); }
 
@@ -321,9 +369,11 @@
   </div>
   <style>@keyframes swipeH{0%,100%{transform:translateX(0);opacity:0.9}50%{transform:translateX(20px);opacity:1}}</style>
   <div id="progress"></div>
+  <div id="period-badge"></div>
+  <button id="story-back" onclick="window.location.href='https://nospremiersmots.fr/'" aria-label="Retour"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="rgba(0,0,0,0.35)" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="rgba(0,0,0,0.35)" stroke-width="1.5" stroke-linecap="round"/></svg></button>
   <div id="slide"></div>
   <div id="watermark">nospremiersmots.fr</div>
-  <div id="demo-cta"><a href="https://nospremiersmots.fr/creer.html">Créer la mienne <span class="demo-arrow">→</span></a></div>
+  <div id="demo-cta"><a href="https://nospremiersmots.fr/creer.html">Créer ma story <span class="demo-arrow">→</span></a></div>
 </div>
 
 <!-- ERROR (no hash / bad data) -->
@@ -403,8 +453,8 @@ if (D) {
   // ═══ HELPERS ═══
   function mkRing(pct,col,sz,th,inner){var r=(sz-th)/2,ci=2*Math.PI*r,da=pct/100*ci;return '<div style="position:relative;width:'+sz+'px;height:'+sz+'px;z-index:1;"><svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="'+th+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+th+'" stroke-dasharray="0 '+ci+'" stroke-linecap="round" transform="rotate(-90 '+sz/2+' '+sz/2+')" data-ring="'+da+' '+ci+'" style="transition:stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1);"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+inner+'</div></div>';}
 
-  var periodBadge = D.dr ? '<div style="position:absolute;top:14px;left:14px;font-size:9px;color:rgba(0,0,0,0.25);z-index:2;letter-spacing:0.3px;">'+D.dr+'</div>' : '';
-  function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h=periodBadge;cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
+  var periodBadge = D.dr || '';
+  function mkShapes(v){var cfgs=[[['80px','rgba(194,124,90,0.07)','top:8%;right:5%'],['120px','rgba(90,143,168,0.05)','bottom:10%;left:-8%']],[['100px','rgba(90,143,168,0.07)','top:-5%;left:10%'],['60px','rgba(194,124,90,0.05)','bottom:15%;right:5%']],[['100px','rgba(194,124,90,0.06)','top:15%;right:-5%'],['80px','rgba(90,143,168,0.05)','bottom:20%;left:5%']]];var h='';cfgs[v%3].forEach(function(s){h+='<div class="st-shape" style="width:'+s[0]+';height:'+s[0]+';background:'+s[1]+';'+s[2]+'"></div>';});return h;}
 
   // ═══ BUILD SLIDES ═══
   const s = D;
@@ -555,22 +605,25 @@ if (D) {
     el.innerHTML = slide.html;
     const dark = slide.bg.indexOf('#2A3') > -1 || slide.bg.indexOf('#1E3') > -1 || slide.bg.indexOf('#1A2') > -1 || slide.bg.indexOf('#D4956B 50%') > -1;
     document.getElementById('watermark').style.color = dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+    // Period badge
+    var pBadge = document.getElementById('period-badge');
+    if (pBadge && periodBadge) {
+      pBadge.textContent = periodBadge;
+      pBadge.className = dark ? 'dark' : 'light';
+    }
+    // Back button
+    var backBtn = document.getElementById('story-back');
+    if (backBtn) {
+      backBtn.className = dark ? 'dark' : 'light';
+      var strokeCol = dark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.35)';
+      backBtn.querySelectorAll('line').forEach(function(l){ l.setAttribute('stroke', strokeCol); });
+    }
     // Demo floating CTA
     var demoCta = document.getElementById('demo-cta');
     if (demoCta && s.demo) {
       var isLast = current >= slides.length - 1;
       if (current >= 2 && !isLast) {
         demoCta.classList.add('visible');
-        var link = demoCta.querySelector('a');
-        if (dark) {
-          link.style.background = 'rgba(255,255,255,0.15)';
-          link.style.borderColor = 'rgba(255,255,255,0.2)';
-          link.style.color = '#fff';
-        } else {
-          link.style.background = 'rgba(255,255,255,0.7)';
-          link.style.borderColor = 'rgba(255,255,255,0.8)';
-          link.style.color = '#C27C5A';
-        }
       } else {
         demoCta.classList.remove('visible');
       }
@@ -613,15 +666,23 @@ if (D) {
   function next() { if (current < slides.length - 1) { current++; render(); } }
   function prev() { if (current > 0) { current--; render(); } }
 
+  var hintDismissedAt = 0;
+
   document.getElementById('slide').addEventListener('click', function(e) {
-    var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';return;}
+    var hint=document.getElementById('swipe-hint-story');
+    if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';hintDismissedAt=Date.now();return;}
+    if(Date.now()-hintDismissedAt<400)return;
     if (e.target.tagName === 'A' || e.target.closest('a')) return;
     var rect = this.getBoundingClientRect();
     if (e.clientX - rect.left > rect.width / 2) next(); else prev();
   });
 
   var tsx = null;
-  document.getElementById('slide').addEventListener('touchstart', function(e) { var hint=document.getElementById('swipe-hint-story');if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';tsx=null;return;} tsx = e.touches[0].clientX; });
+  document.getElementById('slide').addEventListener('touchstart', function(e) {
+    var hint=document.getElementById('swipe-hint-story');
+    if(hint&&hint.style.opacity!=='0'){hint.style.opacity='0';hintDismissedAt=Date.now();tsx=null;return;}
+    tsx = e.touches[0].clientX;
+  });
   document.getElementById('slide').addEventListener('touchend', function(e) {
     if (tsx === null) return;
     var d = tsx - e.changedTouches[0].clientX;
